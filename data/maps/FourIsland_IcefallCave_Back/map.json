@@ -13,12 +13,11 @@
   "show_map_name": true,
   "floor_number": 0,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-  "connections": 0,
+  "connections": null,
   "object_events": [
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
-      "in_connection": false,
       "x": 11,
       "y": 14,
       "elevation": 3,
@@ -28,12 +27,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "0x0",
-      "flag": "FLAG_HIDE_ICEFALL_CAVE_ROCKETS"
+      "flag": "FLAG_HIDE_ICEFALL_CAVE_ROCKETS",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
-      "in_connection": false,
       "x": 13,
       "y": 14,
       "elevation": 3,
@@ -43,12 +42,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "0x0",
-      "flag": "FLAG_HIDE_ICEFALL_CAVE_ROCKETS"
+      "flag": "FLAG_HIDE_ICEFALL_CAVE_ROCKETS",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_LORELEI",
-      "in_connection": false,
       "x": 12,
       "y": 16,
       "elevation": 3,
@@ -58,12 +57,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "FourIsland_IcefallCave_Back_EventScript_Lorelei",
-      "flag": "FLAG_HIDE_ICEFALL_CAVE_LORELEI"
+      "flag": "FLAG_HIDE_ICEFALL_CAVE_LORELEI",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
-      "in_connection": false,
       "x": 10,
       "y": 15,
       "elevation": 3,
@@ -73,7 +72,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "0x0",
-      "flag": "FLAG_HIDE_ICEFALL_CAVE_ROCKETS"
+      "flag": "FLAG_HIDE_ICEFALL_CAVE_ROCKETS",
+      "in_connection": false
     }
   ],
   "warp_events": [
@@ -114,8 +114,6 @@
       "script": "FourIsland_IcefallCave_Back_EventScript_LoreleiRocketsScene"
     }
   ],
-  "bg_events": [
-
-  ],
+  "bg_events": [],
   "level_scaling": "5"
 }

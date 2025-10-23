@@ -13,11 +13,11 @@
   "show_map_name": false,
   "floor_number": 0,
   "battle_scene": "MAP_BATTLE_SCENE_LINK",
-  "connections": 0,
+  "connections": null,
   "object_events": [
     {
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_VAR_0",
-      "in_connection": false,
       "x": 5,
       "y": 1,
       "elevation": 3,
@@ -27,11 +27,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "NULL",
-      "flag": "FLAG_HIDE_BATTLE_TOWER_OPPONENT"
+      "flag": "FLAG_HIDE_BATTLE_TOWER_OPPONENT",
+      "in_connection": false
     },
     {
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_CABLE_CLUB_RECEPTIONIST",
-      "in_connection": false,
       "x": 1,
       "y": 7,
       "elevation": 3,
@@ -41,7 +42,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "NULL",
-      "flag": "0"
+      "flag": "0",
+      "in_connection": false
     }
   ],
   "warp_events": [
@@ -50,21 +52,17 @@
       "y": 8,
       "elevation": 0,
       "dest_map": "MAP_RS_BATTLE_TOWER_LOBBY",
-      "dest_warp_id": 2
+      "dest_warp_id": "2"
     },
     {
       "x": 6,
       "y": 8,
       "elevation": 0,
       "dest_map": "MAP_RS_BATTLE_TOWER_LOBBY",
-      "dest_warp_id": 2
+      "dest_warp_id": "2"
     }
   ],
-  "coord_events": [
-
-  ],
-  "bg_events": [
-
-  ],
+  "coord_events": [],
+  "bg_events": [],
   "level_scaling": "0"
 }

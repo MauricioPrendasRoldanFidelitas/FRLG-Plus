@@ -13,12 +13,11 @@
   "show_map_name": true,
   "floor_number": 11,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-  "connections": 0,
+  "connections": null,
   "object_events": [
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_OLD_MAN_2",
-      "in_connection": false,
       "x": 9,
       "y": 9,
       "elevation": 3,
@@ -28,12 +27,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "SilphCo_11F_EventScript_President",
-      "flag": "0"
+      "flag": "0",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_WORKER_F",
-      "in_connection": false,
       "x": 11,
       "y": 9,
       "elevation": 3,
@@ -43,12 +42,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "SilphCo_11F_EventScript_Secretary",
-      "flag": "0"
+      "flag": "0",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_GIOVANNI",
-      "in_connection": false,
       "x": 6,
       "y": 11,
       "elevation": 3,
@@ -58,12 +57,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "0x0",
-      "flag": "FLAG_HIDE_SILPH_ROCKETS"
+      "flag": "FLAG_HIDE_SILPH_ROCKETS",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
-      "in_connection": false,
       "x": 16,
       "y": 12,
       "elevation": 3,
@@ -73,12 +72,12 @@
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "5",
       "script": "SilphCo_11F_EventScript_Grunt1",
-      "flag": "FLAG_HIDE_SILPH_ROCKETS"
+      "flag": "FLAG_HIDE_SILPH_ROCKETS",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
-      "in_connection": false,
       "x": 16,
       "y": 18,
       "elevation": 3,
@@ -88,12 +87,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "SilphCo_11F_EventScript_ItemZinc",
-      "flag": "FLAG_HIDE_SILPH_CO_11F_ZINC"
+      "flag": "FLAG_HIDE_SILPH_CO_11F_ZINC",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
-      "in_connection": false,
       "x": 2,
       "y": 19,
       "elevation": 3,
@@ -103,12 +102,12 @@
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "5",
       "script": "SilphCo_11F_EventScript_Grunt2",
-      "flag": "FLAG_HIDE_SILPH_ROCKETS"
+      "flag": "FLAG_HIDE_SILPH_ROCKETS",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_WORKER_M",
-      "in_connection": false,
       "x": 4,
       "y": 18,
       "elevation": 3,
@@ -118,12 +117,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "SilphCo_11F_EventScript_WorkerM",
-      "flag": "FLAG_HIDE_SAFFRON_CIVILIANS"
+      "flag": "FLAG_HIDE_SAFFRON_CIVILIANS",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_WORKER_F",
-      "in_connection": false,
       "x": 15,
       "y": 10,
       "elevation": 3,
@@ -133,12 +132,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "SilphCo_11F_EventScript_DevonSpy",
-      "flag": "FLAG_HIDE_SAFFRON_CIVILIANS"
+      "flag": "FLAG_HIDE_SAFFRON_CIVILIANS",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_MASTER_LASS",
-      "in_connection": false,
       "x": 12,
       "y": 18,
       "elevation": 3,
@@ -148,7 +147,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "MasterTrainer_EventScript_Wigglytuff",
-      "flag": "FLAG_HIDE_MASTER_TRAINERS"
+      "flag": "FLAG_HIDE_MASTER_TRAINERS",
+      "in_connection": false
     }
   ],
   "warp_events": [

@@ -13,12 +13,11 @@
   "show_map_name": true,
   "floor_number": 0,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-  "connections": 0,
+  "connections": null,
   "object_events": [
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_COOLTRAINER_M",
-      "in_connection": false,
       "x": 5,
       "y": 2,
       "elevation": 3,
@@ -28,12 +27,12 @@
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "4",
       "script": "VictoryRoad_1F_EventScript_Rolando",
-      "flag": "0"
+      "flag": "0",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_COOLTRAINER_F",
-      "in_connection": false,
       "x": 14,
       "y": 6,
       "elevation": 4,
@@ -43,12 +42,12 @@
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "4",
       "script": "VictoryRoad_1F_EventScript_Naomi",
-      "flag": "0"
+      "flag": "0",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
-      "in_connection": false,
       "x": 12,
       "y": 3,
       "elevation": 3,
@@ -58,12 +57,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "VictoryRoad_1F_EventScript_ItemRareCandy",
-      "flag": "FLAG_HIDE_VICTORY_ROAD_1F_RARE_CANDY"
+      "flag": "FLAG_HIDE_VICTORY_ROAD_1F_RARE_CANDY",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
-      "in_connection": false,
       "x": 14,
       "y": 1,
       "elevation": 3,
@@ -73,12 +72,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "VictoryRoad_1F_EventScript_ItemTM02",
-      "flag": "FLAG_HIDE_VICTORY_ROAD_1F_TM02"
+      "flag": "FLAG_HIDE_VICTORY_ROAD_1F_TM02",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
-      "in_connection": false,
       "x": 7,
       "y": 18,
       "elevation": 3,
@@ -88,12 +87,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "EventScript_StrengthBoulder",
-      "flag": "0"
+      "flag": "0",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
-      "in_connection": false,
       "x": 4,
       "y": 12,
       "elevation": 3,
@@ -103,12 +102,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "EventScript_StrengthBoulder",
-      "flag": "0"
+      "flag": "0",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
-      "in_connection": false,
       "x": 16,
       "y": 3,
       "elevation": 3,
@@ -118,11 +117,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "EventScript_StrengthBoulder",
-      "flag": "0"
+      "flag": "0",
+      "in_connection": false
     },
     {
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_MASTER_HIKER",
-      "in_connection": false,
       "x": 8,
       "y": 11,
       "elevation": 4,
@@ -132,7 +132,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "MasterTrainer_EventScript_Graveler",
-      "flag": "FLAG_HIDE_MASTER_TRAINERS"
+      "flag": "FLAG_HIDE_MASTER_TRAINERS",
+      "in_connection": false
     }
   ],
   "warp_events": [

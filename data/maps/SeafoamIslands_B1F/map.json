@@ -13,12 +13,11 @@
   "show_map_name": true,
   "floor_number": 0,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-  "connections": 0,
+  "connections": null,
   "object_events": [
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
-      "in_connection": false,
       "x": 22,
       "y": 8,
       "elevation": 3,
@@ -28,12 +27,12 @@
       "trainer_type": "FLAG_HIDE_SEAFOAM_B2F_BOULDER_1",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "EventScript_StrengthBoulder",
-      "flag": "FLAG_HIDE_SEAFOAM_B1F_BOULDER_1"
+      "flag": "FLAG_HIDE_SEAFOAM_B1F_BOULDER_1",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
-      "in_connection": false,
       "x": 30,
       "y": 8,
       "elevation": 3,
@@ -43,12 +42,12 @@
       "trainer_type": "FLAG_HIDE_SEAFOAM_B2F_BOULDER_2",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "EventScript_StrengthBoulder",
-      "flag": "FLAG_HIDE_SEAFOAM_B1F_BOULDER_2"
+      "flag": "FLAG_HIDE_SEAFOAM_B1F_BOULDER_2",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
-      "in_connection": false,
       "x": 19,
       "y": 18,
       "elevation": 3,
@@ -58,12 +57,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "SeafoamIslands_B1F_EventScript_ItemWaterStone",
-      "flag": "FLAG_HIDE_SEAFOAM_ISLANDS_B1F_WATER_STONE"
+      "flag": "FLAG_HIDE_SEAFOAM_ISLANDS_B1F_WATER_STONE",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
-      "in_connection": false,
       "x": 24,
       "y": 14,
       "elevation": 4,
@@ -73,11 +72,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "SeafoamIslands_B1F_EventScript_ItemRevive",
-      "flag": "FLAG_HIDE_SEAFOAM_ISLANDS_B1F_REVIVE"
+      "flag": "FLAG_HIDE_SEAFOAM_ISLANDS_B1F_REVIVE",
+      "in_connection": false
     },
     {
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_MASTER_BEAUTY",
-      "in_connection": false,
       "x": 20,
       "y": 18,
       "elevation": 3,
@@ -87,7 +87,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "MasterTrainer_EventScript_Dewgong",
-      "flag": "FLAG_HIDE_MASTER_TRAINERS"
+      "flag": "FLAG_HIDE_MASTER_TRAINERS",
+      "in_connection": false
     }
   ],
   "warp_events": [
@@ -169,11 +170,7 @@
       "dest_warp_id": "6"
     }
   ],
-  "coord_events": [
-
-  ],
-  "bg_events": [
-
-  ],
+  "coord_events": [],
+  "bg_events": [],
   "level_scaling": "4"
 }

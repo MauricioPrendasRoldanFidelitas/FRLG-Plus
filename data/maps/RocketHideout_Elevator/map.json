@@ -42,5 +42,5 @@
       "script": "RocketHideout_Elevator_EventScript_FloorSelect"
     }
   ],
-	"level_scaling": "0"
+  "level_scaling": "0"
 }
