@@ -15,9 +15,9 @@
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": [
     {
-      "direction": "down",
+      "map": "MAP_SEVEN_ISLAND",
       "offset": 10,
-      "map": "MAP_SEVEN_ISLAND"
+      "direction": "down"
     }
   ],
   "object_events": [
@@ -59,9 +59,7 @@
       "dest_warp_id": "1"
     }
   ],
-  "coord_events": [
-
-  ],
+  "coord_events": [],
   "bg_events": [
     {
       "type": "hidden_item",

@@ -525,16 +525,16 @@ $(INTROGFXDIR)/scene_3/gengar_anim.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 348 -Wnum_tiles
 
 $(BATTLETERRAINGFXDIR)/building/terrain.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 77 -Wnum_tiles
+	$(GFX) $< $@ -num_tiles 48 -Wnum_tiles
 
 $(BATTLETERRAINGFXDIR)/cave/anim.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 106 -Wnum_tiles
 
 $(BATTLETERRAINGFXDIR)/cave/terrain.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 84 -Wnum_tiles
+	$(GFX) $< $@ -num_tiles 80 -Wnum_tiles
 
 $(BATTLETERRAINGFXDIR)/grass/terrain.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 98 -Wnum_tiles
+	$(GFX) $< $@ -num_tiles 64 -Wnum_tiles
 
 $(BATTLETERRAINGFXDIR)/indoor/terrain.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 77 -Wnum_tiles
@@ -543,7 +543,7 @@ $(BATTLETERRAINGFXDIR)/longgrass/anim.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 133 -Wnum_tiles
 
 $(BATTLETERRAINGFXDIR)/longgrass/terrain.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 98 -Wnum_tiles
+	$(GFX) $< $@ -num_tiles 48 -Wnum_tiles
 
 $(BATTLETERRAINGFXDIR)/mountain/anim.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 47 -Wnum_tiles
@@ -552,19 +552,19 @@ $(BATTLETERRAINGFXDIR)/pond/anim.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 36 -Wnum_tiles
 
 $(BATTLETERRAINGFXDIR)/pond/terrain.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 75 -Wnum_tiles
+	$(GFX) $< $@ -num_tiles 64 -Wnum_tiles
 
 $(BATTLETERRAINGFXDIR)/sand/terrain.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 83 -Wnum_tiles
+	$(GFX) $< $@ -num_tiles 64 -Wnum_tiles
 
 $(BATTLETERRAINGFXDIR)/underwater/anim.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 26 -Wnum_tiles
 
 $(BATTLETERRAINGFXDIR)/underwater/terrain.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 85 -Wnum_tiles
+	$(GFX) $< $@ -num_tiles 80 -Wnum_tiles
 
 $(BATTLETERRAINGFXDIR)/water/terrain.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 81 -Wnum_tiles
+	$(GFX) $< $@ -num_tiles 64 -Wnum_tiles
 
 $(BERRYPOUCHGFXDIR)/background.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 52 -Wnum_tiles

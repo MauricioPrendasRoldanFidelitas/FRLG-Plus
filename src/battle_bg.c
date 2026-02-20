@@ -423,6 +423,9 @@ static const u32 sBattleTerrainTilemap_Building[] = INCBIN_U32("graphics/battle_
 static const u32 sBattleTerrainAnimTiles_Building[] = INCBIN_U32("graphics/battle_terrain/building/anim.4bpp.lz");
 static const u32 sBattleTerrainAnimTilemap_Building[] = INCBIN_U32("graphics/battle_terrain/building/anim.bin.lz");
 
+static const u32 sBattleTerrainTiles_Plain[] = INCBIN_U32("graphics/battle_terrain/Plain/terrain.4bpp.lz");
+static const u32 sBattleTerrainTilemap_Plain[] = INCBIN_U32("graphics/battle_terrain/Plain/terrain.bin.lz");
+
 static const u32 sBattleTerrainPalette_Link[] = INCBIN_U32("graphics/battle_terrain/indoor/link.gbapal.lz");
 static const u32 sBattleTerrainPalette_Gym[] = INCBIN_U32("graphics/battle_terrain/indoor/gym.gbapal.lz");
 static const u32 sBattleTerrainPalette_Leader[] = INCBIN_U32("graphics/battle_terrain/indoor/leader.gbapal.lz");
@@ -512,8 +515,8 @@ static const struct BattleBackground sBattleTerrainTable[] = {
     },
     [BATTLE_TERRAIN_PLAIN] =
     {
-        .tileset = sBattleTerrainTiles_Building,
-        .tilemap = sBattleTerrainTilemap_Building,
+        .tileset = sBattleTerrainTiles_Plain,
+        .tilemap = sBattleTerrainTilemap_Plain,
         .entryTileset = sBattleTerrainAnimTiles_Building,
         .entryTilemap = sBattleTerrainAnimTilemap_Building,
         .palette = sBattleTerrainPalette_Plain

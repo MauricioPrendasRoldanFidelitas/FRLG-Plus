@@ -3471,7 +3471,7 @@ static void Cmd_checkteamslost(void)
         {
             u32 *ptr = &gHitMarker;
             u32 hitMarkerUnk = 0x10000000;
-            
+
             i++;
             --i;
             if ((hitMarkerUnk << i) & *ptr && !gSpecialStatuses[i].faintedHasReplacement)
@@ -3481,7 +3481,7 @@ static void Cmd_checkteamslost(void)
         {
             u32 *ptr = &gHitMarker;
             u32 hitMarkerUnk = 0x10000000;
-            
+
             {
                 u8 match;
 
@@ -5263,7 +5263,7 @@ static void Cmd_yesnoboxlearnmove(void)
             else
             {
                 u16 moveId = GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_MOVE1 + movePosition);
-                
+
                 if (IsHMMove2(moveId))
                 {
                     PrepareStringBattle(STRINGID_HMMOVESCANTBEFORGOTTEN, gActiveBattler);
@@ -5402,35 +5402,35 @@ static void Cmd_getmoneyreward(void)
             case 0:
                 {
                     const struct TrainerMonNoItemDefaultMoves *party1 = sTrainers[gTrainerBattleOpponent_A].party.NoItemDefaultMoves;
-                    
+
                     lastMonLevel = party1[sTrainers[gTrainerBattleOpponent_A].partySize - 1].lvl;
                 }
                 break;
             case F_TRAINER_PARTY_CUSTOM_MOVESET:
                 {
                     const struct TrainerMonNoItemCustomMoves *party2 = sTrainers[gTrainerBattleOpponent_A].party.NoItemCustomMoves;
-                    
+
                     lastMonLevel = party2[sTrainers[gTrainerBattleOpponent_A].partySize - 1].lvl;
                 }
                 break;
             case F_TRAINER_PARTY_HELD_ITEM:
                 {
                     const struct TrainerMonItemDefaultMoves *party3 = sTrainers[gTrainerBattleOpponent_A].party.ItemDefaultMoves;
-                    
+
                     lastMonLevel = party3[sTrainers[gTrainerBattleOpponent_A].partySize - 1].lvl;
                 }
                 break;
             case (F_TRAINER_PARTY_CUSTOM_MOVESET | F_TRAINER_PARTY_HELD_ITEM):
                 {
                     party4 = sTrainers[gTrainerBattleOpponent_A].party.ItemCustomMoves;
-                    
+
                     lastMonLevel = party4[sTrainers[gTrainerBattleOpponent_A].partySize - 1].lvl;
                 }
                 break;
             case F_TRAINER_PARTY_EVS:
                 {
                     party5 = sTrainers[gTrainerBattleOpponent_A].party.ItemCustomMovesEVs;
-                    
+
                     lastMonLevel = party5[sTrainers[gTrainerBattleOpponent_A].partySize - 1].lvl;
                 }
                 break;
@@ -9670,7 +9670,7 @@ static void Cmd_handleballthrow(void)
             MarkBattlerForControllerExec(gActiveBattler);
             if(gSaveBlock1Ptr->keyFlags.nuzlocke == 1)
                 gBattlescriptCurrInstr = BattleScript_SuccessBallThrowForceNick;
-            else 
+            else
                 gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
             SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
             if(gSaveBlock1Ptr->keyFlags.nuzlocke == 1)
@@ -9705,7 +9705,7 @@ static void Cmd_handleballthrow(void)
                 u8 version = VERSION_EMERALD;
                 SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_MET_LOCATION, &mapSec);
                 SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_MET_GAME, &version);
-            }    
+            }
             if (CalculatePlayerPartyCount() == PARTY_SIZE)
                 gBattleCommunication[MULTISTRING_CHOOSER] = 0;
             else
@@ -9730,7 +9730,7 @@ static void Cmd_handleballthrow(void)
             {
                 if(gSaveBlock1Ptr->keyFlags.nuzlocke == 1)
                     gBattlescriptCurrInstr = BattleScript_SuccessBallThrowForceNick;
-                else 
+                else
                     gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
                 SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
                 if(gSaveBlock1Ptr->keyFlags.nuzlocke == 1)
@@ -9765,7 +9765,7 @@ static void Cmd_handleballthrow(void)
                     u8 version = VERSION_EMERALD;
                     SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_MET_LOCATION, &mapSec);
                     SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_MET_GAME, &version);
-                }  
+                }
                 if (CalculatePlayerPartyCount() == PARTY_SIZE)
                     gBattleCommunication[MULTISTRING_CHOOSER] = 0;
                 else

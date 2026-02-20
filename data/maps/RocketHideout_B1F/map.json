@@ -13,12 +13,11 @@
   "show_map_name": true,
   "floor_number": -1,
   "battle_scene": "MAP_BATTLE_SCENE_INDOOR_2",
-  "connections": 0,
+  "connections": null,
   "object_events": [
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
-      "in_connection": false,
       "x": 4,
       "y": 9,
       "elevation": 3,
@@ -28,12 +27,12 @@
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "5",
       "script": "RocketHideout_B1F_EventScript_Grunt2",
-      "flag": "FLAG_HIDE_MISC_KANTO_ROCKETS"
+      "flag": "FLAG_HIDE_MISC_KANTO_ROCKETS",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
-      "in_connection": false,
       "x": 24,
       "y": 12,
       "elevation": 3,
@@ -43,12 +42,12 @@
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "2",
       "script": "RocketHideout_B1F_EventScript_Grunt1",
-      "flag": "FLAG_HIDE_MISC_KANTO_ROCKETS"
+      "flag": "FLAG_HIDE_MISC_KANTO_ROCKETS",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
-      "in_connection": false,
       "x": 6,
       "y": 32,
       "elevation": 3,
@@ -58,12 +57,12 @@
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "4",
       "script": "RocketHideout_B1F_EventScript_Grunt4",
-      "flag": "FLAG_HIDE_MISC_KANTO_ROCKETS"
+      "flag": "FLAG_HIDE_MISC_KANTO_ROCKETS",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
-      "in_connection": false,
       "x": 10,
       "y": 22,
       "elevation": 3,
@@ -73,12 +72,12 @@
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "3",
       "script": "RocketHideout_B1F_EventScript_Grunt3",
-      "flag": "FLAG_HIDE_MISC_KANTO_ROCKETS"
+      "flag": "FLAG_HIDE_MISC_KANTO_ROCKETS",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
-      "in_connection": false,
       "x": 21,
       "y": 27,
       "elevation": 3,
@@ -88,12 +87,12 @@
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "3",
       "script": "RocketHideout_B1F_EventScript_Grunt5",
-      "flag": "FLAG_HIDE_MISC_KANTO_ROCKETS"
+      "flag": "FLAG_HIDE_MISC_KANTO_ROCKETS",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
-      "in_connection": false,
       "x": 5,
       "y": 16,
       "elevation": 0,
@@ -103,12 +102,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "RocketHideout_B1F_EventScript_ItemEscapeRope",
-      "flag": "FLAG_HIDE_ROCKET_HIDEOUT_B1F_ESCAPE_ROPE"
+      "flag": "FLAG_HIDE_ROCKET_HIDEOUT_B1F_ESCAPE_ROPE",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
-      "in_connection": false,
       "x": 1,
       "y": 22,
       "elevation": 3,
@@ -118,11 +117,12 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "RocketHideout_B1F_EventScript_ItemHyperPotion",
-      "flag": "FLAG_HIDE_ROCKET_HIDEOUT_B1F_HYPER_POTION"
+      "flag": "FLAG_HIDE_ROCKET_HIDEOUT_B1F_HYPER_POTION",
+      "in_connection": false
     },
     {
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_MASTER_SCIENTIST",
-      "in_connection": false,
       "x": 1,
       "y": 26,
       "elevation": 3,
@@ -132,7 +132,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "MasterTrainer_EventScript_Arbok",
-      "flag": "FLAG_HIDE_MASTER_TRAINERS"
+      "flag": "FLAG_HIDE_MASTER_TRAINERS",
+      "in_connection": false
     }
   ],
   "warp_events": [
@@ -179,9 +180,7 @@
       "dest_warp_id": "1"
     }
   ],
-  "coord_events": [
-
-  ],
+  "coord_events": [],
   "bg_events": [
     {
       "type": "hidden_item",
