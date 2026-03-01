@@ -563,40 +563,40 @@ static const struct BattleBackground sBattleTerrainTable[] = {
     },
     [BATTLE_TERRAIN_LORELEI] =
     {
-        .tileset = sBattleTerrainTiles_Indoor,
-        .tilemap = sBattleTerrainTilemap_Indoor,
+        .tileset = sBattleTerrainTiles_Building,
+        .tilemap = sBattleTerrainTilemap_Building,
         .entryTileset = sBattleTerrainAnimTiles_Building,
         .entryTilemap = sBattleTerrainAnimTilemap_Building,
         .palette = sBattleTerrainPalette_Lorelei
     },
     [BATTLE_TERRAIN_BRUNO] =
     {
-        .tileset = sBattleTerrainTiles_Indoor,
-        .tilemap = sBattleTerrainTilemap_Indoor,
+        .tileset = sBattleTerrainTiles_Building,
+        .tilemap = sBattleTerrainTilemap_Building,
         .entryTileset = sBattleTerrainAnimTiles_Building,
         .entryTilemap = sBattleTerrainAnimTilemap_Building,
         .palette = sBattleTerrainPalette_Bruno
     },
     [BATTLE_TERRAIN_AGATHA] =
     {
-        .tileset = sBattleTerrainTiles_Indoor,
-        .tilemap = sBattleTerrainTilemap_Indoor,
+        .tileset = sBattleTerrainTiles_Building,
+        .tilemap = sBattleTerrainTilemap_Building,
         .entryTileset = sBattleTerrainAnimTiles_Building,
         .entryTilemap = sBattleTerrainAnimTilemap_Building,
         .palette = sBattleTerrainPalette_Agatha
     },
     [BATTLE_TERRAIN_LANCE] =
     {
-        .tileset = sBattleTerrainTiles_Indoor,
-        .tilemap = sBattleTerrainTilemap_Indoor,
+        .tileset = sBattleTerrainTiles_Building,
+        .tilemap = sBattleTerrainTilemap_Building,
         .entryTileset = sBattleTerrainAnimTiles_Building,
         .entryTilemap = sBattleTerrainAnimTilemap_Building,
         .palette = sBattleTerrainPalette_Lance
     },
     [BATTLE_TERRAIN_CHAMPION] =
     {
-        .tileset = sBattleTerrainTiles_Indoor,
-        .tilemap = sBattleTerrainTilemap_Indoor,
+        .tileset = sBattleTerrainTiles_Building,
+        .tilemap = sBattleTerrainTilemap_Building,
         .entryTileset = sBattleTerrainAnimTiles_Building,
         .entryTilemap = sBattleTerrainAnimTilemap_Building,
         .palette = sBattleTerrainPalette_Champion

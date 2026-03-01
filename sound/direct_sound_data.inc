@@ -2181,3 +2181,15 @@ DirectSoundWaveData_wave_54::
 	.align 2
 DirectSoundWaveData_wave_77::
 	.incbin "sound/direct_sound_samples/wave_77.bin"
+	
+	.align 2
+DirectSoundWaveData_wave_57::
+	.incbin "sound/direct_sound_samples/wave_57.bin"
+	
+	.align 2
+DirectSoundWaveData_wave_56::
+	.incbin "sound/direct_sound_samples/wave_56.bin"
+
+	.align 2
+DirectSoundWaveData_wave_72::
+	.incbin "sound/direct_sound_samples/wave_72.bin"
