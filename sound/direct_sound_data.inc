@@ -2193,3 +2193,31 @@ DirectSoundWaveData_wave_56::
 	.align 2
 DirectSoundWaveData_wave_72::
 	.incbin "sound/direct_sound_samples/wave_72.bin"
+	
+	.align 2
+DirectSoundWaveData_wave_58::
+	.incbin "sound/direct_sound_samples/wave_58.bin"
+	
+	.align 2
+DirectSoundWaveData_wave_61::
+	.incbin "sound/direct_sound_samples/wave_61.bin"
+	
+	.align 2
+DirectSoundWaveData_wave_62::
+	.incbin "sound/direct_sound_samples/wave_62.bin"
+	
+	.align 2
+DirectSoundWaveData_wave_64::
+	.incbin "sound/direct_sound_samples/wave_64.bin"
+	
+	.align 2
+DirectSoundWaveData_wave_65::
+	.incbin "sound/direct_sound_samples/wave_65.bin"
+	
+	.align 2
+DirectSoundWaveData_wave_68::
+	.incbin "sound/direct_sound_samples/wave_68.bin"
+	
+	.align 2
+DirectSoundWaveData_wave_73::
+	.incbin "sound/direct_sound_samples/wave_73.bin"

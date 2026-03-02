@@ -1261,4 +1261,4 @@ $(MID_SUBDIR)/se_dex_search.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G127 -v100 -P5
 
 $(MID_SUBDIR)/mus_victory_road_cave.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -G192 -V090
+	$(MID) $< $@ -E -R$(STD_REVERB) -G193 -V090 -P1
