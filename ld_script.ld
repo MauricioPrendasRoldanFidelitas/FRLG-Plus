@@ -1146,6 +1146,7 @@ SECTIONS {
         sound/songs/midi/ph_nurse_held.o(.rodata);
         sound/songs/midi/ph_nurse_solo.o(.rodata);
 		sound/songs/midi/mus_victory_road_cave.o(.rodata);
+		sound/songs/midi/mus_vs_elite_four_custom.o(.rodata);
     } =0
 
     lib_rodata :

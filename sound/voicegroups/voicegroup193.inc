@@ -128,3 +128,4 @@ voicegroup193::
 	voice_directsound 60, 0, DirectSoundWaveData_wave_56, 255, 0, 255, 127 @ Train SFX in Helicopter slot
 	voice_directsound 60, 0, DirectSoundWaveData_wave_72, 255, 0, 255, 127 @ Applause
 	voice_noise 60, 0, 0, 0, 7, 15, 0
+

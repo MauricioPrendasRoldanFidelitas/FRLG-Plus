@@ -7676,8 +7676,9 @@ static u16 GetBattleBGM(void)
         case TRAINER_CLASS_CHAMPION:
             return MUS_VS_CHAMPION;
         case TRAINER_CLASS_LEADER:
+			return MUS_VS_GYM_LEADER;
         case TRAINER_CLASS_ELITE_FOUR:
-            return MUS_VS_GYM_LEADER;
+            return MUS_VS_ELITE_FOUR_CUSTOM;
         case TRAINER_CLASS_BOSS:
         case TRAINER_CLASS_TEAM_ROCKET:
         case TRAINER_CLASS_COOLTRAINER:
