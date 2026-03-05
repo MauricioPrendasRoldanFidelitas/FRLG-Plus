@@ -1067,6 +1067,27 @@ static u16 GetLocationMusic(struct WarpData * warp)
 {
     if(FlagGet(FLAG_SYS_ON_CYCLING_ROAD))
         return MUS_CYCLING;
+	else if (Overworld_GetMapHeaderByGroupAndId(warp->mapGroup, warp->mapNum)->regionMapSectionId == MAPSEC_LAVENDER_TOWN)
+    {
+        //Marowak's spirit was calmed, got the Poke Flute from Mr. Fuji
+        if (FlagGet(FLAG_GOT_POKE_FLUTE))
+        {
+            if (Overworld_GetMapHeaderByGroupAndId(warp->mapGroup, warp->mapNum)->music == MUS_POKE_CENTER)
+            {
+                return MUS_POKE_CENTER;
+            }
+            else if (Overworld_GetMapHeaderByGroupAndId(warp->mapGroup, warp->mapNum)->music == MUS_POKE_MART)
+            {
+                return MUS_POKE_MART;
+            }
+            else {
+                return MUS_LAVENDER_PEACE;
+            }
+        }
+        else {
+            return Overworld_GetMapHeaderByGroupAndId(warp->mapGroup, warp->mapNum)->music;
+        }
+    }
     return Overworld_GetMapHeaderByGroupAndId(warp->mapGroup, warp->mapNum)->music;
 }
 

@@ -7680,7 +7680,9 @@ static u16 GetBattleBGM(void)
         case TRAINER_CLASS_ELITE_FOUR:
             return MUS_VS_ELITE_FOUR_CUSTOM;
         case TRAINER_CLASS_BOSS:
+			return MUS_VS_TEAM_ROCKET_BOSS;
         case TRAINER_CLASS_TEAM_ROCKET:
+			return MUS_VS_TEAM_ROCKET;
         case TRAINER_CLASS_COOLTRAINER:
         case TRAINER_CLASS_GENTLEMAN:
         case TRAINER_CLASS_RIVAL_LATE:
@@ -7692,7 +7694,50 @@ static u16 GetBattleBGM(void)
     {
         return MUS_RS_VS_WILD;
     }
-    return MUS_VS_WILD;
+	switch (gMapHeader.regionMapSectionId)
+	{
+		case MAPSEC_FOUR_ISLAND:
+        case MAPSEC_FIVE_ISLAND:
+        case MAPSEC_SEVEN_ISLAND:
+        case MAPSEC_SIX_ISLAND:
+        case MAPSEC_SEVII_ISLE_6:
+        case MAPSEC_SEVII_ISLE_7:
+        case MAPSEC_SEVII_ISLE_8:
+        case MAPSEC_SEVII_ISLE_9:
+        case MAPSEC_RESORT_GORGEOUS:
+        case MAPSEC_WATER_LABYRINTH:
+        case MAPSEC_FIVE_ISLE_MEADOW:
+        case MAPSEC_MEMORIAL_PILLAR:
+        case MAPSEC_OUTCAST_ISLAND:
+        case MAPSEC_GREEN_PATH:
+        case MAPSEC_WATER_PATH:
+        case MAPSEC_RUIN_VALLEY:
+        case MAPSEC_TRAINER_TOWER:
+        case MAPSEC_CANYON_ENTRANCE:
+        case MAPSEC_SEVAULT_CANYON:
+        case MAPSEC_TANOBY_RUINS:
+        case MAPSEC_NAVEL_ROCK:
+        case MAPSEC_ICEFALL_CAVE:
+        case MAPSEC_ROCKET_WAREHOUSE:
+        case MAPSEC_TRAINER_TOWER_2:
+        case MAPSEC_DOTTED_HOLE:
+        case MAPSEC_LOST_CAVE:
+        case MAPSEC_PATTERN_BUSH:
+        case MAPSEC_ALTERING_CAVE:
+        case MAPSEC_TANOBY_CHAMBERS:
+        case MAPSEC_TANOBY_KEY:
+        case MAPSEC_BIRTH_ISLAND:
+        case MAPSEC_MONEAN_CHAMBER:
+        case MAPSEC_LIPTOO_CHAMBER:
+        case MAPSEC_WEEPTH_CHAMBER:
+        case MAPSEC_DILFORD_CHAMBER:
+        case MAPSEC_SCUFIB_CHAMBER:
+        case MAPSEC_RIXY_CHAMBER:
+        case MAPSEC_VIAPOIS_CHAMBER:
+			return MUS_VS_WILD_SEVII;
+		default:
+			return MUS_VS_WILD;
+	}
 }
 
 void PlayBattleBGM(void)

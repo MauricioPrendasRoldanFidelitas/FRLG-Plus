@@ -2,12 +2,12 @@
 voicegroup193::
 	voice_keysplit_all voicegroup192 @ Custom Standard FR/LG-focused drum kit with GM-type notes
 	voice_directsound 60, 0, DirectSoundWaveData_steinway_b_piano, 255, 204, 0, 242
-	voice_keysplit voicegroup003, KeySplitTable1 @ Grand Piano
+	voice_keysplit voicegroup005, KeySplitTable1 @ Grand Piano
 	voice_directsound 60, 0, DirectSoundWaveData_sd90_classical_detuned_ep1_low, 255, 165, 180, 165
 	voice_directsound 60, 0, DirectSoundWaveData_sd90_classical_detuned_ep1_high, 255, 165, 180, 165
 	voice_directsound 60, 0, DirectSoundWaveData_sd90_classical_detuned_ep1_high, 255, 137, 154, 165
 	voice_directsound 60, 0, DirectSoundWaveData_sd90_classical_detuned_ep1_low, 255, 165, 180, 165
-	voice_keysplit voicegroup003, KeySplitTable1 @ Grand Piano copy
+	voice_keysplit voicegroup005, KeySplitTable1 @ Grand Piano copy
 	voice_directsound 60, 0, DirectSoundWaveData_sc88pro_glockenspiel, 255, 242, 0, 127
 	voice_directsound 60, 0, DirectSoundWaveData_sc88pro_glockenspiel, 255, 242, 0, 127
 	voice_directsound 60, 0, DirectSoundWaveData_sc88pro_glockenspiel, 255, 242, 0, 127
@@ -40,28 +40,28 @@ voicegroup193::
 	voice_directsound 60, 0, DirectSoundWaveData_sc88pro_slap_bass, 255, 235, 128, 115
 	voice_directsound 60, 0, DirectSoundWaveData_sc88pro_synth_bass, 255, 252, 0, 115
 	voice_directsound 60, 0, DirectSoundWaveData_trinity_30303_mega_bass, 255, 178, 180, 165
-	voice_keysplit voicegroup004, KeySplitTable2
-	voice_keysplit voicegroup004, KeySplitTable2
-	voice_keysplit voicegroup004, KeySplitTable2
-	voice_keysplit voicegroup004, KeySplitTable2
-	voice_keysplit voicegroup004, KeySplitTable2
+	voice_keysplit voicegroup006, KeySplitTable2
+	voice_keysplit voicegroup006, KeySplitTable2
+	voice_keysplit voicegroup006, KeySplitTable2
+	voice_keysplit voicegroup006, KeySplitTable2
+	voice_keysplit voicegroup006, KeySplitTable2
 	voice_directsound 60, 0, DirectSoundWaveData_sc88pro_pizzicato_strings, 255, 216, 0, 165
 	voice_directsound 60, 0, DirectSoundWaveData_sc88pro_harp, 255, 242, 0, 204
 	voice_directsound 60, 0, DirectSoundWaveData_sc88pro_timpani, 255, 204, 193, 239
-	voice_keysplit voicegroup004, KeySplitTable2
-	voice_keysplit voicegroup004, KeySplitTable2
+	voice_keysplit voicegroup006, KeySplitTable2
+	voice_keysplit voicegroup006, KeySplitTable2
 	voice_programmable_wave 60, 0, ProgrammableWaveData_8, 0, 1, 12, 0
 	voice_programmable_wave 60, 0, ProgrammableWaveData_9, 0, 0, 12, 0
 	voice_directsound 60, 0, DirectSoundWaveData_classical_choir_voice_ahhs, 255, 0, 255, 0
 	voice_directsound 60, 0, DirectSoundWaveData_classical_choir_voice_ahhs, 255, 0, 255, 0
 	voice_programmable_wave 60, 0, ProgrammableWaveData_5, 0, 7, 15, 2
 	voice_programmable_wave 60, 0, ProgrammableWaveData_7, 0, 7, 15, 2
-	voice_keysplit voicegroup005, KeySplitTable3
-	voice_keysplit voicegroup005, KeySplitTable3
-	voice_keysplit voicegroup006, KeySplitTable4
-	voice_keysplit voicegroup005, KeySplitTable3
-	voice_keysplit voicegroup007, KeySplitTable5
-	voice_keysplit voicegroup007, KeySplitTable5
+	voice_keysplit voicegroup007, KeySplitTable3
+	voice_keysplit voicegroup007, KeySplitTable3
+	voice_keysplit voicegroup008, KeySplitTable4
+	voice_keysplit voicegroup007, KeySplitTable3
+	voice_keysplit voicegroup009, KeySplitTable5
+	voice_keysplit voicegroup009, KeySplitTable5
 	voice_programmable_wave 60, 0, ProgrammableWaveData_6, 0, 7, 15, 2
 	voice_programmable_wave 60, 0, ProgrammableWaveData_7, 0, 7, 15, 2
 	voice_directsound 60, 0, DirectSoundWaveData_sd90_classical_oboe, 255, 165, 154, 127

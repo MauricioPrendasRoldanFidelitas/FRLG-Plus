@@ -824,3 +824,25 @@ const struct Tileset gTileset_BattleFrontierRankingHall =
 	.metatileAttributes = gMetatileAttributes_BattleFrontierRankingHall,
 	.callback = NULL
 };
+
+const struct Tileset gTileset_mt_moon =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_mt_moon,
+    .palettes = gTilesetPalettes_mt_moon,
+    .metatiles = gMetatiles_mt_moon,
+    .metatileAttributes = gMetatileAttributes_mt_moon,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_Victory_Road_Cave =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_Victory_Road_Cave,
+    .palettes = gTilesetPalettes_Victory_Road_Cave,
+    .metatiles = gMetatiles_Victory_Road_Cave,
+    .metatileAttributes = gMetatileAttributes_Victory_Road_Cave,
+    .callback = NULL,
+};

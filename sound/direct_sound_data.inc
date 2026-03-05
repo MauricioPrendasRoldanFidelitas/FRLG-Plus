@@ -1855,6 +1855,7 @@ Cry_Deoxys::
 Cry_Chimecho::
 	.incbin "sound/direct_sound_samples/cries/chimecho.bin"
 
+
 	.align 2
 DirectSoundWaveData_register_noise::
 	.incbin "sound/direct_sound_samples/register_noise.bin"
@@ -2222,4 +2223,3 @@ DirectSoundWaveData_Phoneme_50::
 	.align 2
 DirectSoundWaveData_Phoneme_51::
 	.incbin "sound/direct_sound_samples/phonemes/51.bin"
-	

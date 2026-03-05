@@ -222,3 +222,9 @@ const u32 gMetatileAttributes_SeviiIslands6[] = INCBIN_U32("data/tilesets/second
 
 const u16 gMetatiles_BattleFrontierRankingHall[] = INCBIN_U16("data/tilesets/secondary/battlefrontierrankinghall/metatiles.bin");
 const u32 gMetatileAttributes_BattleFrontierRankingHall[] = INCBIN_U32("data/tilesets/secondary/battlefrontierrankinghall/metatile_attributes.bin");
+
+const u16 gMetatiles_mt_moon[] = INCBIN_U16("data/tilesets/secondary/mt_moon/metatiles.bin");
+const u32 gMetatileAttributes_mt_moon[] = INCBIN_U32("data/tilesets/secondary/mt_moon/metatile_attributes.bin");
+
+const u16 gMetatiles_Victory_Road_Cave[] = INCBIN_U16("data/tilesets/secondary/victory_road_cave/metatiles.bin");
+const u32 gMetatileAttributes_Victory_Road_Cave[] = INCBIN_U32("data/tilesets/secondary/victory_road_cave/metatile_attributes.bin");

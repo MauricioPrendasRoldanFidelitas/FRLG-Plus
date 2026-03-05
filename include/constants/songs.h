@@ -542,6 +542,14 @@
 #define PH_NURSE_SOLO               609
 #define MUS_VICTORY_ROAD_CAVE       610
 #define MUS_VS_ELITE_FOUR_CUSTOM    611
+#define MUS_VS_TEAM_ROCKET			612
+#define MUS_VS_TEAM_ROCKET_ADMIN	613
+#define MUS_VS_TEAM_ROCKET_BOSS		614
+#define MUS_VS_TRAINER_SEVII		615
+#define MUS_VS_WILD_SEVII			616
+#define MUS_VIRIDIAN_FOREST_PEACE	617
+#define MUS_LAVENDER_PEACE			618
+#define MUS_LAVENDER_PEACE_INTRO	619
 
 #define MUS_ROUTE118                0x7FFF  // Map is split into 2 music sections. controlled by GetCurrLocationDefaultMusic().
 

@@ -613,6 +613,14 @@ gSongTable::
 	song ph_nurse_solo, 2, 2
 	song mus_victory_road_cave, 0, 0
 	song mus_vs_elite_four_custom, 0, 0
+	song mus_vs_team_rocket, 0, 0
+	song mus_vs_team_rocket_admin, 0, 0
+	song mus_vs_team_rocket_boss, 0, 0
+	song mus_vs_trainer_sevii, 0, 0
+	song mus_vs_wild_sevii, 0, 0
+	song mus_viridian_forest_peace, 0, 0
+	song mus_lavender_peace_intro, 0, 0
+	song mus_lavender_peace, 0, 0
 
 	.align 2
 dummy_song_header:
