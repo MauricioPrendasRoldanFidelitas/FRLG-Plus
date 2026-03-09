@@ -619,8 +619,9 @@ gSongTable::
 	song mus_vs_trainer_sevii, 0, 0
 	song mus_vs_wild_sevii, 0, 0
 	song mus_viridian_forest_peace, 0, 0
-	song mus_lavender_peace_intro, 0, 0
 	song mus_lavender_peace, 0, 0
+	song mus_lavender_peace_intro, 0, 0
+	song mus_route3_remix, 0, 0
 
 	.align 2
 dummy_song_header:

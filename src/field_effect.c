@@ -490,14 +490,7 @@ static void FieldEffectScript_LoadFadedPal(const u8 **script)
     }
     else if((const struct SpritePalette * )FieldEffectScript_ReadWord(script) == &gSpritePalette_GeneralFieldEffect1) //overwrite tall grass palette
     {
-        if(mapsec == MAPSEC_BOND_BRIDGE || mapsec == MAPSEC_THREE_ISLE_PORT || mapsec == MAPSEC_BERRY_FOREST) //if three island
-        {
-            spritePalette = &gThreeIslandGrassPal;
-        }
-        else
-        {
-            spritePalette = (const struct SpritePalette * )FieldEffectScript_ReadWord(script);
-        }
+        spritePalette = (const struct SpritePalette * )FieldEffectScript_ReadWord(script);
     }
     else
     {

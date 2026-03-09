@@ -1153,8 +1153,9 @@ SECTIONS {
 		sound/songs/midi/mus_vs_trainer_sevii.o(.rodata)
 		sound/songs/midi/mus_vs_wild_sevii.o(.rodata)
 		sound/songs/midi/mus_viridian_forest_peace.o(.rodata)
-		sound/songs/midi/mus_lavender_peace_intro.o(.rodata)
 		sound/songs/midi/mus_lavender_peace.o(.rodata)
+		sound/songs/midi/mus_lavender_peace_intro.o(.rodata)
+		sound/songs/midi/mus_route3_remix.o(.rodata)
     } =0
 
     lib_rodata :

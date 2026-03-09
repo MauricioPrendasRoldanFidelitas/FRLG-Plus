@@ -550,6 +550,7 @@
 #define MUS_VIRIDIAN_FOREST_PEACE	617
 #define MUS_LAVENDER_PEACE			618
 #define MUS_LAVENDER_PEACE_INTRO	619
+#define MUS_ROUTE3_REMIX			620
 
 #define MUS_ROUTE118                0x7FFF  // Map is split into 2 music sections. controlled by GetCurrLocationDefaultMusic().
 
