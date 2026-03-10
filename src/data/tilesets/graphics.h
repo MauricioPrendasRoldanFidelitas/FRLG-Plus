@@ -1540,3 +1540,41 @@ const u16 gTilesetPalettes_BattleFrontierRankingHall[][16] =
 	INCBIN_U16("data/tilesets/secondary/battlefrontierrankinghall/palettes/11.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/battlefrontierrankinghall/palettes/12.gbapal"),
 };
+
+const u16 gTilesetPalettes_mt_moon[][16] =
+{
+    INCBIN_U16("data/tilesets/secondary/mt_moon/palettes/00.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/mt_moon/palettes/01.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/mt_moon/palettes/02.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/mt_moon/palettes/03.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/mt_moon/palettes/04.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/mt_moon/palettes/05.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/mt_moon/palettes/06.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/mt_moon/palettes/07.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/mt_moon/palettes/08.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/mt_moon/palettes/09.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/mt_moon/palettes/10.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/mt_moon/palettes/11.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/mt_moon/palettes/12.gbapal"),
+};
+
+const u32 gTilesetTiles_mt_moon[] = INCBIN_U32("data/tilesets/secondary/mt_moon/tiles.4bpp.lz");
+
+const u16 gTilesetPalettes_Victory_Road_Cave[][16] =
+{
+    INCBIN_U16("data/tilesets/secondary/victory_road_cave/palettes/00.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/victory_road_cave/palettes/01.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/victory_road_cave/palettes/02.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/victory_road_cave/palettes/03.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/victory_road_cave/palettes/04.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/victory_road_cave/palettes/05.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/victory_road_cave/palettes/06.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/victory_road_cave/palettes/07.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/victory_road_cave/palettes/08.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/victory_road_cave/palettes/09.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/victory_road_cave/palettes/10.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/victory_road_cave/palettes/11.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/victory_road_cave/palettes/12.gbapal"),
+};
+
+const u32 gTilesetTiles_Victory_Road_Cave[] = INCBIN_U32("data/tilesets/secondary/victory_road_cave/tiles.4bpp.lz");

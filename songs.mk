@@ -406,7 +406,7 @@ $(MID_SUBDIR)/mus_rg_route3.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G152 -V083
 
 $(MID_SUBDIR)/mus_rg_route11.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -G153 -V090
+	$(MID) $< $@ -E -R$(STD_REVERB) -G193 -V090
 
 $(MID_SUBDIR)/mus_rg_pallet.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G159 -V100
@@ -1259,3 +1259,36 @@ $(MID_SUBDIR)/se_m_leer.s: %.s: %.mid
 
 $(MID_SUBDIR)/se_dex_search.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G127 -v100 -P5
+
+$(MID_SUBDIR)/mus_victory_road_cave.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G193 -V090
+
+$(MID_SUBDIR)/mus_vs_elite_four_custom.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G193 -V090
+
+$(MID_SUBDIR)/mus_vs_team_rocket.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G193 -V090
+
+$(MID_SUBDIR)/mus_vs_team_rocket_admin.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G193 -V090
+
+$(MID_SUBDIR)/mus_vs_team_rocket_boss.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G193 -V090
+
+$(MID_SUBDIR)/mus_vs_trainer_sevii.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G193 -V090
+
+$(MID_SUBDIR)/mus_vs_wild_sevii.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G193 -V090
+
+$(MID_SUBDIR)/mus_viridian_forest_peace.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G193 -V090
+
+$(MID_SUBDIR)/mus_lavender_peace.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G193 -V090
+
+$(MID_SUBDIR)/mus_lavender_peace_intro.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G193 -V090
+
+$(MID_SUBDIR)/mus_route3_remix.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G193 -V090

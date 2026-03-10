@@ -123,7 +123,7 @@ const struct SpriteTemplate gUnknown_TallGrass_OneIsland =
     .paletteTag = FLDEFF_PAL_TAG_GENERAL_1,
     .oam = &gObjectEventBaseOam_16x16,
     .anims = sAnimTable_TallGrass,
-    .images = gUnknown_83A53DC_OneIsland,
+    .images = sPicTable_TallGrass,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = UpdateTallGrassFieldEffect,
 };
@@ -134,7 +134,7 @@ const struct SpriteTemplate gUnknown_TallGrass_SevenIsland =
     .paletteTag = FLDEFF_PAL_TAG_GENERAL_1,
     .oam = &gObjectEventBaseOam_16x16,
     .anims = sAnimTable_TallGrass,
-    .images = gSevenIsland_Grass_SpriteFrameImage,
+    .images = sPicTable_TallGrass,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = UpdateTallGrassFieldEffect,
 };

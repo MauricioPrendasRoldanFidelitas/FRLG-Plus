@@ -1642,4 +1642,7 @@ extern const u8 gText_HowDoIBattleThem[];
 extern const u8 gText_AboutTitles[];
 extern const u8 gText_Nothing[];
 
+extern const u8 gString_TrainerNameGrunt[];
+extern const u8 gString_TrainerNameAdmin[];
+
 #endif //GUARD_STRINGS_H
