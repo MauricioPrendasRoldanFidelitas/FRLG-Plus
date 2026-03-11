@@ -43,6 +43,8 @@
 #include "constants/mystery_gift.h"
 	.include "asm/macros.inc"
 	.include "asm/macros/event.inc"
+	.set FALSE, 0
+	.set TRUE,  1
 	.include "constants/constants.inc"
 
 	.section script_data, "aw", %progbits
@@ -1011,8 +1013,8 @@ Text_Gyaoo::
 	.string "Gyaoo!$"
 
 Text_MoveCanOnlyBeLearnedOnce::
-	.string "This move can be learned only\n"
-	.string "once. Is that okay?$"
+	.string "This move can only be learned\n"
+	.string "once for free. Is that okay?$"
 
 EventScript_ResetAllMapFlags::
 	setflag FLAG_HIDE_OAK_IN_HIS_LAB
@@ -1064,6 +1066,14 @@ EventScript_ResetAllMapFlags::
 	setflag FLAG_HIDE_FAME_CHECKER_KOGA_JOURNAL
 	setflag FLAG_HIDE_FAME_CHECKER_LT_SURGE_JOURNAL
 	setflag FLAG_HIDE_SAFFRON_CITY_POKECENTER_SABRINA_JOURNALS
+	setflag FLAG_HIDE_LAVENDER_OUTSIDE_FUJI
+	setflag FLAG_HIDE_BATTLE_TOWER_OPPONENT
+	setflag FLAG_HIDE_VICTORY_ROAD_2F_BOULDER
+	setflag FLAG_HIDE_SCOTT
+	setflag FLAG_HIDE_LATI
+	setflag FLAG_HIDE_AWARD_SCOTT_BATTLE_TOWER
+	setflag FLAG_HIDE_NATIONAL_DEX_AIDE
+	setflag FLAG_HIDE_MASTER_TRAINERS
 	setvar VAR_MASSAGE_COOLDOWN_STEP_COUNTER, 500
 	end
 
@@ -1281,16 +1291,26 @@ EventScript_BufferPutAwayPocketName::
 	case POCKET_ITEMS,       EventScript_BufferPutAwayPocketItems
 	case POCKET_KEY_ITEMS,   EventScript_BufferPutAwayPocketKeyItems
 	case POCKET_POKE_BALLS,  EventScript_BufferPutAwayPocketPokeBalls
-	case POCKET_TM_HM,     EventScript_BufferPutAwayPocketTMCase
-	case POCKET_BERRIES, EventScript_BufferPutAwayPocketBerryPouch
+	case POCKET_TM_CASE,     EventScript_BufferPutAwayPocketTMCase
+	case POCKET_BERRY_POUCH, EventScript_BufferPutAwayPocketBerryPouch
+	case POCKET_MEDICINE,	 EventScript_BufferPutAwayPocketMedicine
+	case POCKET_HELD_ITEMS,  EventScript_BufferPutAwayPocketHeldItems
 	end
 
 EventScript_BufferPutAwayPocketItems::
 	bufferstdstring STR_VAR_3, STDSTRING_ITEMS_POCKET
 	return
 
+EventScript_BufferPutAwayPocketMedicine::
+	bufferstdstring STR_VAR_3, STDSTRING_MEDICINE_POCKET
+	return
+
 EventScript_BufferPutAwayPocketKeyItems::
 	bufferstdstring STR_VAR_3, STDSTRING_KEY_ITEMS_POCKET
+	return
+	
+EventScript_BufferPutAwayPocketHeldItems::
+	bufferstdstring STR_VAR_3, STDSTRING_HELD_ITEMS_POCKET
 	return
 
 EventScript_BufferPutAwayPocketPokeBalls::
@@ -1330,6 +1350,7 @@ EventScript_NoMoreRoomForPokemon::
 
 	.include "data/text/braille.inc"
 	.include "data/scripts/trainers.inc"
+	.include "data/scripts/master_trainers.inc"
 
 @ Test message!
 @ Welcome to the world of Pokémon!

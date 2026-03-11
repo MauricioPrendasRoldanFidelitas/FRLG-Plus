@@ -62,6 +62,7 @@ Route5_PokemonDayCare_EventScript_CheckOnMon::
 	end
 
 Route5_PokemonDayCare_EventScript_MonHasGrownByXLevels::
+	callnative GetStartingLevelOfRoute5DaycareMon
 	msgbox Route5_PokemonDayCare_Text_MonHasGrownByXLevels
 	return
 
@@ -72,6 +73,7 @@ Route5_PokemonDayCare_EventScript_NotEnoughTime::
 Route5_PokemonDayCare_EventScript_TryRetrieveMon::
 	specialvar VAR_RESULT, CalculatePlayerPartyCount
 	goto_if_eq VAR_RESULT, PARTY_SIZE, Route5_PokemonDayCare_EventScript_NoRoomInParty
+Route5_PokemonDayCare_EventScript_TryRetrieveMon_Continue::
 	specialvar VAR_RESULT, IsEnoughForCostInVar0x8005
 	goto_if_eq VAR_RESULT, TRUE, Route5_PokemonDayCare_EventScript_RetrieveMon
 	msgbox Route5_PokemonDayCare_Text_DontHaveEnoughMoney
@@ -81,6 +83,8 @@ Route5_PokemonDayCare_EventScript_TryRetrieveMon::
 Route5_PokemonDayCare_EventScript_RetrieveMon::
 	setvar VAR_0x8004, 0
 	specialvar VAR_RESULT, TakePokemonFromRoute5Daycare
+	compare VAR_RESULT, 9999 //boxes full
+	goto_if_eq Route5_PokemonDayCare_EventScript_StorageAndPartyFull
 	special SubtractMoneyFromVar0x8005
 	updatemoneybox
 	copyvar VAR_0x8008, VAR_RESULT

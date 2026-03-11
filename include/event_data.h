@@ -57,5 +57,12 @@ void ClearMysteryGiftVars(void);
 bool32 IsNationalPokedexEnabled(void);
 void EnableNationalPokedex_RSE(void);
 void ClearTempFieldEventData(void);
+u8 NuzlockeFlagSet(u8 mapsec);
+u8 NuzlockeFlagClear(u8 mapsec);
+u8 NuzlockeFlagGet(u8 mapsec);
+bool8 CheckMasterTrainerFlag(u16 flag);
+bool8 SetMasterTrainerFlag(u16 flag);
+bool8 ClearMasterTrainerFlag(u16 flag);
+
 
 #endif // GUARD_EVENT_DATA_H
