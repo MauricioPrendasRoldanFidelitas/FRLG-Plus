@@ -38,7 +38,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CeladonCity_EventScript_RocketGrunt1",
-      "flag": "FLAG_HIDE_CELADON_ROCKETS"
+      "flag": "FLAG_HIDE_CELADON_ROCKETS",
+      "in_connection": false
     },
     {
       "type": "object",
@@ -52,7 +53,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CeladonCity_EventScript_FatMan",
-      "flag": "0"
+      "flag": "0",
+      "in_connection": false
     },
     {
       "type": "object",
@@ -66,7 +68,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CeladonCity_EventScript_Poliwrath",
-      "flag": "0"
+      "flag": "0",
+      "in_connection": false
     },
     {
       "type": "object",
@@ -80,7 +83,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CeladonCity_EventScript_LittleGirl",
-      "flag": "0"
+      "flag": "0",
+      "in_connection": false
     },
     {
       "type": "object",
@@ -94,7 +98,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CeladonCity_EventScript_Woman",
-      "flag": "0"
+      "flag": "0",
+      "in_connection": false
     },
     {
       "type": "object",
@@ -108,7 +113,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CeladonCity_EventScript_OldMan2",
-      "flag": "0"
+      "flag": "0",
+      "in_connection": false
     },
     {
       "type": "object",
@@ -122,7 +128,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CeladonCity_EventScript_SoftboiledTutor",
-      "flag": "0"
+      "flag": "0",
+      "in_connection": false
     },
     {
       "type": "object",
@@ -136,12 +143,13 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CeladonCity_EventScript_RocketGrunt2",
-      "flag": "FLAG_HIDE_CELADON_ROCKETS"
+      "flag": "FLAG_HIDE_CELADON_ROCKETS",
+      "in_connection": false
     },
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_OLD_MAN_1",
-      "x": 9,
+      "x": 10,
       "y": 30,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_UP",
@@ -150,7 +158,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CeladonCity_EventScript_OldMan1",
-      "flag": "0"
+      "flag": "0",
+      "in_connection": false
     },
     {
       "type": "object",
@@ -164,7 +173,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "EventScript_CutTree",
-      "flag": "FLAG_TEMP_14"
+      "flag": "FLAG_CELADON_CITY_NORTH_CUT_TREE",
+      "in_connection": false
     },
     {
       "type": "object",
@@ -178,7 +188,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "EventScript_CutTree",
-      "flag": "FLAG_TEMP_13"
+      "flag": "FLAG_CELADON_CITY_SOUTH_CUT_TREE",
+      "in_connection": false
     },
     {
       "type": "object",
@@ -192,14 +203,15 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CeladonCity_EventScript_Boy",
-      "flag": "0"
+      "flag": "0",
+      "in_connection": false
     },
     {
       "type": "clone",
       "graphics_id": "OBJ_EVENT_GFX_CUT_TREE",
       "x": -7,
       "y": 21,
-      "target_local_id": 7,
+      "target_local_id": "7",
       "target_map": "MAP_ROUTE16"
     },
     {
@@ -214,7 +226,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CeladonCity_EventScript_ItemEther",
-      "flag": "FLAG_HIDE_CELADON_CITY_ETHER"
+      "flag": "FLAG_HIDE_CELADON_CITY_ETHER",
+      "in_connection": false
     },
     {
       "type": "object",
@@ -228,7 +241,53 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CeladonCity_EventScript_SilphCoScientist",
-      "flag": "FLAG_HIDE_CELADON_ROCKETS"
+      "flag": "FLAG_HIDE_CELADON_ROCKETS",
+      "in_connection": false
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_MASTER_SCIENTIST",
+      "x": 28,
+      "y": 19,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "MasterTrainer_EventScript_Grimer",
+      "flag": "FLAG_HIDE_MASTER_TRAINERS",
+      "in_connection": false
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_MASTER_LASS",
+      "x": 23,
+      "y": 35,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "MasterTrainer_EventScript_Victreebel",
+      "flag": "FLAG_HIDE_MASTER_TRAINERS",
+      "in_connection": false
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+      "x": 44,
+      "y": 36,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "CeladonCity_EventScript_ItemSunStone",
+      "flag": "FLAG_HIDE_CELADON_CITY_SUN_STONE",
+      "in_connection": false
     }
   ],
   "warp_events": [
@@ -275,7 +334,7 @@
       "dest_warp_id": "1"
     },
     {
-      "x": 11,
+      "x": 12,
       "y": 30,
       "elevation": 0,
       "dest_map": "MAP_CELADON_CITY_GYM",
@@ -400,5 +459,6 @@
       "quantity": 1,
       "underfoot": false
     }
-  ]
+  ],
+  "level_scaling": "0"
 }

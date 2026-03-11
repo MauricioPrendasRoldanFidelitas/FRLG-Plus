@@ -38,7 +38,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "EventScript_CutTree",
-      "flag": "FLAG_TEMP_14"
+      "flag": "FLAG_ROUTE_2_CUT_TREE_3",
+      "in_connection": false
     },
     {
       "type": "object",
@@ -52,7 +53,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "EventScript_CutTree",
-      "flag": "FLAG_TEMP_13"
+      "flag": "FLAG_ROUTE_2_CUT_TREE_4",
+      "in_connection": false
     },
     {
       "type": "object",
@@ -66,7 +68,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "EventScript_CutTree",
-      "flag": "FLAG_TEMP_15"
+      "flag": "FLAG_ROUTE_2_CUT_TREE_1",
+      "in_connection": false
     },
     {
       "type": "object",
@@ -80,7 +83,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "EventScript_CutTree",
-      "flag": "FLAG_TEMP_16"
+      "flag": "FLAG_ROUTE_2_CUT_TREE_2",
+      "in_connection": false
     },
     {
       "type": "object",
@@ -94,7 +98,8 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "Route2_EventScript_ItemEther",
-      "flag": "FLAG_HIDE_ROUTE2_ETHER"
+      "flag": "FLAG_HIDE_ROUTE2_ETHER",
+      "in_connection": false
     },
     {
       "type": "object",
@@ -108,15 +113,46 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "Route2_EventScript_ItemParalyzeHeal",
-      "flag": "FLAG_HIDE_ROUTE2_PARALYZE_HEAL"
+      "flag": "FLAG_HIDE_ROUTE2_PARALYZE_HEAL",
+      "in_connection": false
     },
     {
       "type": "clone",
       "graphics_id": "OBJ_EVENT_GFX_CUT_TREE",
       "x": 6,
       "y": 85,
-      "target_local_id": 8,
+      "target_local_id": "8",
       "target_map": "MAP_VIRIDIAN_CITY"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_MASTER_BIRD_KEEPER",
+      "x": 2,
+      "y": 71,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "MasterTrainer_EventScript_Pidgey",
+      "flag": "FLAG_HIDE_MASTER_TRAINERS",
+      "in_connection": false
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_MASTER_BUG_CATCHER",
+      "x": 21,
+      "y": 75,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "MasterTrainer_EventScript_Parasect",
+      "flag": "FLAG_HIDE_MASTER_TRAINERS",
+      "in_connection": false
     }
   ],
   "warp_events": [
@@ -209,5 +245,6 @@
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "Route2_EventScript_RouteSign"
     }
-  ]
+  ],
+  "level_scaling": "1"
 }
