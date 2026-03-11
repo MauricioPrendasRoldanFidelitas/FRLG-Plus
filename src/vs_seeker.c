@@ -558,6 +558,18 @@ static const struct RematchData sRematches[] = {
       MAP(SEVEN_ISLAND_TANOBY_RUINS) },
    { {TRAINER_GENTLEMAN_CLIFFORD, TRAINER_GENTLEMAN_CLIFFORD},
       MAP(SEVEN_ISLAND_TANOBY_RUINS) },
+	{ {TRAINER_PKMN_RANGER_HELENA, SKIP, SKIP, SKIP, TRAINER_PKMN_RANGER_HELENA_2},
+      MAP(TWO_ISLAND_CAPE_BRINK) },
+   { {TRAINER_COOLTRAINER_ATTICUS, SKIP, SKIP, SKIP, TRAINER_COOLTRAINER_ATTICUS_2},
+      MAP(TWO_ISLAND_CAPE_BRINK) },
+   { {TRAINER_FISHERMAN_DEFOREST, SKIP, SKIP, SKIP, TRAINER_FISHERMAN_DEFOREST_2},
+      MAP(TWO_ISLAND_CAPE_BRINK) },
+   { {TRAINER_BIRD_KEEPER_SPEDO, SKIP, SKIP, SKIP, TRAINER_BIRD_KEEPER_SPEDO_2},
+      MAP(TWO_ISLAND_CAPE_BRINK) },
+   { {TRAINER_COOLTRAINER_CASPARA, SKIP, SKIP, SKIP, TRAINER_COOLTRAINER_CASPARA_2},
+      MAP(TWO_ISLAND_CAPE_BRINK) },
+   { {TRAINER_SWIMMER_FEMALE_SEDEF, SKIP, SKIP, SKIP, TRAINER_SWIMMER_FEMALE_SEDEF_2},
+      MAP(TWO_ISLAND_CAPE_BRINK) },
 };
 
 static const u8 sMovementScript_Wait48[] = {
@@ -641,11 +653,11 @@ void VsSeekerResetObjectMovementAfterChargeComplete(void)
 
     for (i = 0; i < gMapHeader.events->objectEventCount; i++)
     {
-        if ((templates[i].trainerType == TRAINER_TYPE_NORMAL
-          || templates[i].trainerType == TRAINER_TYPE_BURIED) 
-         && (templates[i].movementType == MOVEMENT_TYPE_RAISE_HAND_AND_STOP
-          || templates[i].movementType == MOVEMENT_TYPE_RAISE_HAND_AND_JUMP
-          || templates[i].movementType == MOVEMENT_TYPE_RAISE_HAND_AND_SWIM))
+        if ((templates[i].objUnion.normal.trainerType == TRAINER_TYPE_NORMAL
+          || templates[i].objUnion.normal.trainerType == TRAINER_TYPE_BURIED) 
+         && (templates[i].objUnion.normal.movementType == MOVEMENT_TYPE_RAISE_HAND_AND_STOP
+          || templates[i].objUnion.normal.movementType == MOVEMENT_TYPE_RAISE_HAND_AND_JUMP
+          || templates[i].objUnion.normal.movementType == MOVEMENT_TYPE_RAISE_HAND_AND_SWIM))
         {
             movementType = GetRandomFaceDirectionMovementType();
             TryGetObjectEventIdByLocalIdAndMap(templates[i].localId, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, &objEventId);
@@ -1137,6 +1149,24 @@ static u8 GetRunningBehaviorFromGraphicsId(u16 graphicsId)
         case OBJ_EVENT_GFX_BLACKBELT:
         case OBJ_EVENT_GFX_HIKER:
         case OBJ_EVENT_GFX_SAILOR:
+		case OBJ_EVENT_GFX_PAINTER:
+        case OBJ_EVENT_GFX_BIRD_KEEPER:
+        case OBJ_EVENT_GFX_POKEMON_RANGER_M:
+        case OBJ_EVENT_GFX_POKEMON_RANGER_F:
+        case OBJ_EVENT_GFX_MASTER_BEAUTY:
+        case OBJ_EVENT_GFX_RUIN_MANIAC:
+        case OBJ_EVENT_GFX_PSYCHIC_M:
+        case OBJ_EVENT_GFX_PSYCHIC_F:
+        case OBJ_EVENT_GFX_AROMA_LADY:
+        case OBJ_EVENT_GFX_TWIN:
+        case OBJ_EVENT_GFX_YOUNG_COUPLE_M:
+        case OBJ_EVENT_GFX_YOUNG_COUPLE_F:
+        case OBJ_EVENT_GFX_ENGINEER:
+        case OBJ_EVENT_GFX_JUGGLER:
+        case OBJ_EVENT_GFX_TAMER:
+        case OBJ_EVENT_GFX_POKEMON_BREEDER:
+        case OBJ_EVENT_GFX_LADY:
+        case OBJ_EVENT_GFX_ROCKER_2:
             return MOVEMENT_TYPE_RAISE_HAND_AND_JUMP;
         case OBJ_EVENT_GFX_TUBER_M_WATER:
         case OBJ_EVENT_GFX_SWIMMER_M_WATER:

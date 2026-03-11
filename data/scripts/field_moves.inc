@@ -16,6 +16,16 @@ EventScript_CutTreeCommon:
 	setfieldeffectargument 3, VAR_0x8004 @ skip pose if so
 	dofieldeffect FLDEFF_USE_CUT_ON_TREE
 	waitstate
+		goto EventScript_CutTreeDown
+	end
+
+EventScript_FldEffCut::
+	lockall
+	dofieldeffect FLDEFF_USE_CUT_ON_TREE
+	waitstate
+	goto EventScript_CutTreeDown
+	end
+	
 EventScript_CutTreeDown:: @ fallthrough
 	setflag FLAG_SAFE_FOLLOWER_MOVEMENT
 	call_if_eq VAR_0x8004, TRUE, EventScript_FollowerFieldMove
@@ -396,3 +406,10 @@ EventScript_FailSweetScent::
 
 Text_LooksLikeNothingHere::
 	.string "Looks like there's nothing here…$"
+
+EventScript_EnableAutoRun::
+    msgbox AutoRunEnabled MSGBOX_SIGN
+    end
+AutoRunEnabled:
+    .string "Pressing R toggles running by default.\nAuto running is now enabled.$"
+

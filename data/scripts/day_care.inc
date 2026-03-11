@@ -93,6 +93,9 @@ Route5_PokemonDayCare_EventScript_RetrieveMon::
 	bufferpartymonnick STR_VAR_1, VAR_RESULT
 	copyvar VAR_RESULT, VAR_0x8008
 	msgbox Route5_PokemonDayCare_Text_ThankYouHeresMon
+	waitmoncry
+	compare VAR_MON_BOX_ID, 9999 //not sent to box
+	call_if_ne Route5_PokemonDayCare_EventScript_SentToBoxNum
 	textcolor NPC_TEXT_COLOR_NEUTRAL
 	waitse
 	playmoncry VAR_RESULT, CRY_MODE_NORMAL
@@ -103,9 +106,23 @@ Route5_PokemonDayCare_EventScript_RetrieveMon::
 	end
 
 Route5_PokemonDayCare_EventScript_NoRoomInParty::
+	callnative CheckDaycareMonsHaveMail
+	goto_if_ne VAR_RESULT, TRUE, Route5_PokemonDayCare_EventScript_TryRetrieveMon_Continue @ this mon has mail
+Route5_PokemonDayCare_EventScript_StorageAndPartyFull::
 	msgbox Route5_PokemonDayCare_Text_YouveGotNoRoomForIt
 	goto Route5_PokemonDayCare_EventScript_CloseMoneyBox
 	end
+
+Route5_PokemonDayCare_EventScript_SentToBoxNum::
+	copyvar VAR_TEMP_1, VAR_RESULT
+	call EventScript_TransferredToPC_Nickname
+	return
+
+EventScript_TransferredToPC_Nickname::
+	bufferboxname STR_VAR_1, VAR_PC_BOX_TO_SEND_MON
+	call_if_unset FLAG_SYS_NOT_SOMEONES_PC, EventScript_TransferredSomeonesPC
+	call_if_set FLAG_SYS_NOT_SOMEONES_PC, EventScript_TransferredBillsPC
+	return
 
 Route5_PokemonDayCare_EventScript_CloseMoneyBox::
 	hidemoneybox
