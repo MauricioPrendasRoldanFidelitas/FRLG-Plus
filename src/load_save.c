@@ -10,7 +10,7 @@
 #include "berry_powder.h"
 #include "overworld.h"
 #include "quest_log.h"
-#include "constants/items.h"
+#include "constants/event_objects.h"
 
 #define SAVEBLOCK_MOVE_RANGE    128
 
@@ -22,8 +22,6 @@ struct LoadedSaveData
  /*0x0130*/ struct ItemSlot TMsHMs[BAG_TMHM_COUNT];
  /*0x0230*/ struct ItemSlot berries[BAG_BERRIES_COUNT];
  /*0x02E8*/ struct Mail mail[MAIL_COUNT];
-            struct ItemSlot medicine[BAG_MEDICINE_COUNT];
-            struct ItemSlot heldItems[BAG_HELD_ITEMS_COUNT];
 };
 
 // EWRAM DATA
@@ -44,8 +42,6 @@ bool32 gFlashMemoryPresent;
 struct SaveBlock1 *gSaveBlock1Ptr;
 struct SaveBlock2 *gSaveBlock2Ptr;
 struct PokemonStorage *gPokemonStoragePtr;
-
-extern struct ItemSlot gKeyItemSlots[BAG_KEYITEMS_COUNT];
 
 void CheckForFlashMemory(void)
 {
@@ -181,52 +177,57 @@ void LoadPlayerParty(void)
 void SaveObjectEvents(void)
 {
     int i;
+    u16 graphicsId;
 
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
+    {
         gSaveBlock1Ptr->objectEvents[i] = gObjectEvents[i];
+        // Swap graphicsId bytes when saving and loading
+        // This keeps compatibility with vanilla,
+        // since the lower graphicsIds will be in the same place as vanilla
+        graphicsId = gObjectEvents[i].graphicsId;
+        gSaveBlock1Ptr->objectEvents[i].graphicsId = (graphicsId >> 8) | (graphicsId << 8);
+        gSaveBlock1Ptr->objectEvents[i].spriteId = 127; // magic number
+        // To avoid crash on vanilla, save follower as inactive
+        if (gObjectEvents[i].localId == OBJ_EVENT_ID_FOLLOWER) 
+            gSaveBlock1Ptr->objectEvents[i].active = FALSE;
+    }
 }
 
 void LoadObjectEvents(void)
 {
     int i;
+    u16 graphicsId;
 
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
+    {
         gObjectEvents[i] = gSaveBlock1Ptr->objectEvents[i];
+        // Swap graphicsId bytes when saving and loading
+        // This keeps compatibility with vanilla,
+        // since the lower graphicsIds will be in the same place as vanilla
+        graphicsId = gObjectEvents[i].graphicsId;
+        gObjectEvents[i].graphicsId = (graphicsId >> 8) | (graphicsId << 8);
+        if (gObjectEvents[i].spriteId != 127)
+            gObjectEvents[i].graphicsId &= 0xFF;
+        gObjectEvents[i].spriteId = 0;
+        // Try to restore saved inactive follower
+        if (gObjectEvents[i].localId == OBJ_EVENT_ID_FOLLOWER &&
+            !gObjectEvents[i].active &&
+            gObjectEvents[i].graphicsId >= OBJ_EVENT_GFX_MON_BASE)
+            gObjectEvents[i].active = TRUE;
+    }
 }
 
 void SaveSerializedGame(void)
 {
     SavePlayerParty();
     SaveObjectEvents();
-    SerializeKeyItemSlots();
 }
 
 void LoadSerializedGame(void)
 {
     LoadPlayerParty();
     LoadObjectEvents();
-    DeserializeTmHmItemSlots();
-    DeserializeKeyItemSlots();
-}
-
-void SerializeKeyItemSlots(void)
-{
-    u32 i;
-    for (i = 0; i < BAG_KEYITEMS_COUNT; i++)
-    {
-        if(gKeyItemSlots[i].itemId > 258 && gKeyItemSlots[i].itemId < 289) //RS Key Items
-        {
-            gSaveBlock1Ptr->bagPocket_KeyItems[i] = (u8)(gKeyItemSlots[i].itemId - 258);
-        }
-        if(gKeyItemSlots[i].itemId > 348) //FRLGE Key Items
-        {
-            gSaveBlock1Ptr->bagPocket_KeyItems[i] = (u8)(gKeyItemSlots[i].itemId - 348 + 30);
-        }
-        if(gKeyItemSlots[i].itemId == ITEM_LINK_BRACELET)
-        {
-            gSaveBlock1Ptr->bagPocket_KeyItems[i] = 59;
-        }
-    }
 }
 
 void LoadPlayerBag(void)
@@ -239,7 +240,7 @@ void LoadPlayerBag(void)
 
     // load player key items.
     for (i = 0; i < BAG_KEYITEMS_COUNT; i++)
-        gLoadedSaveData.keyItems[i] = gKeyItemSlots[i];
+        gLoadedSaveData.keyItems[i] = gSaveBlock1Ptr->bagPocket_KeyItems[i];
 
     // load player pokeballs.
     for (i = 0; i < BAG_POKEBALLS_COUNT; i++)
@@ -247,7 +248,7 @@ void LoadPlayerBag(void)
 
     // load player TMs and HMs.
     for (i = 0; i < BAG_TMHM_COUNT; i++)
-        gLoadedSaveData.TMsHMs[i] = gTmHmItemSlots[i];
+        gLoadedSaveData.TMsHMs[i] = gSaveBlock1Ptr->bagPocket_TMHM[i];
 
     // load player berries.
     for (i = 0; i < BAG_BERRIES_COUNT; i++)
@@ -256,14 +257,6 @@ void LoadPlayerBag(void)
     // load mail.
     for (i = 0; i < MAIL_COUNT; i++)
         gLoadedSaveData.mail[i] = gSaveBlock1Ptr->mail[i];
-
-    // load player medicine.
-    for (i = 0; i < BAG_BERRIES_COUNT; i++)
-        gLoadedSaveData.medicine[i] = gSaveBlock1Ptr->bagPocket_Medicine[i];
-
-    // load player held items.
-    for (i = 0; i < BAG_BERRIES_COUNT; i++)
-        gLoadedSaveData.heldItems[i] = gSaveBlock1Ptr->bagPocket_HoldItems[i];
 
     gLastEncryptionKey = gSaveBlock2Ptr->encryptionKey;
 }
@@ -279,20 +272,7 @@ void SavePlayerBag(void)
 
     // save player key items.
     for (i = 0; i < BAG_KEYITEMS_COUNT; i++)
-    {
-        if(gLoadedSaveData.keyItems[i].itemId > 258 && gLoadedSaveData.keyItems[i].itemId < 289) //RS Key Items
-        {
-            gSaveBlock1Ptr->bagPocket_KeyItems[i] = (u8)(gLoadedSaveData.keyItems[i].itemId - 258);
-        }
-        if(gLoadedSaveData.keyItems[i].itemId > 348) //FRLGE Key Items
-        {
-            gSaveBlock1Ptr->bagPocket_KeyItems[i] = (u8)(gLoadedSaveData.keyItems[i].itemId - 348 + 30);
-        }
-        if(gLoadedSaveData.keyItems[i].itemId == ITEM_LINK_BRACELET)
-        {
-            gSaveBlock1Ptr->bagPocket_KeyItems[i] = 59;
-        }
-    }
+        gSaveBlock1Ptr->bagPocket_KeyItems[i] = gLoadedSaveData.keyItems[i];
 
     // save player pokeballs.
     for (i = 0; i < BAG_POKEBALLS_COUNT; i++)
@@ -300,7 +280,7 @@ void SavePlayerBag(void)
 
     // save player TMs and HMs.
     for (i = 0; i < BAG_TMHM_COUNT; i++)
-        gTmHmItemSlots[i] = gLoadedSaveData.TMsHMs[i];
+        gSaveBlock1Ptr->bagPocket_TMHM[i] = gLoadedSaveData.TMsHMs[i];
 
     // save player berries.
     for (i = 0; i < BAG_BERRIES_COUNT; i++)
@@ -309,14 +289,6 @@ void SavePlayerBag(void)
     // save mail.
     for (i = 0; i < MAIL_COUNT; i++)
         gSaveBlock1Ptr->mail[i] = gLoadedSaveData.mail[i];
-
-    // save player medicine.
-    for (i = 0; i < BAG_BERRIES_COUNT; i++)
-        gSaveBlock1Ptr->bagPocket_Medicine[i] = gLoadedSaveData.medicine[i];
-
-    // save player held items.
-    for (i = 0; i < BAG_BERRIES_COUNT; i++)
-        gSaveBlock1Ptr->bagPocket_HoldItems[i] = gLoadedSaveData.heldItems[i];
 
     encryptionKeyBackup = gSaveBlock2Ptr->encryptionKey;
     gSaveBlock2Ptr->encryptionKey = gLastEncryptionKey;

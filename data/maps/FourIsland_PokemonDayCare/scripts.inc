@@ -7,7 +7,6 @@ FourIsland_PokemonDayCare_EventScript_DaycareWoman::
 	goto_if_questlog EventScript_ReleaseEnd
 	lock
 	faceplayer
-	goto_if_unset FLAG_GOT_RIVAL_STARTER_EGG, FourIsland_PokemonDayCare_EventScript_StarterEggDaycareWoman
 	specialvar VAR_RESULT, GetDaycareState
 	goto_if_eq VAR_RESULT, DAYCARE_EGG_WAITING, FourIsland_PokemonDayCare_EggWaiting
 	goto_if_eq VAR_RESULT, DAYCARE_ONE_MON, FourIsland_PokemonDayCare_OneMonInDaycare
@@ -34,6 +33,7 @@ FourIsland_PokemonDayCare_GiveMonToRaise::
 	msgbox DayCare_Text_WellRaiseYourMon
 	waitmoncry
 	special StoreSelectedPokemonInDaycare
+	callnative UpdateFollowingPokemon
 	incrementgamestat GAME_STAT_USED_DAYCARE
 	specialvar VAR_RESULT, GetDaycareState
 	goto_if_eq VAR_RESULT, DAYCARE_ONE_MON, FourIsland_PokemonDayCare_CanRaiseOneMore
@@ -87,8 +87,8 @@ FourIsland_PokemonDayCare_OneMonInDaycare::
 	end
 
 FourIsland_PokemonDayCare_TryRetrieveMon::
-	callnative IsPartyAndBoxesFull
-	goto_if_eq VAR_RESULT, TRUE, FourIsland_PokemonDayCare_EventScript_StorageAndPartyFull
+	specialvar VAR_RESULT, CalculatePlayerPartyCount
+	goto_if_eq VAR_RESULT, PARTY_SIZE, FourIsland_PokemonDayCare_NoRoomInParty
 	specialvar VAR_RESULT, GetDaycareState
 	setvar VAR_0x8004, 0
 	goto_if_eq VAR_RESULT, DAYCARE_ONE_MON, FourIsland_PokemonDayCare_CostPrompt
@@ -100,10 +100,6 @@ FourIsland_PokemonDayCare_TryRetrieveMon::
 	end
 
 FourIsland_PokemonDayCare_CostPrompt::
-	specialvar VAR_RESULT, CalculatePlayerPartyCount
-	compare VAR_RESULT, PARTY_SIZE
-	goto_if_eq FourIsland_PokemonDayCare_NoRoomInParty
-FourIsland_PokemonDayCare_CostPrompt_Continue::
 	special GetDaycareCost
 	msgbox DayCare_Text_ItWillCostX, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, FourIsland_PokemonDayCare_CheckEnoughMoney
@@ -118,10 +114,9 @@ FourIsland_PokemonDayCare_CheckEnoughMoney::
 	end
 
 FourIsland_PokemonDayCare_RetrieveMon::
-	specialvar VAR_RESULT, TakePokemonFromDaycare
-	goto_if_eq VAR_RESULT, 9999, FourIsland_PokemonDayCare_EventScript_StorageAndPartyFull @boxes full
 	applymovement LOCALID_DAYCARE_WOMAN, FourIsland_PokemonDayCare_Movement_RetrieveMon
 	waitmovement 0
+	specialvar VAR_RESULT, TakePokemonFromDaycare
 	special SubtractMoneyFromVar0x8005
 	playse SE_RS_SHOP
 	msgbox DayCare_Text_HeresYourMon
@@ -129,10 +124,8 @@ FourIsland_PokemonDayCare_RetrieveMon::
 	playmoncry VAR_RESULT, CRY_MODE_NORMAL
 	textcolor NPC_TEXT_COLOR_NEUTRAL
 	msgbox DayCare_Text_TookBackMon
-	waitmoncry
-	compare VAR_MON_BOX_ID, 9999 //not sent to box
-	call_if_ne Route5_PokemonDayCare_EventScript_SentToBoxNum
 	call EventScript_RestorePrevTextColor
+	waitmoncry
 	specialvar VAR_RESULT, GetDaycareState
 	goto_if_eq VAR_RESULT, DAYCARE_ONE_MON, FourIsland_PokemonDayCare_AskRetrieveOtherMon
 	goto FourIsland_PokemonDayCare_ComeAgain
@@ -145,9 +138,6 @@ FourIsland_PokemonDayCare_AskRetrieveOtherMon::
 	end
 
 FourIsland_PokemonDayCare_NoRoomInParty::
-	callnative CheckDaycareMonsHaveMail
-	goto_if_ne VAR_RESULT, TRUE, FourIsland_PokemonDayCare_CostPrompt_Continue @selected slot has mail
-FourIsland_PokemonDayCare_EventScript_StorageAndPartyFull::
 	msgbox DayCare_Text_YourPartyIsFull
 	release
 	end
@@ -173,14 +163,6 @@ FourIsland_PokemonDayCare_Movement_RetrieveMon::
 	set_visible
 	walk_slower_down
 	step_end
-
-FourIsland_PokemonDayCare_EventScript_StarterEggDaycareWoman::
-	msgbox FourIsland_PokemonDayCare_Text_StarterEggDaycareWoman
-	release
-	end
-
-FourIsland_PokemonDayCare_Text_StarterEggDaycareWoman::
-	.string "My husband outside is looking for\na TRAINER.\pPlease go see him.$"
 
 @ Unused. Possibly a commented script, or a typo end added to the above Movement script
 FourIsland_PokemonDayCare_EventScript_UnusedEnd::

@@ -2,6 +2,7 @@
 #include "gflib.h"
 #include "bg_regs.h"
 #include "cable_club.h"
+#include "clock.h"
 #include "credits.h"
 #include "event_data.h"
 #include "event_object_movement.h"
@@ -20,7 +21,6 @@
 #include "fldeff.h"
 #include "heal_location.h"
 #include "help_system.h"
-#include "item.h"
 #include "link.h"
 #include "link_rfu.h"
 #include "load_save.h"
@@ -33,8 +33,6 @@
 #include "new_menu_helpers.h"
 #include "overworld.h"
 #include "play_time.h"
-#include "pokedex.h"
-#include "pokemon_storage_system.h"
 #include "quest_log.h"
 #include "quest_log_objects.h"
 #include "random.h"
@@ -50,13 +48,11 @@
 #include "trainer_pokemon_sprites.h"
 #include "vs_seeker.h"
 #include "wild_encounter.h"
-#include "constants/abilities.h"
 #include "constants/cable_club.h"
 #include "constants/event_objects.h"
 #include "constants/maps.h"
 #include "constants/region_map_sections.h"
 #include "constants/songs.h"
-#include "constants/items.h"
 #include "constants/sound.h"
 
 #define PLAYER_LINK_STATE_IDLE 0x80
@@ -147,6 +143,7 @@ static void VBlankCB_Field(void);
 static bool32 LoadMapInStepsLink(u8 *state);
 static bool32 ReturnToFieldLocal(u8 *state);
 static bool32 ReturnToFieldLink(u8 *state);
+static void DoMapLoadLoop(u8 *state);
 static void MoveSaveBlocks_ResetHeap_(void);
 static void ResetScreenForMapLoad(void);
 static void InitViewGraphics(void);
@@ -201,7 +198,7 @@ static void RunTerminateLinkScript(void);
 static void SpawnLinkPlayerObjectEvent(u8 i, s16 x, s16 y, u8 gender);
 static void InitLinkPlayerObjectEventPos(struct ObjectEvent *objEvent, s16 x, s16 y);
 static u8 GetSpriteForLinkedPlayer(u8 linkPlayerId);
-static void GetLinkPlayerCoords(u8 linkPlayerId, u16 *x, u16 *y);
+static void GetLinkPlayerCoords(u8 linkPlayerId, s16 *x, s16 *y);
 static u8 GetLinkPlayerFacingDirection(u8 linkPlayerId);
 static u8 GetLinkPlayerElevation(u8 linkPlayerId);
 static u8 GetLinkPlayerIdAt(s16 x, s16 y);
@@ -245,65 +242,6 @@ static const u16 sWhiteOutMoneyLossBadgeFlagIDs[] = {
     FLAG_BADGE07_GET,
     FLAG_BADGE08_GET
 };
-
-bool8 CheckNationalDexEligibilityOnSaveLoad(void)
-{
-    u16 mapGroup = gSaveBlock1Ptr->location.mapGroup;
-    s8 mapNum = gSaveBlock1Ptr->location.mapNum;
-    if((mapGroup == MAP_GROUP(VIRIDIAN_CITY_POKEMON_CENTER_1F) && mapNum == MAP_NUM(VIRIDIAN_CITY_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(PEWTER_CITY_POKEMON_CENTER_1F) && mapNum == MAP_NUM(PEWTER_CITY_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(CERULEAN_CITY_POKEMON_CENTER_1F) && mapNum == MAP_NUM(CERULEAN_CITY_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(LAVENDER_TOWN_POKEMON_CENTER_1F) && mapNum == MAP_NUM(LAVENDER_TOWN_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(VERMILION_CITY_POKEMON_CENTER_1F) && mapNum == MAP_NUM(VERMILION_CITY_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(CELADON_CITY_POKEMON_CENTER_1F) && mapNum == MAP_NUM(CELADON_CITY_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(FUCHSIA_CITY_POKEMON_CENTER_1F) && mapNum == MAP_NUM(FUCHSIA_CITY_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(CINNABAR_ISLAND_POKEMON_CENTER_1F) && mapNum == MAP_NUM(CINNABAR_ISLAND_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(INDIGO_PLATEAU_POKEMON_CENTER_1F) && mapNum == MAP_NUM(INDIGO_PLATEAU_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(SAFFRON_CITY_POKEMON_CENTER_1F) && mapNum == MAP_NUM(SAFFRON_CITY_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(ROUTE4_POKEMON_CENTER_1F) && mapNum == MAP_NUM(ROUTE4_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(ROUTE10_POKEMON_CENTER_1F) && mapNum == MAP_NUM(ROUTE10_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(ONE_ISLAND_POKEMON_CENTER_1F) && mapNum == MAP_NUM(ONE_ISLAND_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(TWO_ISLAND_POKEMON_CENTER_1F) && mapNum == MAP_NUM(TWO_ISLAND_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(THREE_ISLAND_POKEMON_CENTER_1F) && mapNum == MAP_NUM(THREE_ISLAND_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(FOUR_ISLAND_POKEMON_CENTER_1F) && mapNum == MAP_NUM(FOUR_ISLAND_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(FIVE_ISLAND_POKEMON_CENTER_1F) && mapNum == MAP_NUM(FIVE_ISLAND_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(SEVEN_ISLAND_POKEMON_CENTER_1F) && mapNum == MAP_NUM(SEVEN_ISLAND_POKEMON_CENTER_1F)) ||
-       (mapGroup == MAP_GROUP(SIX_ISLAND_POKEMON_CENTER_1F) && mapNum == MAP_NUM(SIX_ISLAND_POKEMON_CENTER_1F)))
-    {
-        if(!IsNationalPokedexEnabled() && HasNationalMon())
-        {
-            VarSet(VAR_TEMP_0, 0);
-            return TRUE;
-        }
-    }
-    return FALSE;
-}
-
-bool8 DoCoordsMatchPMCExitMat(void)
-{
-    s16 x;
-    s16 y;
-    switch(gMapHeader.regionMapSectionId)
-    {
-        case MAPSEC_INDIGO_PLATEAU:
-            x = 11;
-            y = 16;
-            break;
-        case MAPSEC_ONE_ISLAND:
-            x = 9;
-            y = 9;
-            break;
-        default:
-            x = 7;
-            y = 8;
-            break;
-    }
-    if(gSaveBlock1Ptr->pos.x == x && gSaveBlock1Ptr->pos.y == y)
-    {
-        return TRUE;
-    }
-    return FALSE;
-}
 
 static void DoWhiteOut(void)
 {
@@ -451,7 +389,7 @@ void SetGameStat(u8 statId, u32 statVal)
 
 void ApplyNewEncryptionKeyToGameStats(u32 newKey)
 {
-    u32 i;
+    u8 i;
     for (i = 0; i < NUM_GAME_STATS; i++)
     {
         ApplyNewEncryptionKeyToWord(&gSaveBlock1Ptr->gameStats[i], newKey);
@@ -468,18 +406,18 @@ static void LoadObjEventTemplatesFromHeader(void)
         if (gMapHeader.events->objectEvents[i].kind == OBJ_KIND_CLONE)
         {
             // load target object from the connecting map
-            u8 localId = gMapHeader.events->objectEvents[i].objUnion.clone.targetLocalId;
-            u8 mapNum = gMapHeader.events->objectEvents[i].objUnion.clone.targetMapNum;
-            u8 mapGroup = gMapHeader.events->objectEvents[i].objUnion.clone.targetMapGroup;
+            u8 localId = gMapHeader.events->objectEvents[i].targetLocalId;
+            u8 mapNum = gMapHeader.events->objectEvents[i].targetMapNum;
+            u8 mapGroup = gMapHeader.events->objectEvents[i].targetMapGroup;
             const struct MapHeader * connectionMap = Overworld_GetMapHeaderByGroupAndId(mapGroup, mapNum);
 
             gSaveBlock1Ptr->objectEventTemplates[j] = connectionMap->events->objectEvents[localId - 1];
             gSaveBlock1Ptr->objectEventTemplates[j].localId = gMapHeader.events->objectEvents[i].localId;
             gSaveBlock1Ptr->objectEventTemplates[j].x = gMapHeader.events->objectEvents[i].x;
             gSaveBlock1Ptr->objectEventTemplates[j].y = gMapHeader.events->objectEvents[i].y;
-            gSaveBlock1Ptr->objectEventTemplates[j].objUnion.clone.targetLocalId = localId;
-            gSaveBlock1Ptr->objectEventTemplates[j].objUnion.clone.targetMapNum = mapNum;
-            gSaveBlock1Ptr->objectEventTemplates[j].objUnion.clone.targetMapGroup = mapGroup;
+            gSaveBlock1Ptr->objectEventTemplates[j].targetLocalId = localId;
+            gSaveBlock1Ptr->objectEventTemplates[j].targetMapNum = mapNum;
+            gSaveBlock1Ptr->objectEventTemplates[j].targetMapGroup = mapGroup;
             gSaveBlock1Ptr->objectEventTemplates[j].kind = OBJ_KIND_CLONE;
             j++;
         }
@@ -528,24 +466,7 @@ void SetObjEventTemplateMovementType(u8 localId, u8 movementType)
         struct ObjectEventTemplate *objectEventTemplate = &savObjTemplates[i];
         if (objectEventTemplate->localId == localId)
         {
-            objectEventTemplate->objUnion.normal.movementType = movementType;
-            return;
-        }
-    }
-}
-
-void ResetObjEventTemplateMovementType(u8 localId)
-{
-    s32 i;
-    struct ObjectEventTemplate *savObjTemplates = gSaveBlock1Ptr->objectEventTemplates;
-    for (i = 0; i < OBJECT_EVENT_TEMPLATES_COUNT; i++)
-    {
-        struct ObjectEventTemplate *objectEventTemplate = &savObjTemplates[i];
-        const struct ObjectEventTemplate * headerObjectEventTemplate = &gMapHeader.events->objectEvents[i];
-        if (objectEventTemplate->localId == localId)
-        {
-            objectEventTemplate->objUnion.normal.movementType = headerObjectEventTemplate->objUnion.normal.movementType;
-            SetObjectMovementType(localId, headerObjectEventTemplate->objUnion.normal.movementType);
+            objectEventTemplate->movementType = movementType;
             return;
         }
     }
@@ -704,7 +625,7 @@ static void Overworld_SetWhiteoutRespawnPoint(void)
     SetWhiteoutRespawnWarpAndHealerNpc(&sWarpDestination);
 }
 
-void SetLastHealLocationWarp(u32 healLocationId)
+void SetLastHealLocationWarp(u8 healLocationId)
 {
     const struct HealLocation *healLocation = GetHealLocation(healLocationId);
     if (healLocation)
@@ -759,11 +680,6 @@ void SetWarpDestinationToFixedHoleWarp(s16 x, s16 y)
 static void SetWarpDestinationToContinueGameWarp(void)
 {
     sWarpDestination = gSaveBlock1Ptr->continueGameWarp;
-}
-
-static void SetContinueGameWarp(s8 mapGroup, s8 mapNum, s8 warpId, s8 x, s8 y)
-{
-    SetWarpData(&gSaveBlock1Ptr->continueGameWarp, mapGroup, mapNum, warpId, x, y);
 }
 
 void SetContinueGameWarpToHealLocation(u8 healLocationId)
@@ -838,6 +754,7 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
     ResetCyclingRoadChallengeData();
     RestartWildEncounterImmunitySteps();
     MapResetTrainerRematches(mapGroup, mapNum);
+    DoTimeBasedEvents();
     SetSavedWeatherFromCurrMapHeader();
     ChooseAmbientCrySpecies();
     SetDefaultFlashLevel();
@@ -873,6 +790,7 @@ static void LoadMapFromWarp(bool32 unused)
     ResetCyclingRoadChallengeData();
     RestartWildEncounterImmunitySteps();
     MapResetTrainerRematches(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum);
+    DoTimeBasedEvents();
     SetSavedWeatherFromCurrMapHeader();
     ChooseAmbientCrySpecies();
     if (isOutdoors)
@@ -889,12 +807,10 @@ static void LoadMapFromWarp(bool32 unused)
 
 static void QL_LoadMapNormal(void)
 {
-    bool8 isOutdoors;
-
     LoadCurrentMapData();
     LoadObjEventTemplatesFromHeader();
-    isOutdoors = IsMapTypeOutdoors(gMapHeader.mapType);
     TrySetMapSaveWarpStatus();
+    DoTimeBasedEvents();
     SetSavedWeatherFromCurrMapHeader();
     ChooseAmbientCrySpecies();
     SetDefaultFlashLevel();
@@ -913,7 +829,7 @@ void ResetInitialPlayerAvatarState(void)
     sInitialPlayerAvatarState.hasDirectionSet = FALSE;
 }
 
-void SetInitialPlayerAvatarStateWithDirection(u8 dirn)
+static void SetInitialPlayerAvatarStateWithDirection(u8 dirn)
 {
     sInitialPlayerAvatarState.direction = dirn;
     sInitialPlayerAvatarState.transitionFlags = PLAYER_AVATAR_FLAG_ON_FOOT;
@@ -1065,29 +981,6 @@ void Overworld_SetWarpDestinationFromWarp(struct WarpData * warp)
 
 static u16 GetLocationMusic(struct WarpData * warp)
 {
-    if(FlagGet(FLAG_SYS_ON_CYCLING_ROAD))
-        return MUS_CYCLING;
-	else if (Overworld_GetMapHeaderByGroupAndId(warp->mapGroup, warp->mapNum)->regionMapSectionId == MAPSEC_LAVENDER_TOWN)
-    {
-        //Marowak's spirit was calmed, got the Poke Flute from Mr. Fuji
-        if (FlagGet(FLAG_GOT_POKE_FLUTE))
-        {
-            if (Overworld_GetMapHeaderByGroupAndId(warp->mapGroup, warp->mapNum)->music == MUS_POKE_CENTER)
-            {
-                return MUS_POKE_CENTER;
-            }
-            else if (Overworld_GetMapHeaderByGroupAndId(warp->mapGroup, warp->mapNum)->music == MUS_POKE_MART)
-            {
-                return MUS_POKE_MART;
-            }
-            else {
-                return MUS_LAVENDER_PEACE;
-            }
-        }
-        else {
-            return Overworld_GetMapHeaderByGroupAndId(warp->mapGroup, warp->mapNum)->music;
-        }
-    }
     return Overworld_GetMapHeaderByGroupAndId(warp->mapGroup, warp->mapNum)->music;
 }
 
@@ -1095,20 +988,12 @@ static u16 GetCurrLocationDefaultMusic(void)
 {
     u16 music;
     music = GetLocationMusic(&gSaveBlock1Ptr->location);
-    if(music == MUS_SILPH && FlagGet(FLAG_HIDE_SILPH_ROCKETS))
-    {
-        music = MUS_GSC_PEWTER;
-    }
     return music;
 }
 
 static u16 GetWarpDestinationMusic(void)
 {
     u16 music = GetLocationMusic(&sWarpDestination);
-    if(music == MUS_SILPH && FlagGet(FLAG_HIDE_SILPH_ROCKETS))
-    {
-        music = MUS_GSC_PEWTER;
-    }
     return music;
 }
 
@@ -1206,7 +1091,6 @@ void Overworld_ChangeMusicTo(u16 newMusic)
         FadeOutAndPlayNewMapMusic(newMusic, 8);
 }
 
-// rendered unused as a QoL feature. Warps are almost instant without the artificial music delay.
 static u8 GetMapMusicFadeoutSpeed(void)
 {
     const struct MapHeader *mapHeader = GetDestinationWarpMapHeader();
@@ -1221,7 +1105,7 @@ void TryFadeOutOldMapMusic(void)
     u16 warpMusic = GetWarpDestinationMusic();
     if (FlagGet(FLAG_DONT_TRANSITION_MUSIC) != TRUE && warpMusic != GetCurrentMapMusic())
     {
-        FadeOutMapMusic(1);
+        FadeOutMapMusic(GetMapMusicFadeoutSpeed());
     }
 }
 
@@ -1261,8 +1145,6 @@ static void PlayAmbientCry(void)
 
 void UpdateAmbientCry(s16 *state, u16 *delayCounter)
 {
-    u8 i, monsCount, divBy;
-
     switch (*state)
     {
     case 0:
@@ -1276,18 +1158,7 @@ void UpdateAmbientCry(s16 *state, u16 *delayCounter)
         *state = 3;
         break;
     case 2:
-        divBy = 1;
-        monsCount = CalculatePlayerPartyCount();
-        for (i = 0; i < monsCount; i++)
-        {
-            if (!GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG)
-                && GetMonAbility(&gPlayerParty[0]) == ABILITY_SWARM)
-            {
-                divBy = 2;
-                break;
-            }
-        }
-        *delayCounter = ((Random() % 1200) + 1200) / divBy;
+        *delayCounter = (Random() % 1200) + 1200;
         *state = 3;
         break;
     case 3:
@@ -1357,10 +1228,6 @@ bool8 IsMapTypeOutdoors(u8 mapType)
 
 bool8 Overworld_MapTypeAllowsTeleportAndFly(u8 mapType)
 {
-    if(GetCurrentRegionMapSectionId() == MAPSEC_FARAWAY_ISLAND || GetCurrentRegionMapSectionId() == MAPSEC_SOUTHERN_ISLAND)
-        return FALSE;
-    if(GetCurrentRegionMapSectionId() == MAPSEC_BATTLE_FRONTIER)
-        return FALSE;
     if (mapType == MAP_TYPE_ROUTE
         || mapType == MAP_TYPE_TOWN
         || mapType == MAP_TYPE_OCEAN_ROUTE
@@ -1377,11 +1244,6 @@ bool8 IsMapTypeIndoors(u8 mapType)
         return TRUE;
     else
         return FALSE;
-}
-
-static u8 GetSavedWarpRegionMapSectionId(void)
-{
-    return Overworld_GetMapHeaderByGroupAndId(gSaveBlock1Ptr->dynamicWarp.mapGroup, gSaveBlock1Ptr->dynamicWarp.mapNum)->regionMapSectionId;
 }
 
 u8 GetCurrentRegionMapSectionId(void)
@@ -1641,14 +1503,10 @@ static bool8 RunFieldCallback(void)
 
 void CB2_NewGame(void)
 {
-    u8 versionBackup = gSaveBlock1Ptr->keyFlags.version;
     FieldClearVBlankHBlankCallbacks();
     StopMapMusic();
     ResetSafariZoneFlag_();
     NewGameInitData();
-    AddBagItem(ITEM_BERRY_POUCH, 1);
-    AddBagItem(ITEM_TM_CASE, 1);
-    gSaveBlock1Ptr->keyFlags.version = versionBackup;
     ResetInitialPlayerAvatarState();
     PlayTimeCounter_Start();
     ScriptContext_Init();
@@ -1676,13 +1534,6 @@ void CB2_WhiteOut(void)
         UnlockPlayerFieldControls();
         gFieldCallback = FieldCB_RushInjuredPokemonToCenter;
         val = 0;
-        if(gSaveBlock1Ptr->keyFlags.nuzlocke == 1 || gSaveBlock1Ptr->keyFlags.noPMC == 1)
-        {
-            if(GetFirstAliveBoxMon() == 420) //no usable Pokemon
-            {
-                gGlobalFieldTintMode = 1; //should grayscale palettes?
-            }
-        }
         DoMapLoadLoop(&val);
         QuestLog_CutRecording();
         SetFieldVBlankCallback();
@@ -1822,6 +1673,7 @@ void CB2_ContinueSavedGame(void)
     LoadSaveblockMapHeader();
     LoadSaveblockObjEventScripts();
     UnfreezeObjectEvents();
+    DoTimeBasedEvents();
     Overworld_ResetStateOnContinue();
     InitMapFromSavedGame();
     PlayTimeCounter_Start();
@@ -2068,6 +1920,10 @@ static bool32 ReturnToFieldLocal(u8 *state)
         QuestLog_InitPalettesBackup();
         ResumeMap(FALSE);
         ReloadObjectsAndRunReturnToFieldMapScript();
+        if (gFieldCallback == FieldCallback_UseFly)
+            RemoveFollowingPokemon();
+        else
+            UpdateFollowingPokemon();
         SetCameraToTrackPlayer();
         (*state)++;
         break;
@@ -2166,7 +2022,7 @@ static bool32 ReturnToFieldLink(u8 *state)
     return FALSE;
 }
 
-void DoMapLoadLoop(u8 *state)
+static void DoMapLoadLoop(u8 *state)
 {
     while (!LoadMapInStepsLocal(state, FALSE)) ;
 }
@@ -2235,10 +2091,7 @@ static void ResumeMap(bool32 inLink)
     ResetAllPicSprites();
     ResetCameraUpdateInfo();
     InstallCameraPanAheadCallback();
-    if (!inLink)
-        InitObjectEventPalettes(0);
-    else
-        InitObjectEventPalettes(1);
+    FreeAllSpritePalettes();
 
     FieldEffectActiveListClear();
     StartWeather();
@@ -2259,7 +2112,7 @@ static void InitObjectEventsLink(void)
 
 static void InitObjectEventsLocal(void)
 {
-    s16 x, y;
+    u16 x, y;
     struct InitialPlayerAvatarState *player;
 
     gTotalCameraPixelOffsetX = 0;
@@ -2271,6 +2124,7 @@ static void InitObjectEventsLocal(void)
     SetPlayerAvatarTransitionFlags(player->transitionFlags);
     ResetInitialPlayerAvatarState();
     TrySpawnObjectEvents(0, 0);
+    UpdateFollowingPokemon();
     TryRunOnWarpIntoMapScript();
 }
 
@@ -2309,7 +2163,7 @@ static void OffsetCameraFocusByLinkPlayerId(void)
 
 static void SpawnLinkPlayers(void)
 {
-    u32 i;
+    u16 i;
     u16 x, y;
 
     GetCameraFocusCoords(&x, &y);
@@ -2326,7 +2180,7 @@ static void SpawnLinkPlayers(void)
 
 static void CreateLinkPlayerSprites(void)
 {
-    u32 i;
+    u16 i;
     for (i = 0; i < gFieldLinkPlayerCount; i++)
         CreateLinkPlayerSprite(i, gLinkPlayers[i].version);
 }
@@ -2457,7 +2311,6 @@ void CB2_EnterFieldFromQuestLog(void)
     Overworld_ResetStateOnContinue();
     InitMapFromSavedGame();
     PlayTimeCounter_Start();
-    CheckNationalDexEligibilityOnSaveLoad();
     ScriptContext_Init();
     gExitStairsMovementDisabled = TRUE;
     if (UseContinueGameWarp() == TRUE)
@@ -3130,11 +2983,6 @@ u32 GetCableClubPartnersReady(void)
     return CABLE_SEAT_WAITING;
 }
 
-static bool32 IsAnyPlayerExitingCableClub(void)
-{
-    return IsAnyPlayerInLinkState(PLAYER_LINK_STATE_EXITING_ROOM);
-}
-
 u16 SetInCableClubSeat(void)
 {
     SetKeyInterceptCallback(KeyInterCB_SetReady);
@@ -3438,27 +3286,6 @@ static void InitLinkPlayerObjectEventPos(struct ObjectEvent *objEvent, s16 x, s1
     ObjectEventUpdateElevation(objEvent);
 }
 
-static void SetLinkPlayerObjectRange(u8 linkPlayerId, u8 dir)
-{
-    if (gLinkPlayerObjectEvents[linkPlayerId].active)
-    {
-        u8 objEventId = gLinkPlayerObjectEvents[linkPlayerId].objEventId;
-        struct ObjectEvent *objEvent = &gObjectEvents[objEventId];
-        linkDirection(objEvent) = dir;
-    }
-}
-
-static void DestroyLinkPlayerObject(u8 linkPlayerId)
-{
-    struct LinkPlayerObjectEvent *linkPlayerObjEvent = &gLinkPlayerObjectEvents[linkPlayerId];
-    u8 objEventId = linkPlayerObjEvent->objEventId;
-    struct ObjectEvent *objEvent = &gObjectEvents[objEventId];
-    if (objEvent->spriteId != MAX_SPRITES)
-        DestroySprite(&gSprites[objEvent->spriteId]);
-    linkPlayerObjEvent->active = FALSE;
-    objEvent->active = FALSE;
-}
-
 // Returns the spriteId corresponding to this player.
 static u8 GetSpriteForLinkedPlayer(u8 linkPlayerId)
 {
@@ -3467,7 +3294,7 @@ static u8 GetSpriteForLinkedPlayer(u8 linkPlayerId)
     return objEvent->spriteId;
 }
 
-static void GetLinkPlayerCoords(u8 linkPlayerId, u16 *x, u16 *y)
+static void GetLinkPlayerCoords(u8 linkPlayerId, s16 *x, s16 *y)
 {
     u8 objEventId = gLinkPlayerObjectEvents[linkPlayerId].objEventId;
     struct ObjectEvent *objEvent = &gObjectEvents[objEventId];
@@ -3489,16 +3316,9 @@ static u8 GetLinkPlayerElevation(u8 linkPlayerId)
     return objEvent->currentElevation;
 }
 
-static s32 GetLinkPlayerObjectStepTimer(u8 linkPlayerId)
-{
-    u8 objEventId = gLinkPlayerObjectEvents[linkPlayerId].objEventId;
-    struct ObjectEvent *objEvent = &gObjectEvents[objEventId];
-    return 16 - (s8)objEvent->directionSequenceIndex;
-}
-
 static u8 GetLinkPlayerIdAt(s16 x, s16 y)
 {
-    u32 i;
+    u8 i;
     for (i = 0; i < MAX_LINK_PLAYERS; i++)
     {
         if (gLinkPlayerObjectEvents[i].active
@@ -3628,7 +3448,7 @@ static u8 FlipVerticalAndClearForced(u8 newFacing, u8 oldFacing)
 
 static bool8 LinkPlayerDetectCollision(u8 selfObjEventId, u8 a2, s16 x, s16 y)
 {
-    u32 i;
+    u8 i;
     for (i = 0; i < 16; i++)
     {
         if (i != selfObjEventId)
@@ -3657,10 +3477,6 @@ static void CreateLinkPlayerSprite(u8 linkPlayerId, u8 gameVersion)
             objEvent->spriteId = CreateObjectGraphicsSprite(
                 GetRivalAvatarGraphicsIdByStateIdAndGender(PLAYER_AVATAR_STATE_NORMAL, linkGender(objEvent)),
                 SpriteCB_LinkPlayer, 0, 0, 0);
-        }
-        else if (gameVersion == VERSION_EMERALD)
-        {
-            objEvent->spriteId = CreateObjectGraphicsSprite(GetEMAvatarGraphicsIdByGender(linkGender(objEvent)), SpriteCB_LinkPlayer, 0, 0, 0);
         }
         else
         {

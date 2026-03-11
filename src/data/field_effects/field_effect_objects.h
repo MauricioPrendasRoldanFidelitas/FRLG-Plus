@@ -1,8 +1,5 @@
-const struct SpritePalette gSpritePalette_GeneralFieldEffect0 = { .data = gFieldEffectObjectPalette0, .tag = FLDEFF_PAL_TAG_GENERAL_0 }; //sand footprints pal
-const struct SpritePalette gSpritePalette_GeneralFieldEffect1 = { .data = gFieldEffectObjectPalette1, .tag = FLDEFF_PAL_TAG_GENERAL_1 }; //tall grass pal
-const struct SpritePalette gBlackSandFootprintsPal = { .data = gBlackSandFootPrints_Pal, .tag = FLDEFF_PAL_TAG_GENERAL_0 }; 
-const struct SpritePalette gThreeIslandGrassPal = { .data = gThreeIslandGrass_Pal, .tag = FLDEFF_PAL_TAG_GENERAL_1 };
-const struct SpritePalette gSnowFootprintsPal = { .data = gSnowFootPrints_Pal, .tag = FLDEFF_PAL_TAG_GENERAL_0 };
+const struct SpritePalette gSpritePalette_GeneralFieldEffect0 = { .data = gFieldEffectObjectPalette0, .tag = FLDEFF_PAL_TAG_GENERAL_0 };
+const struct SpritePalette gSpritePalette_GeneralFieldEffect1 = { .data = gFieldEffectObjectPalette1, .tag = FLDEFF_PAL_TAG_GENERAL_1 };
 
 static const union AnimCmd sAnim_Shadow[] =
 {
@@ -23,7 +20,7 @@ static const struct SpriteFrameImage sPicTable_ShadowExtraLarge[] = { obj_frame_
 const struct SpriteTemplate gFieldEffectObjectTemplate_ShadowSmall =
 {
     .tileTag = TAG_NONE,
-    .paletteTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_PLAYER_RED,
     .oam = &gObjectEventBaseOam_8x8,
     .anims = sAnimTable_Shadow,
     .images = sPicTable_ShadowSmall,
@@ -34,7 +31,7 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_ShadowSmall =
 const struct SpriteTemplate gFieldEffectObjectTemplate_ShadowMedium =
 {
     .tileTag = TAG_NONE,
-    .paletteTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_PLAYER_RED,
     .oam = &gObjectEventBaseOam_16x8,
     .anims = sAnimTable_Shadow,
     .images = sPicTable_ShadowMedium,
@@ -45,7 +42,7 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_ShadowMedium =
 const struct SpriteTemplate gFieldEffectObjectTemplate_ShadowLarge =
 {
     .tileTag = TAG_NONE,
-    .paletteTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_PLAYER_RED,
     .oam = &gObjectEventBaseOam_32x8,
     .anims = sAnimTable_Shadow,
     .images = sPicTable_ShadowLarge,
@@ -56,7 +53,7 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_ShadowLarge =
 const struct SpriteTemplate gFieldEffectObjectTemplate_ShadowExtraLarge =
 {
     .tileTag = TAG_NONE,
-    .paletteTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_PLAYER_RED,
     .oam = &gObjectEventBaseOam_64x32,
     .anims = sAnimTable_Shadow,
     .images = sPicTable_ShadowExtraLarge,
@@ -73,25 +70,7 @@ static const struct SpriteFrameImage sPicTable_TallGrass[] =
     overworld_frame(gFieldEffectObjectPic_TallGrass, 2, 2, 4),
 };
 
-const struct SpriteFrameImage gSevenIsland_Grass_SpriteFrameImage[] =
-{
-    overworld_frame(gSevenIsland_Grass, 2, 2, 0),
-    overworld_frame(gSevenIsland_Grass, 2, 2, 1),
-    overworld_frame(gSevenIsland_Grass, 2, 2, 2),
-    overworld_frame(gSevenIsland_Grass, 2, 2, 3),
-    overworld_frame(gSevenIsland_Grass, 2, 2, 4),
-};
-
-const struct SpriteFrameImage gUnknown_83A53DC_OneIsland[] = //also Three Island
-{
-    overworld_frame(gFieldEffectObjectPic_TallGrass, 2, 2, 5),
-    overworld_frame(gFieldEffectObjectPic_TallGrass, 2, 2, 5),
-    overworld_frame(gFieldEffectObjectPic_TallGrass, 2, 2, 6),
-    overworld_frame(gFieldEffectObjectPic_TallGrass, 2, 2, 7),
-    overworld_frame(gFieldEffectObjectPic_TallGrass, 2, 2, 8),
-};
-
-const union AnimCmd sAnim_TallGrass[] =
+static const union AnimCmd sAnim_TallGrass[] =
 {
     ANIMCMD_FRAME(1, 10),
     ANIMCMD_FRAME(2, 10),
@@ -117,29 +96,7 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_TallGrass =
     .callback = UpdateTallGrassFieldEffect,
 };
 
-const struct SpriteTemplate gUnknown_TallGrass_OneIsland =
-{
-    .tileTag = TAG_NONE,
-    .paletteTag = FLDEFF_PAL_TAG_GENERAL_1,
-    .oam = &gObjectEventBaseOam_16x16,
-    .anims = sAnimTable_TallGrass,
-    .images = sPicTable_TallGrass,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = UpdateTallGrassFieldEffect,
-};
-
-const struct SpriteTemplate gUnknown_TallGrass_SevenIsland =
-{
-    .tileTag = TAG_NONE,
-    .paletteTag = FLDEFF_PAL_TAG_GENERAL_1,
-    .oam = &gObjectEventBaseOam_16x16,
-    .anims = sAnimTable_TallGrass,
-    .images = sPicTable_TallGrass,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = UpdateTallGrassFieldEffect,
-};
-
-const struct SpriteFrameImage sPicTable_Ripple[] =
+static const struct SpriteFrameImage sPicTable_Ripple[] =
 {
     overworld_frame(gFieldEffectObjectPic_Ripple, 2, 2, 0),
     overworld_frame(gFieldEffectObjectPic_Ripple, 2, 2, 1),
@@ -261,7 +218,7 @@ static const union AnimCmd *const sAnimTable_SurfBlob[] =
 const struct SpriteTemplate gFieldEffectObjectTemplate_SurfBlob =
 {
     .tileTag = TAG_NONE,
-    .paletteTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_PLAYER_RED,
     .oam = &gObjectEventBaseOam_32x32,
     .anims = sAnimTable_SurfBlob,
     .images = sPicTable_SurfBlob,
@@ -320,7 +277,7 @@ static const union AnimCmd *const sAnimTable_Arrow[] =
 const struct SpriteTemplate gFieldEffectObjectTemplate_Arrow =
 {
     .tileTag = TAG_NONE,
-    .paletteTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_PLAYER_RED,
     .oam = &gObjectEventBaseOam_16x16,
     .anims = sAnimTable_Arrow,
     .images = sPicTable_Arrow,
@@ -1190,7 +1147,7 @@ static const union AnimCmd *const sAnimTable_Bird[] =
 const struct SpriteTemplate gFieldEffectObjectTemplate_Bird =
 {
     .tileTag = TAG_NONE,
-    .paletteTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_PLAYER_RED,
     .oam = &gObjectEventBaseOam_64x64,
     .anims = sAnimTable_Bird,
     .images = sPicTable_Bird,

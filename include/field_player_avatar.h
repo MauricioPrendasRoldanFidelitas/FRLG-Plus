@@ -4,7 +4,7 @@
 #include "global.h"
 
 void ClearPlayerAvatarInfo(void);
-void SetPlayerAvatarExtraStateTransition(u8, u8);
+void SetPlayerAvatarExtraStateTransition(u16 graphicsId, u8 extras);
 u8 GetPlayerAvatarGenderByGraphicsId(u8);
 bool8 TestPlayerAvatarFlags(u8);
 void PlayerGetDestCoords(s16 *, s16 *);
@@ -27,7 +27,7 @@ bool8 IsPlayerFacingSurfableFishableWater(void);
 void StartFishing(u8 secondaryId);
 u8 GetPlayerAvatarObjectId(void);
 u8 PlayerGetElevation(void);
-u8 GetPlayerAvatarGraphicsIdByCurrentState(void);
+u16 GetPlayerAvatarGraphicsIdByCurrentState(void);
 void StartPlayerAvatarSummonMonForFieldMoveAnim(void);
 void SetPlayerInvisibility(bool8);
 void StartTeleportInPlayerAnim(void);
@@ -61,9 +61,7 @@ void player_step(u8 direction, u16 newKeys, u16 heldKeys);
 bool32 PlayerIsMovingOnRockStairs(u8 direction);
 void UpdatePlayerAvatarTransitionState(void);
 void InitPlayerAvatar(s16 x, s16 y, u8 direction, u8 gender);
-void InitDivingPlayerAvatar(s16 x, s16 y, u8 direction, u8 gender);
 void PlayerUseAcroBikeOnBumpySlope(u8 direction);
 u8 GetRSAvatarGraphicsIdByGender(u8 gender);
-u8 GetEMAvatarGraphicsIdByGender(u8 gender);
 
 #endif //GUARD_FIELD_PLAYER_AVATAR_H

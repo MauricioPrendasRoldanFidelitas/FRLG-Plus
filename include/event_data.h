@@ -25,6 +25,7 @@ extern u16 gSpecialVar_PrevTextColor;
 
 void InitEventData(void);
 void ClearTempFieldEventData(void);
+void ClearDailyFlags(void);
 void ClearUpperFlags(void);
 void DisableNationalPokedex(void);
 void EnableNationalPokedex(void);
@@ -40,10 +41,12 @@ void EnableResetRTC(void);
 bool32 CanResetRTC(void);
 u16 *GetVarPointer(u16 id);
 u16 VarGet(u16 id);
+u16 VarGetIfExist(u16 id);
 bool8 VarSet(u16 id, u16 value);
-u8 VarGetObjectEventGraphicsId(u8 id);
+u16 VarGetObjectEventGraphicsId(u8 id);
 u8 *GetFlagPointer(u16 id);
 u8 FlagSet(u16 id);
+u8 FlagToggle(u16 id);
 u8 FlagClear(u16 id);
 bool8 FlagGet(u16 id);
 u16 * GetVarPointer(u16 id);
@@ -54,11 +57,5 @@ void ClearMysteryGiftVars(void);
 bool32 IsNationalPokedexEnabled(void);
 void EnableNationalPokedex_RSE(void);
 void ClearTempFieldEventData(void);
-u8 NuzlockeFlagSet(u8 mapsec);
-u8 NuzlockeFlagClear(u8 mapsec);
-u8 NuzlockeFlagGet(u8 mapsec);
-bool8 CheckMasterTrainerFlag(u16 flag);
-bool8 SetMasterTrainerFlag(u16 flag);
-bool8 ClearMasterTrainerFlag(u16 flag);
 
 #endif // GUARD_EVENT_DATA_H

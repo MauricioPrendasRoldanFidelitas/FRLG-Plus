@@ -20,7 +20,6 @@
 #include "script.h"
 #include "strings.h"
 #include "wild_encounter.h"
-#include "constants/abilities.h"
 #include "constants/event_object_movement.h"
 #include "constants/event_objects.h"
 #include "constants/songs.h"
@@ -507,64 +506,21 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
         return;
     }
 
-    if ((gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING))
-    {
-        if(FlagGet(FLAG_AUTO_RUN_TOGGLED))
-        {
-            if(heldKeys & B_BUTTON)
-                // speed 2 is fast, same speed as running
-                PlayerWalkFast(direction);
-            else
-                PlayerWalkFaster(direction);
-        }
-        else
-        {
-            if(heldKeys & B_BUTTON)
-                PlayerWalkFaster(direction);
-            else
-                // speed 2 is fast, same speed as running
-                PlayerWalkFast(direction);
-        }
-        return;
-    }
-
-    if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER)
+    if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
     {
         // Same speed as running
         PlayerWalkFast(direction);
         return;
     }
 
-    if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER) && (heldKeys & B_BUTTON || FlagGet(FLAG_AUTO_RUN_TOGGLED))
+    if ((heldKeys & B_BUTTON) && FlagGet(FLAG_SYS_B_DASH)
         && !IsRunningDisallowed(gObjectEvents[gPlayerAvatar.objectEventId].currentMetatileBehavior))
     {
-        //if running
         if (PlayerIsMovingOnRockStairs(direction))
-        {
-            if(heldKeys & B_BUTTON && FlagGet(FLAG_AUTO_RUN_TOGGLED))
-            {
-                //autorun toggled but B pressed, walk
-                PlayerWalkSlow(direction);
-            }
-            else
-            {
-                PlayerRunSlow(direction);
-                gPlayerAvatar.flags |= PLAYER_AVATAR_FLAG_DASH;
-            }
-        }
+            PlayerRunSlow(direction);
         else
-        {
-            if(heldKeys & B_BUTTON && FlagGet(FLAG_AUTO_RUN_TOGGLED))
-            {
-                //autorun toggled but B pressed, walk
-                PlayerWalkNormal(direction);
-            }
-            else
-            {
-                PlayerRun(direction);
-                gPlayerAvatar.flags |= PLAYER_AVATAR_FLAG_DASH;
-            }
-        }
+            PlayerRun(direction);
+        gPlayerAvatar.flags |= PLAYER_AVATAR_FLAG_DASH;
         return;
     }
     else
@@ -708,7 +664,7 @@ static const u8 sAcroBikeTrickCollisionTypes[] = {
 
 static void CheckAcroBikeCollision(s16 x, s16 y, u8 metatileBehavior, u8 *collision)
 {
-    u32 i;
+    u8 i;
 
     for (i = 0; i < NELEMS(sAcroBikeTrickMetatiles); i++)
     {
@@ -739,7 +695,7 @@ static void (*const sPlayerAvatarTransitionFuncs[])(struct ObjectEvent *) = {
 
 static void DoPlayerAvatarTransition(void)
 {
-    u32 i;
+    u8 i;
     u8 flags = gPlayerAvatar.transitionFlags;
 
     if (flags != 0)
@@ -779,16 +735,7 @@ static void PlayerAvatarTransition_Surfing(struct ObjectEvent * playerObjEvent)
 
 static void PlayerAvatarTransition_Underwater(struct ObjectEvent * playerObjEvent)
 {
-    u8 facingDirection = playerObjEvent->facingDirection;
-    s16 x = playerObjEvent->currentCoords.x;
-    s16 y = playerObjEvent->currentCoords.y;
-    
-    RemoveObjectEvent(playerObjEvent);
-    InitDivingPlayerAvatar(x, y, facingDirection, gSaveBlock2Ptr->playerGender);
-    //ObjectEventSetGraphicsId(playerObjEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_UNDERWATER));
-    //ObjectEventTurn(playerObjEvent, playerObjEvent->movementDirection);
-    SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_UNDERWATER);
-    gObjectEvents[gPlayerAvatar.objectEventId].fieldEffectSpriteId = StartUnderwaterSurfBlobBobbing(gPlayerAvatar.spriteId);
+
 }
 
 static void PlayerAvatarTransition_ReturnToField(struct ObjectEvent * playerObjEvent)
@@ -958,7 +905,7 @@ void PlayerTurnInPlace(u8 direction)
 void PlayerJumpLedge(u8 direction)
 {
     PlaySE(SE_LEDGE);
-    PlayerSetAnimId(GetJump2MovementAction(direction), 8);
+    PlayerSetAnimId(GetJump2MovementAction(direction), COPY_MOVE_JUMP2);
 }
 
 // Shakes head for male player character,
@@ -991,61 +938,6 @@ static void PlayerApplyTileForcedMovement(u8 metatileBehavior)
         if (sForcedMovementFuncs[i].check(metatileBehavior))
             sForcedMovementFuncs[i].apply();
     }
-}
-
-static void PlayerIdleWheelie(u8 direction)
-{
-    PlayerSetAnimId(GetAcroWheelieFaceDirectionMovementAction(direction), 1);
-}
-
-static void PlayerStartWheelie(u8 direction)
-{
-    PlayerSetAnimId(GetAcroPopWheelieFaceDirectionMovementAction(direction), 1);
-}
-
-static void PlayerEndWheelie(u8 direction)
-{
-    PlayerSetAnimId(GetAcroEndWheelieFaceDirectionMovementAction(direction), 1);
-}
-
-static void PlayerStandingHoppingWheelie(u8 direction)
-{
-    PlaySE(SE_BIKE_HOP);
-    PlayerSetAnimId(GetAcroWheelieHopFaceDirectionMovementAction(direction), 1);
-}
-
-static void PlayerMovingHoppingWheelie(u8 direction)
-{
-    PlaySE(SE_BIKE_HOP);
-    PlayerSetAnimId(GetAcroWheelieHopMovementAction(direction), 2);
-}
-
-static void PlayerLedgeHoppingWheelie(u8 direction)
-{
-    PlaySE(SE_BIKE_HOP);
-    PlayerSetAnimId(GetAcroWheelieJumpMovementAction(direction), 8);
-}
-
-static void PlayerAcroTurnJump(u8 direction)
-{
-    PlaySE(SE_BIKE_HOP);
-    PlayerSetAnimId(GetJumpInPlaceTurnAroundMovementAction(direction), 1);
-}
-
-static void PlayerAcroWheelieCollide(u8 direction)
-{
-    PlaySE(SE_WALL_HIT);
-    PlayerSetAnimId(GetAcroWheelieInPlaceMovementAction(direction), 2);
-}
-
-static void PlayerAcroPopWheelie(u8 direction)
-{
-    PlayerSetAnimId(GetAcroPopWheelieMoveMovementAction(direction), 2);
-}
-
-static void PlayerAcroWheelieMove(u8 direction)
-{
-    PlayerSetAnimId(GetAcroWheelieMoveMovementAction(direction), 2);
 }
 
 static bool8 (*const sArrowWarpMetatileBehaviorChecks[])(u8) = {
@@ -1185,15 +1077,13 @@ void StopPlayerAvatar(void)
     }
 }
 
-// this table originally had NOTHING to do with the player avatar state. It has been updated to be more consistent with the player avatar state flags
 static const u8 sPlayerAvatarGfxIds[][GENDER_COUNT] = {
-    [PLAYER_AVATAR_GFX_NORMAL]          = {OBJ_EVENT_GFX_RED_NORMAL,     OBJ_EVENT_GFX_GREEN_NORMAL},
-    [PLAYER_AVATAR_GFX_BIKE]            = {OBJ_EVENT_GFX_RED_BIKE,       OBJ_EVENT_GFX_GREEN_BIKE},
-    [PLAYER_AVATAR_GFX_RIDE]            = {OBJ_EVENT_GFX_RED_SURF,       OBJ_EVENT_GFX_GREEN_SURF},
-    [PLAYER_AVATAR_GFX_UNDERWATER]      = {OBJ_EVENT_GFX_RED_UNDERWATER, OBJ_EVENT_GFX_GREEN_UNDERWATER},  //change to dive sprite(s)
-    [PLAYER_AVATAR_GFX_FIELD_MOVE]      = {OBJ_EVENT_GFX_RED_FIELD_MOVE, OBJ_EVENT_GFX_GREEN_FIELD_MOVE},
-    [PLAYER_AVATAR_GFX_FISH]            = {OBJ_EVENT_GFX_RED_FISH,       OBJ_EVENT_GFX_GREEN_FISH},
-    [PLAYER_AVATAR_GFX_VSSEEKER]        = {OBJ_EVENT_GFX_RED_VS_SEEKER,  OBJ_EVENT_GFX_GREEN_VS_SEEKER}, //not a real state. same as PLAYER_AVATAR_STATE_WATERING (aka PLAYER_AVATAR_STATE_DASH).
+    [PLAYER_AVATAR_GFX_NORMAL]     = {OBJ_EVENT_GFX_RED_NORMAL,     OBJ_EVENT_GFX_GREEN_NORMAL},
+    [PLAYER_AVATAR_GFX_BIKE]       = {OBJ_EVENT_GFX_RED_BIKE,       OBJ_EVENT_GFX_GREEN_BIKE},
+    [PLAYER_AVATAR_GFX_RIDE]       = {OBJ_EVENT_GFX_RED_SURF,       OBJ_EVENT_GFX_GREEN_SURF},
+    [PLAYER_AVATAR_GFX_FIELD_MOVE] = {OBJ_EVENT_GFX_RED_FIELD_MOVE, OBJ_EVENT_GFX_GREEN_FIELD_MOVE},
+    [PLAYER_AVATAR_GFX_FISH]       = {OBJ_EVENT_GFX_RED_FISH,       OBJ_EVENT_GFX_GREEN_FISH},
+    [PLAYER_AVATAR_GFX_VSSEEKER]   = {OBJ_EVENT_GFX_RED_VS_SEEKER,  OBJ_EVENT_GFX_GREEN_VS_SEEKER},
 };
 
 static const u8 sHoennLinkPartnerGfxIds[] = {
@@ -1201,17 +1091,11 @@ static const u8 sHoennLinkPartnerGfxIds[] = {
     OBJ_EVENT_GFX_RS_MAY
 };
 
-static const u8 sEmeraldLinkPartnerGfxIds[] = {
-    OBJ_EVENT_GFX_EM_BRENDAN,
-    OBJ_EVENT_GFX_EM_MAY
-};
-
 u8 GetRivalAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
 {
     return GetPlayerAvatarGraphicsIdByStateIdAndGender(state, gender);
 }
 
-// game freak is dumb and decided to make this state-based table not relate to the states defined in global.fieldmap.h
 u8 GetPlayerAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
 {
     return sPlayerAvatarGfxIds[state][gender];
@@ -1220,11 +1104,6 @@ u8 GetPlayerAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
 u8 GetRSAvatarGraphicsIdByGender(u8 gender)
 {
     return sHoennLinkPartnerGfxIds[gender];
-}
-
-u8 GetEMAvatarGraphicsIdByGender(u8 gender)
-{
-    return sEmeraldLinkPartnerGfxIds[gender];
 }
 
 u8 GetPlayerAvatarGraphicsIdByStateId(u8 state)
@@ -1241,7 +1120,6 @@ u8 GetPlayerAvatarGenderByGraphicsId(u8 gfxId)
     case OBJ_EVENT_GFX_GREEN_SURF:
     case OBJ_EVENT_GFX_GREEN_FIELD_MOVE:
     case OBJ_EVENT_GFX_GREEN_FISH:
-    case OBJ_EVENT_GFX_GREEN_UNDERWATER:
         return FEMALE;
     default:
         return MALE;
@@ -1250,7 +1128,7 @@ u8 GetPlayerAvatarGenderByGraphicsId(u8 gfxId)
 
 bool8 PartyHasMonWithSurf(void)
 {
-    u32 i;
+    u8 i;
 
     if (!TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING))
     {
@@ -1295,7 +1173,7 @@ bool8 MetatileAtCoordsIsWaterTile(s16 x, s16 y)
 
 void ClearPlayerAvatarInfo(void)
 {
-    gPlayerAvatar = (struct PlayerAvatar){};
+    memset(&gPlayerAvatar, 0, sizeof(struct PlayerAvatar));
 }
 
 void SetPlayerAvatarStateMask(u8 flags)
@@ -1304,36 +1182,34 @@ void SetPlayerAvatarStateMask(u8 flags)
     gPlayerAvatar.flags |= flags;
 }
 
-static const u8 sPlayerAvatarGfxToStateFlag[][4][GENDER_COUNT] = {
+static const u8 sPlayerAvatarGfxToStateFlag[][3][GENDER_COUNT] = {
     [MALE] = {
         {OBJ_EVENT_GFX_RED_NORMAL, PLAYER_AVATAR_FLAG_ON_FOOT},
         {OBJ_EVENT_GFX_RED_BIKE,   PLAYER_AVATAR_FLAG_MACH_BIKE},
         {OBJ_EVENT_GFX_RED_SURF,   PLAYER_AVATAR_FLAG_SURFING},
-        {OBJ_EVENT_GFX_RED_UNDERWATER,   PLAYER_AVATAR_FLAG_UNDERWATER},  //change to your male dive sprite
     },
     [FEMALE] = {
         {OBJ_EVENT_GFX_GREEN_NORMAL, PLAYER_AVATAR_FLAG_ON_FOOT},
         {OBJ_EVENT_GFX_GREEN_BIKE,   PLAYER_AVATAR_FLAG_MACH_BIKE},
         {OBJ_EVENT_GFX_GREEN_SURF,   PLAYER_AVATAR_FLAG_SURFING},
-        {OBJ_EVENT_GFX_GREEN_UNDERWATER,   PLAYER_AVATAR_FLAG_UNDERWATER},  //change to your female dive sprite
     }
 };
 
-u8 GetPlayerAvatarStateTransitionByGraphicsId(u8 graphicsId, u8 gender)
+u8 GetPlayerAvatarStateTransitionByGraphicsId(u16 graphicsId, u8 gender)
 {
-    u32 i;
+    u8 i;
 
     for (i = 0; i < NELEMS(*sPlayerAvatarGfxToStateFlag); i++)
     {
         if (sPlayerAvatarGfxToStateFlag[gender][i][0] == graphicsId)
             return sPlayerAvatarGfxToStateFlag[gender][i][1];
     }
-    return 1;
+    return PLAYER_AVATAR_FLAG_ON_FOOT;
 }
 
-u8 GetPlayerAvatarGraphicsIdByCurrentState(void)
+u16 GetPlayerAvatarGraphicsIdByCurrentState(void)
 {
-    u32 i;
+    u8 i;
     u8 flags = gPlayerAvatar.flags;
 
     for (i = 0; i < NELEMS(*sPlayerAvatarGfxToStateFlag); i++)
@@ -1344,7 +1220,7 @@ u8 GetPlayerAvatarGraphicsIdByCurrentState(void)
     return 0;
 }
 
-void SetPlayerAvatarExtraStateTransition(u8 graphicsId, u8 extras)
+void SetPlayerAvatarExtraStateTransition(u16 graphicsId, u8 extras)
 {
     u8 unk = GetPlayerAvatarStateTransitionByGraphicsId(graphicsId, gPlayerAvatar.gender);
 
@@ -1362,12 +1238,12 @@ void InitPlayerAvatar(s16 x, s16 y, u8 direction, u8 gender)
     playerObjEventTemplate.graphicsId = GetPlayerAvatarGraphicsIdByStateIdAndGender(PLAYER_AVATAR_GFX_NORMAL, gender);
     playerObjEventTemplate.x = x - 7;
     playerObjEventTemplate.y = y - 7;
-    playerObjEventTemplate.objUnion.normal.elevation = 0;
-    playerObjEventTemplate.objUnion.normal.movementType = MOVEMENT_TYPE_PLAYER;
-    playerObjEventTemplate.objUnion.normal.movementRangeX = 0;
-    playerObjEventTemplate.objUnion.normal.movementRangeY = 0;
-    playerObjEventTemplate.objUnion.normal.trainerType = TRAINER_TYPE_NONE;
-    playerObjEventTemplate.objUnion.normal.trainerRange_berryTreeId = 0;
+    playerObjEventTemplate.elevation = 0;
+    playerObjEventTemplate.movementType = MOVEMENT_TYPE_PLAYER;
+    playerObjEventTemplate.movementRangeX = 0;
+    playerObjEventTemplate.movementRangeY = 0;
+    playerObjEventTemplate.trainerType = TRAINER_TYPE_NONE;
+    playerObjEventTemplate.trainerRange_berryTreeId = 0;
     playerObjEventTemplate.script = NULL;
     playerObjEventTemplate.flagId = 0;
     objectEventId = SpawnSpecialObjectEvent(&playerObjEventTemplate);
@@ -1382,38 +1258,6 @@ void InitPlayerAvatar(s16 x, s16 y, u8 direction, u8 gender)
     gPlayerAvatar.spriteId = objectEvent->spriteId;
     gPlayerAvatar.gender = gender;
     SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_CONTROLLABLE | PLAYER_AVATAR_FLAG_ON_FOOT);
-}
-
-void InitDivingPlayerAvatar(s16 x, s16 y, u8 direction, u8 gender)
-{
-    struct ObjectEventTemplate playerObjEventTemplate;
-    u8 objectEventId;
-    struct ObjectEvent *objectEvent;
-
-    playerObjEventTemplate.localId = OBJ_EVENT_ID_PLAYER;
-    playerObjEventTemplate.graphicsId = GetPlayerAvatarGraphicsIdByStateIdAndGender(PLAYER_AVATAR_GFX_UNDERWATER, gender);
-    playerObjEventTemplate.x = x - 7;
-    playerObjEventTemplate.y = y - 7;
-    playerObjEventTemplate.objUnion.normal.elevation = 0;
-    playerObjEventTemplate.objUnion.normal.movementType = MOVEMENT_TYPE_PLAYER;
-    playerObjEventTemplate.objUnion.normal.movementRangeX = 0;
-    playerObjEventTemplate.objUnion.normal.movementRangeY = 0;
-    playerObjEventTemplate.objUnion.normal.trainerType = 0;
-    playerObjEventTemplate.objUnion.normal.trainerRange_berryTreeId = 0;
-    playerObjEventTemplate.script = NULL;
-    playerObjEventTemplate.flagId = 0;
-    objectEventId = SpawnSpecialObjectEvent(&playerObjEventTemplate);
-    objectEvent = &gObjectEvents[objectEventId];
-    objectEvent->isPlayer = 1;
-    objectEvent->warpArrowSpriteId = CreateWarpArrowSprite();
-    ObjectEventTurn(objectEvent, direction);
-    ClearPlayerAvatarInfo();
-    gPlayerAvatar.runningState = NOT_MOVING;
-    gPlayerAvatar.tileTransitionState = T_NOT_MOVING;
-    gPlayerAvatar.objectEventId = objectEventId;
-    gPlayerAvatar.spriteId = objectEvent->spriteId;
-    gPlayerAvatar.gender = gender;
-    SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_CONTROLLABLE | PLAYER_AVATAR_FLAG_UNDERWATER);
 }
 
 void SetPlayerInvisibility(bool8 invisible)
@@ -1455,11 +1299,6 @@ void StartPlayerAvatarFishAnim(u8 direction)
 
 // Stubbed from R/S
 void PlayerUseAcroBikeOnBumpySlope(u8 direction)
-{
-
-}
-
-static void SetPlayerAvatarWatering(void)
 {
 
 }
@@ -1736,6 +1575,10 @@ static void Task_WaitStopSurfing(u8 taskId)
         UnlockPlayerFieldControls();
         UnfreezeObjectEvents();
         DestroySprite(&gSprites[playerObjEvent->fieldEffectSpriteId]);
+#ifdef BUGFIX
+        // If this is not defined but the player steps into grass from surfing, they will appear over the grass instead of in the grass.
+        playerObjEvent->triggerGroundEffectsOnMove = TRUE;
+#endif
         DestroyTask(taskId);
         SetHelpContextForMap();
     }
@@ -1877,38 +1720,16 @@ static bool8 Fishing5(struct Task *task)
 // Determine if fish bites
 static bool8 Fishing6(struct Task *task)
 {
-    bool8 bite;
-
     AlignFishingAnimationFrames(&gSprites[gPlayerAvatar.spriteId]);
     task->tStep++;
-    bite = FALSE;
 
-    if (!DoesCurrentMapHaveFishingMons())
+    if (!DoesCurrentMapHaveFishingMons() || Random() & 1)
     {
         task->tStep = FISHING_NO_BITE;
     }
     else
     {
-        if (!GetMonData(&gPlayerParty[0], MON_DATA_IS_EGG))
-        {
-            u8 ability = GetMonAbility(&gPlayerParty[0]);
-            if (ability == ABILITY_SUCTION_CUPS || ability  == ABILITY_STICKY_HOLD)
-            {
-                if (Random() % 100 > 14)
-                    bite = TRUE;
-            }
-        }
-
-        if (!bite)
-        {
-            if (Random() & 1)
-                task->tStep = FISHING_NO_BITE;
-            else
-                bite = TRUE;
-        }
-
-        if (bite == TRUE)
-            StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], GetFishingBiteDirectionAnimNum(GetPlayerFacingDirection()));
+        StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], GetFishingBiteDirectionAnimNum(GetPlayerFacingDirection()));
     }
     return TRUE;
 }

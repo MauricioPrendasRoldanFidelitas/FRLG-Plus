@@ -150,57 +150,10 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_DeoxysD;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_DeoxysA;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_DeoxysN;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SSAnne;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_CueBall;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Painter;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BirdKeeper;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Burglar;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PokemonRangerF;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PokemonRangerM;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RuinManiac;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PokeManiac;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PsychicM;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PsychicF;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_AromaLady;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Twin;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_YoungCoupleM;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_YoungCoupleF;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Engineer;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Juggler;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Tamer;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PokemonBreeder;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RedUnderwater;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GreenUnderwater;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Scott;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Bulbasaur;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Charmander;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Squirtle;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Latias;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Latios;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_EmBrendan;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_EmMay;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_CableCar;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Sudowoodo;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Abra;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SwimmerFWater2;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MasterBeauty;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MasterBirdKeeper;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MasterBlackbelt;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MasterBugCatcher;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MasterCooltrainerM;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MasterHiker;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MasterLass;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MasterPsychicM;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MasterScientist;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MasterYoungster;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lady;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Rocker2;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Anabel;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Tucker;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Greta;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Spenser;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Noland;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lucy;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Brandon;
+// Begin pokemon event objects
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PokeBall;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Follower;
+
 
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
     [OBJ_EVENT_GFX_RED_NORMAL]               = &gObjectEventGraphicsInfo_RedNormal,
@@ -355,55 +308,6 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_DEOXYS_A]                 = &gObjectEventGraphicsInfo_DeoxysA,
     [OBJ_EVENT_GFX_DEOXYS_N]                 = &gObjectEventGraphicsInfo_DeoxysN,
     [OBJ_EVENT_GFX_SS_ANNE]                  = &gObjectEventGraphicsInfo_SSAnne,
-    [OBJ_EVENT_GFX_CUE_BALL]                 = &gObjectEventGraphicsInfo_CueBall,
-    [OBJ_EVENT_GFX_PAINTER]                  = &gObjectEventGraphicsInfo_Painter,
-    [OBJ_EVENT_GFX_BIRD_KEEPER]              = &gObjectEventGraphicsInfo_BirdKeeper,
-    [OBJ_EVENT_GFX_BURGLAR]                  = &gObjectEventGraphicsInfo_Burglar,
-    [OBJ_EVENT_GFX_POKEMON_RANGER_F]         = &gObjectEventGraphicsInfo_PokemonRangerF,
-    [OBJ_EVENT_GFX_POKEMON_RANGER_M]         = &gObjectEventGraphicsInfo_PokemonRangerM,
-    [OBJ_EVENT_GFX_RUIN_MANIAC]              = &gObjectEventGraphicsInfo_RuinManiac,
-    [OBJ_EVENT_GFX_POKE_MANIAC]              = &gObjectEventGraphicsInfo_PokeManiac,
-    [OBJ_EVENT_GFX_PSYCHIC_M]                = &gObjectEventGraphicsInfo_PsychicM,
-    [OBJ_EVENT_GFX_PSYCHIC_F]                = &gObjectEventGraphicsInfo_PsychicF,
-    [OBJ_EVENT_GFX_AROMA_LADY]               = &gObjectEventGraphicsInfo_AromaLady,
-    [OBJ_EVENT_GFX_TWIN]                     = &gObjectEventGraphicsInfo_Twin,
-    [OBJ_EVENT_GFX_YOUNG_COUPLE_M]           = &gObjectEventGraphicsInfo_YoungCoupleM,
-    [OBJ_EVENT_GFX_YOUNG_COUPLE_F]           = &gObjectEventGraphicsInfo_YoungCoupleF,
-    [OBJ_EVENT_GFX_ENGINEER]                 = &gObjectEventGraphicsInfo_Engineer,
-    [OBJ_EVENT_GFX_JUGGLER]                  = &gObjectEventGraphicsInfo_Juggler,
-    [OBJ_EVENT_GFX_TAMER]                    = &gObjectEventGraphicsInfo_Tamer,
-    [OBJ_EVENT_GFX_POKEMON_BREEDER]          = &gObjectEventGraphicsInfo_PokemonBreeder,
-    [OBJ_EVENT_GFX_RED_UNDERWATER]           = &gObjectEventGraphicsInfo_RedUnderwater,
-    [OBJ_EVENT_GFX_GREEN_UNDERWATER]         = &gObjectEventGraphicsInfo_GreenUnderwater,
-    [OBJ_EVENT_GFX_SCOTT]                    = &gObjectEventGraphicsInfo_Scott,
-    [OBJ_EVENT_GFX_BULBASAUR]                = &gObjectEventGraphicsInfo_Bulbasaur,
-    [OBJ_EVENT_GFX_CHARMANDER]               = &gObjectEventGraphicsInfo_Charmander,
-    [OBJ_EVENT_GFX_SQUIRTLE]                 = &gObjectEventGraphicsInfo_Squirtle,
-    [OBJ_EVENT_GFX_LATIAS]                   = &gObjectEventGraphicsInfo_Latias,
-    [OBJ_EVENT_GFX_LATIOS]                   = &gObjectEventGraphicsInfo_Latios,
-    [OBJ_EVENT_GFX_EM_BRENDAN]               = &gObjectEventGraphicsInfo_EmBrendan,
-    [OBJ_EVENT_GFX_EM_MAY]                   = &gObjectEventGraphicsInfo_EmMay,
-    [OBJ_EVENT_GFX_CABLE_CAR]                = &gObjectEventGraphicsInfo_CableCar,
-    [OBJ_EVENT_GFX_SUDOWOODO]                = &gObjectEventGraphicsInfo_Sudowoodo,
-    [OBJ_EVENT_GFX_ABRA]                     = &gObjectEventGraphicsInfo_Abra,
-    [OBJ_EVENT_GFX_SWIMMER_F_WATER_2]        = &gObjectEventGraphicsInfo_SwimmerFWater2,
-    [OBJ_EVENT_GFX_MASTER_BEAUTY]            = &gObjectEventGraphicsInfo_MasterBeauty,
-    [OBJ_EVENT_GFX_MASTER_BIRD_KEEPER]       = &gObjectEventGraphicsInfo_MasterBirdKeeper,
-    [OBJ_EVENT_GFX_MASTER_BLACK_BELT]        = &gObjectEventGraphicsInfo_MasterBlackbelt,
-    [OBJ_EVENT_GFX_MASTER_BUG_CATCHER]       = &gObjectEventGraphicsInfo_MasterBugCatcher,
-    [OBJ_EVENT_GFX_MASTER_COOLTRAINER_M]     = &gObjectEventGraphicsInfo_MasterCooltrainerM,
-    [OBJ_EVENT_GFX_MASTER_HIKER]             = &gObjectEventGraphicsInfo_MasterHiker,
-    [OBJ_EVENT_GFX_MASTER_LASS]              = &gObjectEventGraphicsInfo_MasterLass,
-    [OBJ_EVENT_GFX_MASTER_PSYCHIC_M]         = &gObjectEventGraphicsInfo_MasterPsychicM,
-    [OBJ_EVENT_GFX_MASTER_SCIENTIST]         = &gObjectEventGraphicsInfo_MasterScientist,
-    [OBJ_EVENT_GFX_MASTER_YOUNGSTER]         = &gObjectEventGraphicsInfo_MasterYoungster,
-    [OBJ_EVENT_GFX_LADY]                     = &gObjectEventGraphicsInfo_Lady,
-    [OBJ_EVENT_GFX_ROCKER_2]                 = &gObjectEventGraphicsInfo_Rocker2,
-    [OBJ_EVENT_GFX_ANABEL]                   = &gObjectEventGraphicsInfo_Anabel,
-    [OBJ_EVENT_GFX_TUCKER]                   = &gObjectEventGraphicsInfo_Tucker,
-    [OBJ_EVENT_GFX_GRETA]                    = &gObjectEventGraphicsInfo_Greta,
-    [OBJ_EVENT_GFX_SPENSER]                  = &gObjectEventGraphicsInfo_Spenser,
-    [OBJ_EVENT_GFX_NOLAND]                   = &gObjectEventGraphicsInfo_Noland,
-    [OBJ_EVENT_GFX_LUCY]                     = &gObjectEventGraphicsInfo_Lucy,
-    [OBJ_EVENT_GFX_BRANDON]                  = &gObjectEventGraphicsInfo_Brandon,
+    [OBJ_EVENT_GFX_POKE_BALL] =                &gObjectEventGraphicsInfo_PokeBall,
+    [OBJ_EVENT_GFX_OW_MON] =                   &gObjectEventGraphicsInfo_Follower,
 };

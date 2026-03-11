@@ -17,7 +17,6 @@
 #include "new_menu_helpers.h"
 #include "overworld.h"
 #include "party_menu.h"
-#include "pokemon_storage_system.h"
 #include "quest_log.h"
 #include "script.h"
 #include "special_field_anim.h"
@@ -26,15 +25,11 @@
 #include "trig.h"
 #include "util.h"
 #include "constants/event_object_movement.h"
-#include "constants/layouts.h"
-#include "constants/maps.h"
-#include "constants/map_groups.h"
 #include "constants/metatile_behaviors.h"
-#include "constants/region_map_sections.h"
 #include "constants/songs.h"
 #include "constants/sound.h"
 
-extern struct CompressedSpritePalette gMonPaletteTable[]; // Intentionally declared (incorrectly) without const in order to match
+// extern struct CompressedSpritePalette gMonPaletteTable[]; // Intentionally declared (incorrectly) without const in order to match
 extern const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[];
 extern const struct CompressedSpriteSheet gTrainerFrontPicTable[];
 
@@ -58,8 +53,6 @@ static void FieldEffectScript_LoadTiles(const u8 **script);
 static void FieldEffectScript_LoadFadedPal(const u8 **script);
 static void FieldEffectScript_LoadPal(const u8 **script);
 static void FieldEffectScript_CallNative(const u8 **script, u32 *result);
-static void FieldEffectFreeTilesIfUnused(u16 tilesTag);
-static void FieldEffectFreePaletteIfUnused(u8 paletteNum);
 static void Task_PokecenterHeal(u8 taskId);
 static void SpriteCB_PokeballGlow(struct Sprite *sprite);
 static void SpriteCB_PokecenterMonitor(struct Sprite *sprite);
@@ -419,12 +412,6 @@ static bool8 FieldEffectCmd_loadtiles_callnative(const u8 **script, u32 *result)
     return TRUE;
 }
 
-extern const struct SpritePalette gSpritePalette_GeneralFieldEffect0; //sand footprints pal
-extern const struct SpritePalette gBlackSandFootprintsPal;
-extern const struct SpritePalette gThreeIslandGrassPal;
-extern const struct SpritePalette gSpritePalette_GeneralFieldEffect1; //tall grass pal
-extern const struct SpritePalette gSnowFootprintsPal;
-
 static bool8 FieldEffectCmd_loadfadedpal_callnative(const u8 **script, u32 *result)
 {
     (*script)++;
@@ -470,33 +457,8 @@ void ApplyGlobalFieldPaletteTint(u8 paletteIdx)
 
 static void FieldEffectScript_LoadFadedPal(const u8 **script)
 {
-    u8 mapsec = GetCurrentRegionMapSectionId();
-    const struct SpritePalette * spritePalette;
-    u8 idx;
-    if((const struct SpritePalette * )FieldEffectScript_ReadWord(script) == &gSpritePalette_GeneralFieldEffect0) //overwrite sand footprints palette
-    {
-        if(mapsec == MAPSEC_ONE_ISLAND || mapsec == MAPSEC_TREASURE_BEACH || mapsec == MAPSEC_KINDLE_ROAD) //if one island
-        {
-            spritePalette = &gBlackSandFootprintsPal;
-        }
-        else if(gSaveBlock1Ptr->mapLayoutId == LAYOUT_FOUR_ISLAND) //Four Island town's snow footprints
-        {
-            spritePalette = &gSnowFootprintsPal;
-        }
-        else
-        {
-            spritePalette = (const struct SpritePalette * )FieldEffectScript_ReadWord(script);
-        }
-    }
-    else if((const struct SpritePalette * )FieldEffectScript_ReadWord(script) == &gSpritePalette_GeneralFieldEffect1) //overwrite tall grass palette
-    {
-        spritePalette = (const struct SpritePalette * )FieldEffectScript_ReadWord(script);
-    }
-    else
-    {
-        spritePalette = (const struct SpritePalette * )FieldEffectScript_ReadWord(script);
-    }
-    idx = IndexOfSpritePaletteTag(spritePalette->tag);
+    const struct SpritePalette * spritePalette = (const struct SpritePalette * )FieldEffectScript_ReadWord(script);
+    u8 idx = IndexOfSpritePaletteTag(spritePalette->tag);
     LoadSpritePalette(spritePalette);
     if (idx == 0xFF)
         ApplyGlobalFieldPaletteTint(IndexOfSpritePaletteTag(spritePalette->tag));
@@ -536,37 +498,37 @@ void FieldEffectStop(struct Sprite *sprite, u8 fldeff)
     FieldEffectActiveListRemove(fldeff);
 }
 
-static void FieldEffectFreeTilesIfUnused(u16 tileStart)
+void FieldEffectFreeTilesIfUnused(u16 tileStart)
 {
-    u32 i;
-    u16 tileTag = GetSpriteTileTagByTileStart(tileStart);
-    if (tileTag == TAG_NONE)
-        return;
-    for (i = 0; i < MAX_SPRITES; i++)
+    u8 i;
+    u16 tag = GetSpriteTileTagByTileStart(tileStart);
+
+    if (tag != TAG_NONE)
     {
-        if (gSprites[i].inUse && gSprites[i].usingSheet && tileStart == gSprites[i].sheetTileStart)
-            return;
+        for (i = 0; i < MAX_SPRITES; i++)
+            if (gSprites[i].inUse && gSprites[i].usingSheet && tileStart == gSprites[i].sheetTileStart)
+                return;
+        FreeSpriteTilesByTag(tag);
     }
-    FreeSpriteTilesByTag(tileTag);
 }
 
-static void FieldEffectFreePaletteIfUnused(u8 paletteNum)
+void FieldEffectFreePaletteIfUnused(u8 paletteNum)
 {
-    u32 i;
-    u16 paletteTag = GetSpritePaletteTagByPaletteNum(paletteNum);
-    if (paletteTag == TAG_NONE)
-        return;
-    for (i = 0; i < MAX_SPRITES; i++)
+    u8 i;
+    u16 tag = GetSpritePaletteTagByPaletteNum(paletteNum);
+
+    if (tag != TAG_NONE)
     {
-        if (gSprites[i].inUse && gSprites[i].oam.paletteNum == paletteNum)
-            return;
+        for (i = 0; i < MAX_SPRITES; i++)
+            if (gSprites[i].inUse && gSprites[i].oam.paletteNum == paletteNum)
+                return;
+        FreeSpritePaletteByTag(tag);
     }
-    FreeSpritePaletteByTag(paletteTag);
 }
 
 void FieldEffectActiveListClear(void)
 {
-    u32 i;
+    u8 i;
     for (i = 0; i < FIELD_EFFECT_COUNT; i++)
     {
         sFieldEffectActiveList[i] = 0xFF;
@@ -575,7 +537,7 @@ void FieldEffectActiveListClear(void)
 
 static void FieldEffectActiveListAdd(u8 fldeff)
 {
-    u32 i;
+    u8 i;
     for (i = 0; i < FIELD_EFFECT_COUNT; i++)
     {
         if (sFieldEffectActiveList[i] == 0xFF)
@@ -588,7 +550,7 @@ static void FieldEffectActiveListAdd(u8 fldeff)
 
 void FieldEffectActiveListRemove(u8 fldeff)
 {
-    u32 i;
+    u8 i;
     for (i = 0; i < FIELD_EFFECT_COUNT; i++)
     {
         if (sFieldEffectActiveList[i] == fldeff)
@@ -601,7 +563,7 @@ void FieldEffectActiveListRemove(u8 fldeff)
 
 bool8 FieldEffectActiveListContains(u8 fldeff)
 {
-    u32 i;
+    u8 i;
     for (i = 0; i < FIELD_EFFECT_COUNT; i++)
     {
         if (sFieldEffectActiveList[i] == fldeff)
@@ -627,35 +589,20 @@ u8 CreateTrainerSprite(u8 trainerSpriteID, s16 x, s16 y, u8 subpriority, u8 *buf
     return CreateSprite(&spriteTemplate, x, y, subpriority);
 }
 
-// Unused
-static void LoadTrainerGfx_TrainerCard(u8 gender, u16 palOffset, u8 *dest)
-{
-    LZDecompressVram(gTrainerFrontPicTable[gender].data, dest);
-    LoadCompressedPalette(gTrainerFrontPicPaletteTable[gender].data, palOffset, PLTT_SIZE_4BPP);
-}
-
-// Unused
-static u8 AddNewGameBirchObject(s16 x, s16 y, u8 subpriority)
-{
-    LoadSpritePalette(&sNewGameOakObjectPaletteInfo);
-    return CreateSprite(&sNewGameOakObjectTemplate, x, y, subpriority);
-}
-
 u8 CreateMonSprite_PicBox(u16 species, s16 x, s16 y, u8 subpriority)
 {
-    u16 spriteId = CreateMonPicSprite_HandleDeoxys(species, 0, 0x8000, TRUE, x, y, 0, gMonPaletteTable[species].tag);
-    PreservePaletteInWeather(IndexOfSpritePaletteTag(gMonPaletteTable[species].tag) + 0x10);
+    u16 spriteId = CreateMonPicSprite(species, FALSE, 0x8000, TRUE, x, y, 0, species);
+    PreservePaletteInWeather(IndexOfSpritePaletteTag(species) + 0x10);
     if (spriteId == 0xFFFF)
         return MAX_SPRITES;
     else
         return spriteId;
 }
 
-static u8 CreateMonSprite_FieldMove(u16 species, u32 otId, u32 personality, s16 x, s16 y, u8 subpriority)
+static u8 CreateMonSprite_FieldMove(u16 species, bool32 isShiny, u32 personality, s16 x, s16 y, u8 subpriority)
 {
-    const struct CompressedSpritePalette * spritePalette = GetMonSpritePalStructFromOtIdPersonality(species, otId, personality);
-    u16 spriteId = CreateMonPicSprite_HandleDeoxys(species, otId, personality, 1, x, y, 0, spritePalette->tag);
-    PreservePaletteInWeather(IndexOfSpritePaletteTag(spritePalette->tag) + 0x10);
+    u16 spriteId = CreateMonPicSprite(species, isShiny, personality, 1, x, y, 0, species);
+    PreservePaletteInWeather(IndexOfSpritePaletteTag(species) + 0x10);
     if (spriteId == 0xFFFF)
         return MAX_SPRITES;
     else
@@ -664,12 +611,14 @@ static u8 CreateMonSprite_FieldMove(u16 species, u32 otId, u32 personality, s16 
 
 void FreeResourcesAndDestroySprite(struct Sprite *sprite, u8 spriteId)
 {
+    u8 paletteNum = sprite->oam.paletteNum;
     ResetPreservedPalettesInWeather();
     if (sprite->oam.affineMode != ST_OAM_AFFINE_OFF)
     {
         FreeOamMatrix(sprite->oam.matrixNum);
     }
-    FreeAndDestroyMonPicSprite(spriteId);
+    FreeAndDestroyMonPicSpriteNoPalette(spriteId);
+    FieldEffectFreePaletteIfUnused(paletteNum); // Clear palette only if unused, in case follower is using it
 }
 
 // r, g, b are between 0 and 16
@@ -687,27 +636,6 @@ void MultiplyInvertedPaletteRGBComponents(u16 i, u8 r, u8 g, u8 b)
     curRed += (((0x1f - curRed) * r) >> 4);
     curGreen += (((0x1f - curGreen) * g) >> 4);
     curBlue += (((0x1f - curBlue) * b) >> 4);
-    outPal = curRed;
-    outPal |= curGreen << 5;
-    outPal |= curBlue << 10;
-    gPlttBufferFaded[i] = outPal;
-}
-
-// r, g, b are between 0 and 16
-static void MultiplyPaletteRGBComponents(u16 i, u8 r, u8 g, u8 b)
-{
-    int curRed;
-    int curGreen;
-    int curBlue;
-    u16 outPal;
-
-    outPal = gPlttBufferUnfaded[i];
-    curRed = outPal & 0x1f;
-    curGreen = (outPal & (0x1f << 5)) >> 5;
-    curBlue = (outPal & (0x1f << 10)) >> 10;
-    curRed -= ((curRed * r) >> 4);
-    curGreen -= ((curGreen * g) >> 4);
-    curBlue -= ((curBlue * b) >> 4);
     outPal = curRed;
     outPal |= curGreen << 5;
     outPal |= curBlue << 10;
@@ -764,23 +692,6 @@ static void (*const sPokeballGlowEffectFuncs[])(struct Sprite *) =
     PokeballGlowEffect_Idle
 };
 
-static u32 CountAliveMonsInNuzlocke(void)
-{
-    u32 i, count;
-
-    for (i = 0, count = 0; i < PARTY_SIZE; i++)
-    {
-        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) != SPECIES_NONE
-            && !GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG))
-        {
-            if(GetMonData(&gPlayerParty[i], MON_DATA_HP) != 0)
-                count++;
-        }
-    }
-
-    return count;
-}
-
 // Task data for Task_PokecenterHeal and Task_HallOfFameRecord
 #define tState              data[0]
 #define tNumMons            data[1]
@@ -811,20 +722,13 @@ bool8 FldEff_PokecenterHeal(void)
     u8 nPokemon;
     struct Task *task;
 
-    if(gSaveBlock1Ptr->keyFlags.nuzlocke == 1)
-        nPokemon = CountAliveMonsInNuzlocke(); 
-    else
-        nPokemon = CountPartyNonEggMons();
+    nPokemon = CalculatePlayerPartyCount();
     task = &gTasks[CreateTask(Task_PokecenterHeal, 0xFF)];
     task->tNumMons = nPokemon;
     task->tFirstBallX = 93;
     task->tFirstBallY = 36;
     task->tMonitorX = 128;
     task->tMonitorY = 24;
-    if(gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(SEVEN_ISLAND_HOUSE_ROOM2) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(SEVEN_ISLAND_HOUSE_ROOM2))
-    {   //for the Battle House healing machine
-        task->tFirstBallY = 68;
-    }
     return FALSE;
 }
 
@@ -888,7 +792,6 @@ static void Task_HallOfFameRecord(u8 taskId)
 
 static void HallOfFameRecordEffect_Init(struct Task *task)
 {
-    u8 taskId;
     task->tState++;
     task->tGlowEffectSpriteId = CreateGlowingPokeballsEffect(task->tNumMons, task->tFirstBallX, task->tFirstBallY, FALSE);
 }
@@ -990,7 +893,7 @@ static void PokeballGlowEffect_TryPlaySe(struct Sprite *sprite)
         sprite->sCounter = 0;
         sprite->sNumFlashed = 0;
         if (sprite->sPlayHealSe)
-            PlayFanfare(MUS_RS_HEAL);
+            PlayFanfare(MUS_HEAL);
     }
 }
 
@@ -1117,7 +1020,6 @@ static void SpriteCB_HallOfFameMonitor(struct Sprite *sprite)
         FieldEffectFreeGraphicsResources(sprite);
 }
 
-static void FieldCallback_UseFly(void);
 static void Task_UseFly(u8 taskId);
 static void FieldCallback_FlyIntoMap(void);
 static void Task_FlyIntoMap(u8 taskId);
@@ -1128,7 +1030,7 @@ void ReturnToFieldFromFlyMapSelect(void)
     gFieldCallback = FieldCallback_UseFly;
 }
 
-static void FieldCallback_UseFly(void)
+void FieldCallback_UseFly(void)
 {
     FadeInFromBlack();
     CreateTask(Task_UseFly, 0);
@@ -1350,6 +1252,15 @@ static bool8 FallWarpEffect_7(struct Task *task)
     return FALSE;
 }
 
+static void HideFollowerForFieldEffect(void)
+{
+    struct ObjectEvent *followerObj = GetFollowerObject();
+    if (!followerObj || followerObj->invisible)
+        return;
+    ClearObjectEventMovement(followerObj, &gSprites[followerObj->spriteId]);
+    ObjectEventSetHeldMovement(followerObj, MOVEMENT_ACTION_ENTER_POKEBALL);
+}
+
 static void Task_EscalatorWarpFieldEffect(u8 taskId);
 static bool8 EscalatorWarpEffect_1(struct Task *task);
 static bool8 EscalatorWarpEffect_2(struct Task *task);
@@ -1400,6 +1311,7 @@ static bool8 EscalatorWarpEffect_1(struct Task *task)
     FreezeObjectEvents();
     CameraObjectReset2();
     StartEscalator(task->data[1]);
+    HideFollowerForFieldEffect(); // Hide follower before warping
     QuestLog_OnEscalatorWarp(QL_ESCALATOR_OUT);
     task->data[0]++;
     return FALSE;
@@ -2147,6 +2059,7 @@ void StartEscapeRopeFieldEffect(void)
 {
     LockPlayerFieldControls();
     FreezeObjectEvents();
+    HideFollowerForFieldEffect(); // hide follower before warping
     CreateTask(Task_EscapeRopeWarpOut, 80);
 }
 
@@ -2619,7 +2532,7 @@ static void VBlankCB_ShowMonEffect_Indoors(void);
 static void AnimateIndoorShowMonBg(struct Task *task);
 static bool8 SlideIndoorBannerOnscreen(struct Task *task);
 static bool8 SlideIndoorBannerOffscreen(struct Task *task);
-static u8 InitFieldMoveMonSprite(u32 species, u32 otId, u32 personality);
+static u8 InitFieldMoveMonSprite(u32 species, bool32 isShiny, u32 personality);
 static void SpriteCB_FieldMoveMonSlideOnscreen(struct Sprite *sprite);
 static void SpriteCB_FieldMoveMonWaitAfterCry(struct Sprite *sprite);
 static void SpriteCB_FieldMoveMonSlideOffscreen(struct Sprite *sprite);
@@ -2650,25 +2563,7 @@ u32 FldEff_FieldMoveShowMonInit(void)
     u32 r6 = gFieldEffectArguments[0] & 0x80000000;
     u8 partyIdx = gFieldEffectArguments[0];
     gFieldEffectArguments[0] = GetMonData(&gPlayerParty[partyIdx], MON_DATA_SPECIES);
-    if(gFieldEffectArguments[0] == SPECIES_DEOXYS)
-    {
-        switch(GetMonData(&gPlayerParty[partyIdx], MON_DATA_FORME))
-        {
-            case 1: //Attack Forme
-                gFieldEffectArguments[0] = 65531;
-                break;
-            case 2: //Defense Forme
-                gFieldEffectArguments[0] = 65532;
-                break;
-            case 3: //Speed Forme
-                gFieldEffectArguments[0] = 65533;
-                break;
-            default: //Normal Forme
-                gFieldEffectArguments[0] = 65530;
-                break;
-        }
-    }
-    gFieldEffectArguments[1] = GetMonData(&gPlayerParty[partyIdx], MON_DATA_OT_ID);
+    gFieldEffectArguments[1] = GetMonData(&gPlayerParty[partyIdx], MON_DATA_IS_SHINY, NULL);
     gFieldEffectArguments[2] = GetMonData(&gPlayerParty[partyIdx], MON_DATA_PERSONALITY);
     gFieldEffectArguments[0] |= r6;
     FieldEffectStart(FLDEFF_FIELD_MOVE_SHOW_MON);
@@ -2789,7 +2684,7 @@ static void ShowMonEffect_Outdoors_6(struct Task *task)
 static void ShowMonEffect_Outdoors_7(struct Task *task)
 {
     IntrCallback callback;
-    LoadWordFromTwoHalfwords((u16 *)&task->data[13], (uintptr_t *)&callback);
+    LoadWordFromTwoHalfwords((u16 *)&task->data[13], (u32 *)&callback);
     SetVBlankCallback(callback);
     ChangeBgX(0, 0, 0);
     ChangeBgY(0, 0, 0);
@@ -2803,7 +2698,7 @@ static void VBlankCB_ShowMonEffect_Outdoors(void)
 {
     IntrCallback callback;
     struct Task *task = &gTasks[FindTaskIdByFunc(Task_ShowMon_Outdoors)];
-    LoadWordFromTwoHalfwords((u16 *)&task->data[13], (uintptr_t *)&callback);
+    LoadWordFromTwoHalfwords((u16 *)&task->data[13], (u32 *)&callback);
     callback();
     SetGpuReg(REG_OFFSET_WIN0H, task->data[1]);
     SetGpuReg(REG_OFFSET_WIN0V, task->data[2]);
@@ -2815,7 +2710,7 @@ static void VBlankCB_ShowMonEffect_Outdoors(void)
 
 static void LoadFieldMoveStreaksTilemapToVram(u16 screenbase)
 {
-    u32 i;
+    u16 i;
     u16 *dest;
     dest = (u16 *)(VRAM + (10 * 32) + screenbase);
     for (i = 0; i < (10 * 32); i++, dest++)
@@ -2908,7 +2803,7 @@ static void ShowMonEffect_Indoors_7(struct Task *task)
     u16 charbase;
     charbase = (GetGpuReg(REG_OFFSET_BG0CNT) >> 8) << 11;
     CpuFill32(0, (void *)VRAM + charbase, 0x800);
-    LoadWordFromTwoHalfwords((u16 *)&task->data[13], (uintptr_t *)&intrCallback);
+    LoadWordFromTwoHalfwords((u16 *)&task->data[13], (u32 *)&intrCallback);
     SetVBlankCallback(intrCallback);
     ChangeBgX(0, 0, 0);
     ChangeBgY(0, 0, 0);
@@ -2923,7 +2818,7 @@ static void VBlankCB_ShowMonEffect_Indoors(void)
     IntrCallback intrCallback;
     struct Task *task;
     task = &gTasks[FindTaskIdByFunc(Task_ShowMon_Indoors)];
-    LoadWordFromTwoHalfwords((u16 *)&task->data[13], (uintptr_t *)&intrCallback);
+    LoadWordFromTwoHalfwords((u16 *)&task->data[13], (u32 *)&intrCallback);
     intrCallback();
     SetGpuReg(REG_OFFSET_BG0HOFS, task->data[1]);
     SetGpuReg(REG_OFFSET_BG0VOFS, task->data[2]);
@@ -2937,7 +2832,7 @@ static void AnimateIndoorShowMonBg(struct Task *task)
 
 static bool8 SlideIndoorBannerOnscreen(struct Task *task)
 {
-    u32 i;
+    u16 i;
     u16 srcOffs;
     u16 dstOffs;
     u16 *dest;
@@ -2966,7 +2861,7 @@ static bool8 SlideIndoorBannerOnscreen(struct Task *task)
 
 static bool8 SlideIndoorBannerOffscreen(struct Task *task)
 {
-    u32 i;
+    u16 i;
     u16 dstOffs;
     u16 *dest;
     if (task->data[4] >= 32)
@@ -2988,23 +2883,18 @@ static bool8 SlideIndoorBannerOffscreen(struct Task *task)
     return FALSE;
 }
 
-static u8 InitFieldMoveMonSprite(u32 species, u32 otId, u32 personality)
+static u8 InitFieldMoveMonSprite(u32 species, bool32 isShiny, u32 personality)
 {
     bool16 playCry;
     u8 monSprite;
     struct Sprite *sprite;
-    u32 speciesForCry = species;
-
-    if(species >= 65530 && species <= 65533)
-        speciesForCry = SPECIES_DEOXYS;
-
-    playCry = (speciesForCry & 0x80000000) >> 16;
+    playCry = (species & 0x80000000) >> 16;
     species &= 0x7fffffff;
-    monSprite = CreateMonSprite_FieldMove(species, otId, personality, 0x140, 0x50, 0);
+    monSprite = CreateMonSprite_FieldMove(species, isShiny, personality, 0x140, 0x50, 0);
     sprite = &gSprites[monSprite];
     sprite->callback = SpriteCallbackDummy;
     sprite->oam.priority = 0;
-    sprite->data[0] = speciesForCry;
+    sprite->data[0] = species;
     sprite->data[6] = playCry;
     return monSprite;
 }
@@ -3081,6 +2971,8 @@ static void UseSurfEffect_1(struct Task *task)
 {
     LockPlayerFieldControls();
     FreezeObjectEvents();
+    // Put follower into pokeball before using Surf
+    HideFollowerForFieldEffect();
     gPlayerAvatar.preventStep = TRUE;
     SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_SURFING);
     PlayerGetDestCoords(&task->data[1], &task->data[2]);
@@ -3226,7 +3118,7 @@ u8 FldEff_NpcFlyOut(void)
     u8 spriteId = CreateSprite(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_BIRD], 0x78, 0, 1);
     struct Sprite *sprite = &gSprites[spriteId];
 
-    sprite->oam.paletteNum = 0;
+    sprite->oam.paletteNum = LoadPlayerObjectEventPalette(gSaveBlock2Ptr->playerGender);
     sprite->oam.priority = 1;
     sprite->callback = SpriteCB_NPCFlyOut;
     sprite->data[1] = gFieldEffectArguments[0];
@@ -3424,7 +3316,7 @@ static u8 CreateFlyBirdSprite(void)
     struct Sprite *sprite;
     spriteId = CreateSprite(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_BIRD], 255, 180, 1);
     sprite = &gSprites[spriteId];
-    sprite->oam.paletteNum = 0;
+    sprite->oam.paletteNum = LoadPlayerObjectEventPalette(gSaveBlock2Ptr->playerGender);
     sprite->oam.priority = 1;
     sprite->callback = SpriteCB_FlyBirdLeaveBall;
     return spriteId;

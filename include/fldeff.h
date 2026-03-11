@@ -9,7 +9,7 @@ gTasks[taskId].data[9] = (u32)func;
 
 extern struct MapPosition gPlayerFacingPosition;
 
-bool8 CheckObjectGraphicsInFrontOfPlayer(u8 graphicsId);
+bool8 CheckObjectGraphicsInFrontOfPlayer(u16 graphicsId);
 u8 CreateFieldEffectShowMon(void);
 
 // flash
@@ -52,5 +52,6 @@ void Task_TryUseSoftboiledOnPartyMon(u8 taskId);
 // sweetscent
 bool8 SetUpFieldMove_SweetScent(void);
 bool8 FldEff_SweetScent(void);
+void StartSweetScentFieldEffect(void);
 
 #endif // GUARD_FLDEFF_H

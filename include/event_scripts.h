@@ -7,6 +7,36 @@
 
 #include "global.h"
 
+extern const u8 EventScript_Follower[];
+extern const u8 EventScript_FollowerEnd[];
+extern const u8 EventScript_FollowerGeneric[];
+extern const u8 EventScript_FollowerLovesYou[];
+
+extern const u8 Common_Movement_FollowerSafeStart[];
+extern const u8 Common_Movement_FollowerSafeEnd[];
+
+extern const u8 EventScript_FollowerIsShivering[];
+extern const u8 EventScript_FollowerNostalgia[];
+extern const u8 EventScript_FollowerHopping[];
+extern const u8 EventScript_FollowerJumpOnPlayer[];
+extern const u8 EventScript_FollowerCuddling[];
+extern const u8 EventScript_FollowerShiverCuddling[];
+extern const u8 EventScript_FollowerGetCloser[];
+extern const u8 EventScript_FollowerPokingPlayer[];
+extern const u8 EventScript_FollowerLookAround[];
+extern const u8 EventScript_FollowerLookAway[];
+extern const u8 EventScript_FollowerLookAwayBark[];
+extern const u8 EventScript_FollowerLookAwayPoke[];
+extern const u8 EventScript_FollowerPokeGround[];
+extern const u8 EventScript_FollowerStartled[];
+extern const u8 EventScript_FollowerFastHopping[];
+extern const u8 EventScript_FollowerDizzy[];
+extern const u8 EventScript_FollowerLookAroundScared[];
+extern const u8 EventScript_FollowerDance[];
+extern const u8 EventScript_FollowerFaceUp[];
+extern const u8 EventScript_FollowerFaceResult[];
+extern const u8 EnterPokeballMovement[];
+
 extern const u8 gTVBravoTrainerText00[];
 extern const u8 gTVBravoTrainerText01[];
 extern const u8 gTVBravoTrainerText02[];
@@ -904,8 +934,6 @@ extern const u8 Help_Text_UsingBall[];
 extern const u8 Help_Text_UsingBait[];
 extern const u8 Help_Text_UsingRock[];
 extern const u8 Help_Text_UsingHallOfFame[];
-extern const u8 Help_Text_UsingKeySystem[];
-extern const u8 Help_Text_SortingBag[];
 extern const u8 Help_Text_HowToUsePokedex[];
 extern const u8 Help_Text_HowToUsePokemon[];
 extern const u8 Help_Text_HowToUseSummary[];
@@ -954,8 +982,6 @@ extern const u8 Help_Text_HowToUseBall[];
 extern const u8 Help_Text_HowToUseBait[];
 extern const u8 Help_Text_HowToUseRock[];
 extern const u8 Help_Text_HowToUseHallOfFame[];
-extern const u8 Help_Text_HowToUseKeySystemSettings[];
-extern const u8 Help_Text_HowToSortBag[];
 extern const u8 Help_Text_HP[];
 extern const u8 Help_Text_EXP[];
 extern const u8 Help_Text_Moves[];
@@ -1126,22 +1152,6 @@ extern const u8 Help_Text_TypeMatchupOwnMoveWater[];
 extern const u8 Help_Text_TypeMatchupOwnPokemonWater[];
 extern const u8 Help_Text_TypeMatchupOwnMoveBug[];
 extern const u8 Help_Text_TypeMatchupOwnPokemonBug[];
-extern const u8 Help_Text_Version[];
-extern const u8 Help_Text_Difficulty[];
-extern const u8 Help_Text_Nuzlocke[];
-extern const u8 Help_Text_Nuzlocke_Catching[];
-extern const u8 Help_Text_IvCalc[];
-extern const u8 Help_Text_EvCalc[];
-extern const u8 Help_Text_NoFreeHeals[];
-extern const u8 Help_Text_DefineVersion[];
-extern const u8 Help_Text_DefineDifficulty[];
-extern const u8 Help_Text_DefineNuzlocke[];
-extern const u8 Help_Text_DefineIvCalc[];
-extern const u8 Help_Text_DefineEvCalc[];
-extern const u8 Help_Text_DefineNuzlocke_Catching[];
-extern const u8 Help_Text_NuzlockeLosing[];
-extern const u8 Help_Text_DefineNuzlockeLosing[];
-extern const u8 Help_Text_DefineNoFreeHeals[];
 
 extern const u8 EventScript_FldEffStrength[];
 extern const u8 EventScript_FailSweetScent[];
@@ -1161,6 +1171,7 @@ extern const u8 EventScript_TryDoNormalTrainerBattle[];
 extern const u8 EventScript_TryDoDoubleRematchBattle[];
 extern const u8 EventScript_TryDoRematchBattle[];
 extern const u8 EventScript_DoTrainerBattleFromApproach[];
+extern const u8 EventScript_TestSignpostMsg[];
 
 // new_game
 extern const u8 EventScript_ResetAllMapFlags[];
@@ -1171,16 +1182,6 @@ extern const u8 EventScript_PalletTown_PlayersHouse_2F_ShutDownPC[];
 // field_screen_effect
 extern const u8 EventScript_AfterWhiteOutMomHeal[];
 extern const u8 EventScript_AfterWhiteOutHeal[];
-extern const u8 EventScript_NuzlockeGameOver[];
-extern const u8 EventScript_NuzlockeHaveMons_Nurse[];
-extern const u8 EventScript_NoPMCHaveMons_Nurse[];
-extern const u8 EventScript_NuzlockeGameOver_Mom[];
-extern const u8 EventScript_NuzlockeHaveMons_Mom[];
-extern const u8 EventScript_NoPMCHaveMons_Mom[];
-extern const u8 EventScript_BothGameOver[];
-extern const u8 EventScript_NoPMCGameOver[];
-extern const u8 EventScript_BothGameOver_Mom[];
-extern const u8 EventScript_NoPMCGameOver_Mom[];
 
 // start_menu
 extern const u8 gText_WouldYouLikeToSaveTheGame[];
@@ -1198,8 +1199,9 @@ extern const u8 CableClub_Text_YouMayTradeHere[];
 extern const u8 CableClub_Text_YouMayBattleHere[];
 extern const u8 CableClub_Text_CanMakeBerryPowder[];
 extern const u8 EventScript_PC[];
+extern const u8 EventScript_AccessPokemonBoxLink[];
 
-extern const u8 EventScript_RepelWoreOff[];
+extern const u8 EventScript_SprayWoreOff[];
 
 // battle_message
 extern const u8 Text_MonSentToBoxInSomeonesPC[];
@@ -1263,13 +1265,10 @@ extern const u8 EventScript_CurrentTooFast[];
 extern const u8 EventScript_UseSurf[];
 extern const u8 EventScript_Waterfall[];
 extern const u8 EventScript_CantUseWaterfall[];
-extern const u8 EventScript_DeepWater[];
-extern const u8 EventScript_TrySurface[];
 extern const u8 EventScript_VsSeekerChargingDone[];
 extern const u8 EventScript_FieldPoison[];
 extern const u8 EventScript_EggHatch[];
 extern const u8 EventScript_DoFallWarp[];
-extern const u8 EventScript_SafariZone_ExtensionSign[];
 
 // overworld
 
@@ -1292,31 +1291,5 @@ extern const u8 TradeCenter_EventScript_Chair0[];
 extern const u8 TradeCenter_EventScript_Chair1[];
 extern const u8 TradeCenter_ConfirmLeaveRoom[];
 extern const u8 TradeCenter_TerminateLink[];
-
-extern const u8 Help_Text_UsingOptionsSubmenu[];
-extern const u8 Help_Text_HowToUseOptionSubmenu[];
-extern const u8 Help_Text_DefineBattleTransitions[];
-extern const u8 Help_Text_DefineBattleIntroAnims[];
-extern const u8 Help_Text_DefineMoveAnimations[];
-extern const u8 Help_Text_DefineHpBarAnimSpeed[];
-extern const u8 Help_Text_DefineExpBarAnimSpeed[];
-extern const u8 Help_Text_DefineBack[];
-extern const u8 Help_Text_BattleTransitions[];
-extern const u8 Help_Text_BattleIntroAnim[];
-extern const u8 Help_Text_MoveAnimations[];
-extern const u8 Help_Text_HpBarAnimSpeed[];
-extern const u8 Help_Text_ExpBarAnimSpeed[];
-extern const u8 Help_Text_Back[];
-extern const u8 Help_Text_AdvancedKeys[];
-extern const u8 Help_Text_DefineAdvancedKeys[];
-extern const u8 Help_Text_DefineAdvancedKeysBack[];
-extern const u8 Help_Text_UsingKeySystemSubmenu[];
-extern const u8 Help_Text_HowToUseKeySystemSubmenu[];
-extern const u8 Help_Text_ExpMod[];
-extern const u8 Help_Text_DefineExpMod[];
-extern const u8 Help_Text_FRExclusives[];
-extern const u8 Help_Text_LGExclusives[];
-extern const u8 Help_Text_DefineFRExclusives[];
-extern const u8 Help_Text_DefineLGExclusives[];
 
 #endif //GUARD_EVENT_SCRIPTS_H

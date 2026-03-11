@@ -111,19 +111,6 @@ void WarpFadeOutScreen(void)
     }
 }
 
-static void WarpFadeOutScreenWithDelay(void) // Unused
-{
-    switch (MapTransitionIsEnter(GetCurrentMapType(), GetDestinationWarpMapHeader()->mapType))
-    {
-    case FALSE:
-        FadeScreen(FADE_TO_BLACK, 3);
-        break;
-    case TRUE:
-        FadeScreen(FADE_TO_WHITE, 3);
-        break;
-    }
-}
-
 static void SetPlayerVisibility(bool8 visible)
 {
     SetPlayerInvisibility(!visible);
@@ -611,14 +598,6 @@ void DoTeleportWarp(void)
     gFieldCallback = FieldCB_TeleportWarpIn;
 }
 
-static void DoPortholeWarp(void) // Unused
-{
-    LockPlayerFieldControls();
-    WarpFadeOutScreen();
-    CreateTask(Task_Teleport2Warp, 10);
-    gFieldCallback = FieldCB_ShowPortholeView;
-}
-
 static void Task_CableClubWarp(u8 taskId)
 {
     struct Task *task = &gTasks[taskId];
@@ -742,12 +721,20 @@ static void Task_DoorWarp(u8 taskId)
     struct Task *task = &gTasks[taskId];
     s16 *xp = &task->data[2];
     s16 *yp = &task->data[3];
+    struct ObjectEvent *followerObject = GetFollowerObject();
+
     switch (task->data[0])
     {
     case 0:
         FreezeObjectEvents();
         PlayerGetDestCoords(xp, yp);
         PlaySE(GetDoorSoundEffect(*xp, *yp - 1));
+        if (followerObject)
+        {
+            // Put follower into pokeball
+            ClearObjectEventMovement(followerObject, &gSprites[followerObject->spriteId]);
+            ObjectEventSetHeldMovement(followerObject, MOVEMENT_ACTION_ENTER_POKEBALL);
+        }
         task->data[1] = FieldAnimateDoorOpen(*xp, *yp - 1);
         task->data[0] = 1;
         break;

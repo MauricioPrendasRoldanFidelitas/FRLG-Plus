@@ -1,8 +1,11 @@
+#include "config.h"
+#include "config/battle.h"
 #include "constants/global.h"
 #include "constants/flags.h"
 #include "constants/event_objects.h"
 #include "constants/event_object_movement.h"
 #include "constants/decorations.h"
+#include "constants/item.h"
 #include "constants/items.h"
 #include "constants/layouts.h"
 #include "constants/maps.h"
@@ -40,8 +43,7 @@
 #include "constants/mystery_gift.h"
 	.include "asm/macros.inc"
 	.include "asm/macros/event.inc"
-	.set FALSE, 0
-	.set TRUE,  1
+	.include "constants/constants.inc"
 
 	.section script_data, "aw", %progbits
 
@@ -806,12 +808,52 @@ gStdScriptsEnd::
 
 	.include "data/scripts/std_msgbox.inc"
 	.include "data/scripts/trainer_battle.inc"
+	
+	.include "data/scripts/debug.inc"
+
+@ Unused
+Text_WouldYouLikeToMixRecords::
+	.string "Would you like to mix records with\n"
+	.string "other TRAINERS?$"
+
+@ Unused
+Text_WeHopeToSeeYouAgain2::
+	.string "We hope to see you again!$"
+
 	.include "data/text/pc.inc"
+
+@ Unused
+Text_WelcomeTradeCenter::
+	.string "Welcome to the POKéMON CABLE CLUB\n"
+	.string "TRADE CENTER.$"
+
+@ Unused
+Text_WelcomeColosseum::
+	.string "Welcome to the POKéMON CABLE CLUB\n"
+	.string "COLOSSEUM.$"
+
+@ Unused
+Text_WelcomeTimeCapsule::
+	.string "Welcome to the POKéMON CABLE CLUB\n"
+	.string "TIME CAPSULE.$"
 
 Text_PleaseComeAgain::
 	.string "Please come again!$"
 
+@ Unused
+Text_HavingDiscountSaleToday::
+	.string "Welcome!\p"
+	.string "We're having a discount sale today!$"
+
+@ Unused
+Text_PlayerWhatCanIDoForYou::
+	.string "{PLAYER}{KUN}, welcome!\p"
+	.string "What can I do for you?$"
+
 	.include "data/text/obtain_item.inc"
+
+Text_MakingPreparations::
+	.string "じゅんびちゅうです！$"
 
 Text_WantWhichFloor::
 	.string "Which floor do you want?$"
@@ -820,8 +862,28 @@ Text_BagItemCanBeRegistered::
 	.string "An item in the BAG can be\n"
 	.string "registered to SELECT for easy use.$"
 
+@ Unused (email from R/S Rivals computer)
+Text_TrainerSchoolEmail::
+	.string "パソコンに\n"
+	.string "ポケモン　トレーナー　こうざの\l"
+	.string "メールが　きている！\p"
+	.string "‥‥　‥‥　‥‥\p"
+	.string "ポケモンが　おぼえられる　わざは　4つ！\p"
+	.string "どんな　わざを　おぼえさせるかで\n"
+	.string "トレーナーの　じつりょくが　とわれます！\p"
+	.string "‥‥　‥‥　‥‥$"
+
 Text_PlayerBootedUpPC::
 	.string "{PLAYER} booted up the PC.$"
+
+@ Unused
+Text_LinkWasCanceled::
+	.string "つうしんは　キャンセルされました$"
+
+@ Unused
+Text_GiveNicknameToReceivedMon::
+	.string "Want to give a nickname to the\n"
+	.string "{STR_VAR_2} you received?$"
 
 gText_PkmnFainted3::
 	.string "{STR_VAR_1} fainted…\p"
@@ -845,6 +907,16 @@ Text_RestoredPkmnToFullHealth::
 	.string "full health.$"
 
 	.include "data/text/surf.inc"
+
+@ Unused, from R/S
+Text_DoorOpenedFarAway::
+	.string "どこか　とおくの　とびらが\n"
+	.string "ひらいたような　おとだ‥‥$"
+
+@ Unused, from R/S
+Text_BigHoleInTheWall::
+	.string "かべに\n"
+	.string "おおきな　あなが　あいている！$"
 
 Text_WirelessClubUndergoingAdjustments::
 	.string "I'm terribly sorry.\n"
@@ -892,6 +964,28 @@ Text_VoiceRangOutDontRunAway::
 	.string "Someone's voice rang out,\n"
 	.string "“Don't run away!”$"
 
+@ Uncear what the below unused JP texts were for
+Text_IdLikeToSeeRequest::
+	.string "えっとー\n"
+	.string "{STR_VAR_2}が　みてみたいなー\p"
+	.string "それも　{STR_VAR_1}{STR_VAR_3}\n"
+	.string "{STR_VAR_2}が　みてみたいなー$"
+
+Text_ThankYouForShowingMe::
+	.string "わぁー　すごい！\n"
+	.string "{STR_VAR_1}{STR_VAR_3}{STR_VAR_2}だー！\p"
+	.string "ありがとー\n"
+	.string "また　よろしくねー！$"
+
+Text_ThatsNotRight::
+	.string "それっ　ちがうよー！$"
+
+Text_ISee::
+	.string "そっか‥$"
+
+Text_TheDoorIsClosed::
+	.string "ドアは　しまっている‥$"
+
 Text_TheDoorIsOpen::
 	.string "The door is open…$"
 
@@ -901,6 +995,10 @@ Text_TheDoorIsOpen::
 
 Text_MonFlewAway::
 	.string "The {STR_VAR_1} flew away!$"
+
+Text_TheresBedLetsRest::
+	.string "ベッドが　ある‥‥\n"
+	.string "やすんでいこう$"
 
 Text_FoundTMHMContainsMove::
 	.string "{PLAYER} found a {STR_VAR_2}!\n"
@@ -913,8 +1011,8 @@ Text_Gyaoo::
 	.string "Gyaoo!$"
 
 Text_MoveCanOnlyBeLearnedOnce::
-	.string "This move can only be learned\n"
-	.string "once for free. Is that okay?$"
+	.string "This move can be learned only\n"
+	.string "once. Is that okay?$"
 
 EventScript_ResetAllMapFlags::
 	setflag FLAG_HIDE_OAK_IN_HIS_LAB
@@ -966,14 +1064,6 @@ EventScript_ResetAllMapFlags::
 	setflag FLAG_HIDE_FAME_CHECKER_KOGA_JOURNAL
 	setflag FLAG_HIDE_FAME_CHECKER_LT_SURGE_JOURNAL
 	setflag FLAG_HIDE_SAFFRON_CITY_POKECENTER_SABRINA_JOURNALS
-	setflag FLAG_HIDE_LAVENDER_OUTSIDE_FUJI
-	setflag FLAG_HIDE_BATTLE_TOWER_OPPONENT
-	setflag FLAG_HIDE_VICTORY_ROAD_2F_BOULDER
-	setflag FLAG_HIDE_SCOTT
-	setflag FLAG_HIDE_LATI
-	setflag FLAG_HIDE_AWARD_SCOTT_BATTLE_TOWER
-	setflag FLAG_HIDE_NATIONAL_DEX_AIDE
-	setflag FLAG_HIDE_MASTER_TRAINERS
 	setvar VAR_MASSAGE_COOLDOWN_STEP_COUNTER, 500
 	end
 
@@ -992,11 +1082,18 @@ Common_ShowEasyChatScreen::
 	.include "data/scripts/set_gym_trainers.inc"
 	.include "data/scripts/bag_full.inc"
 
+@ Unused
+EventScript_GymBadgeFanfare::
+	playfanfare MUS_OBTAIN_BADGE
+	waitfanfare
+	return
+
 EventScript_OutOfCenterPartyHeal::
 	fadescreen FADE_TO_BLACK
-	playfanfare MUS_RS_HEAL
+	playfanfare MUS_HEAL
 	waitfanfare
 	special HealPlayerParty
+	callnative UpdateFollowingPokemon
 	fadescreen FADE_FROM_BLACK
 	return
 
@@ -1018,6 +1115,16 @@ EventScript_ChangePokemonNickname::
 	fadescreen FADE_TO_BLACK
 	special ChangePokemonNickname
 	waitstate
+	return
+
+@ Unused
+EventScript_HandOverItem::
+	bufferitemname STR_VAR_1, VAR_0x8004
+	playfanfare MUS_OBTAIN_TMHM
+	message Text_HandedOverItem
+	waitmessage
+	waitfanfare
+	removeitem VAR_0x8004
 	return
 
 	.include "data/scripts/pokemon_league.inc"
@@ -1071,6 +1178,25 @@ EventScript_ReleaseEnd::
 	end
 
 	.include "data/scripts/pokemon_mansion.inc"
+
+@ Unused
+EventScript_DelayedLookAround::
+	lockall
+	applymovement VAR_0x8004, Common_Movement_WalkInPlaceFasterLeft
+	waitmovement 0
+	delay 20
+	applymovement VAR_0x8004, Common_Movement_WalkInPlaceFasterUp
+	waitmovement 0
+	delay 20
+	applymovement VAR_0x8004, Common_Movement_WalkInPlaceFasterRight
+	waitmovement 0
+	delay 20
+	applymovement VAR_0x8004, Common_Movement_WalkInPlaceFasterDown
+	waitmovement 0
+	delay 20
+	releaseall
+	end
+
 	.include "data/scripts/silphco_doors.inc"
 	.include "data/scripts/pc_transfer.inc"
 
@@ -1155,26 +1281,16 @@ EventScript_BufferPutAwayPocketName::
 	case POCKET_ITEMS,       EventScript_BufferPutAwayPocketItems
 	case POCKET_KEY_ITEMS,   EventScript_BufferPutAwayPocketKeyItems
 	case POCKET_POKE_BALLS,  EventScript_BufferPutAwayPocketPokeBalls
-	case POCKET_TM_CASE,     EventScript_BufferPutAwayPocketTMCase
-	case POCKET_BERRY_POUCH, EventScript_BufferPutAwayPocketBerryPouch
-	case POCKET_MEDICINE,	 EventScript_BufferPutAwayPocketMedicine
-	case POCKET_HELD_ITEMS,  EventScript_BufferPutAwayPocketHeldItems
+	case POCKET_TM_HM,     EventScript_BufferPutAwayPocketTMCase
+	case POCKET_BERRIES, EventScript_BufferPutAwayPocketBerryPouch
 	end
 
 EventScript_BufferPutAwayPocketItems::
 	bufferstdstring STR_VAR_3, STDSTRING_ITEMS_POCKET
 	return
 
-EventScript_BufferPutAwayPocketMedicine::
-	bufferstdstring STR_VAR_3, STDSTRING_MEDICINE_POCKET
-	return
-
 EventScript_BufferPutAwayPocketKeyItems::
 	bufferstdstring STR_VAR_3, STDSTRING_KEY_ITEMS_POCKET
-	return
-
-EventScript_BufferPutAwayPocketHeldItems::
-	bufferstdstring STR_VAR_3, STDSTRING_HELD_ITEMS_POCKET
 	return
 
 EventScript_BufferPutAwayPocketPokeBalls::
@@ -1214,7 +1330,13 @@ EventScript_NoMoreRoomForPokemon::
 
 	.include "data/text/braille.inc"
 	.include "data/scripts/trainers.inc"
-	.include "data/scripts/master_trainers.inc"
+
+@ Test message!
+@ Welcome to the world of Pokémon!
+Text_TestMsg::
+	.string "テストよう　メッセージです！\n"
+	.string "ポケモンの　せかいへ　ようこそ！$"
+
 	.include "data/scripts/fame_checker.inc"
 	.include "data/text/fame_checker.inc"
 	.include "data/text/sign_lady.inc"
@@ -1231,100 +1353,16 @@ EventScript_NoMoreRoomForPokemon::
 	.include "data/scripts/repel.inc"
 	.include "data/scripts/safari_zone.inc"
 	.include "data/text/safari_zone.inc"
+	.include "data/text/competitive_brothers.inc"
+	.include "data/text/eon_ticket.inc"
+	.include "data/text/berries.inc"
 	.include "data/text/flavor_text.inc"
 	.include "data/scripts/hole.inc"
 	.include "data/text/trainers.inc"
 	.include "data/scripts/move_tutors.inc"
 	.include "data/scripts/trainer_tower.inc"
+	.include "data/scripts/test.inc"
 	.include "data/text/save.inc"
 	.include "data/text/new_game_intro.inc"
 	.include "data/text/pokedude.inc"
-
-	.include "data/maps/FarawayIsland_Exterior/scripts.inc"
-	.include "data/maps/FarawayIsland_Exterior/text.inc"
-	.include "data/maps/FarawayIsland_Interior/scripts.inc"
-	.include "data/maps/FarawayIsland_Interior/text.inc"
-	.include "data/scripts/fuji_event.inc"
-	.include "data/scripts/national_dex_aide.inc"
-	.include "data/maps/OneIsland_KindleRoad_GlassWorkshop/scripts.inc"
-	.include "data/maps/Route20_Underwater/scripts.inc"
-	.include "data/maps/Route20_Underwater/text.inc"
-	.include "data/maps/BattleFrontier_OutsideWest/scripts.inc"
-	.include "data/maps/BattleFrontier_OutsideWest/text.inc"
-	.include "data/maps/BattleFrontier_OutsideEast/scripts.inc"
-	.include "data/maps/BattleFrontier_OutsideEast/text.inc"
-	.include "data/maps/RS_BattleTower/scripts.inc"
-	.include "data/maps/RS_BattleTower/text.inc"
-	.include "data/maps/RS_BattleTower_Lobby/scripts.inc"
-	.include "data/maps/RS_BattleTower_Lobby/text.inc"
-	.include "data/maps/RS_BattleTower_Elevator/scripts.inc"
-	.include "data/maps/RS_BattleTower_Elevator/text.inc"
-	.include "data/maps/RS_BattleTower_Corridor/scripts.inc"
-	.include "data/maps/RS_BattleTower_Corridor/text.inc"
-	.include "data/maps/RS_BattleTower_BattleRoom/scripts.inc"
-	.include "data/maps/RS_BattleTower_BattleRoom/text.inc"
-	.include "data/maps/SafariZone_NorthWest/scripts.inc"
-	.include "data/maps/SafariZone_NorthWest/text.inc"
-	.include "data/maps/SafariZone_NorthEast/scripts.inc"
-	.include "data/maps/SafariZone_NorthEast/text.inc"
-	.include "data/maps/SafariZone_NorthWest_RestHouse/scripts.inc"
-	.include "data/maps/SafariZone_NorthWest_RestHouse/text.inc"
-	.include "data/maps/ThreeIsland_BondBridge_Underwater/scripts.inc"
-	.include "data/maps/ThreeIsland_BondBridge_Underwater/text.inc"
-	.include "data/maps/ArtisanCave_B1F/scripts.inc"
-	.include "data/maps/ArtisanCave_B1F/text.inc"
-	.include "data/maps/ArtisanCave_1F/scripts.inc"
-	.include "data/maps/ArtisanCave_1F/text.inc"
-	.include "data/maps/SouthernIsland_Exterior/scripts.inc"
-	.include "data/maps/SouthernIsland_Exterior/text.inc"
-	.include "data/maps/SouthernIsland_Interior/scripts.inc"
-	.include "data/maps/SouthernIsland_Interior/text.inc"
-	.include "data/maps/CeruleanCave_1F_Blue/scripts.inc"
-	.include "data/maps/CeruleanCave_1F_Blue/text.inc"
-	.include "data/maps/CeruleanCave_2F_Blue/scripts.inc"
-	.include "data/maps/CeruleanCave_2F_Blue/text.inc"
-	.include "data/maps/CeruleanCave_B1F_Blue/scripts.inc"
-	.include "data/maps/CeruleanCave_B1F_Blue/text.inc"
-	.include "data/maps/CeruleanCave_1F_Yellow/scripts.inc"
-	.include "data/maps/CeruleanCave_1F_Yellow/text.inc"
-	.include "data/maps/CeruleanCave_2F_Yellow/scripts.inc"
-	.include "data/maps/CeruleanCave_2F_Yellow/text.inc"
-	.include "data/maps/CeruleanCave_B1F_Yellow/scripts.inc"
-	.include "data/maps/CeruleanCave_B1F_Yellow/text.inc"
-	.include "data/maps/FourIsland_Base/scripts.inc"
-	.include "data/maps/FourIsland_Base/text.inc"
-	.include "data/maps/FourIsland_Base_CableCarStation/scripts.inc"
-	.include "data/maps/FourIsland_Base_CableCarStation/text.inc"
-	.include "data/maps/FourIsland_CableCarStation/scripts.inc"
-	.include "data/maps/FourIsland_CableCarStation/text.inc"
-	.include "data/maps/BattleFrontier_Lounge2/scripts.inc"
-	.include "data/maps/BattleFrontier_Lounge2/text.inc"
-	.include "data/maps/BattleFrontier_Lounge1/scripts.inc"
-	.include "data/maps/BattleFrontier_Lounge1/text.inc"
-	.include "data/maps/BattleFrontier_Lounge3/scripts.inc"
-	.include "data/maps/BattleFrontier_Lounge3/text.inc"
-	.include "data/maps/BattleFrontier_Lounge4/scripts.inc"
-	.include "data/maps/BattleFrontier_Lounge4/text.inc"
-	.include "data/maps/BattleFrontier_Lounge5/scripts.inc"
-	.include "data/maps/BattleFrontier_Lounge5/text.inc"
-	.include "data/maps/BattleFrontier_Lounge6/scripts.inc"
-	.include "data/maps/BattleFrontier_Lounge6/text.inc"
-	.include "data/maps/BattleFrontier_Lounge7/scripts.inc"
-	.include "data/maps/BattleFrontier_Lounge7/text.inc"
-	.include "data/maps/BattleFrontier_Lounge8/scripts.inc"
-	.include "data/maps/BattleFrontier_Lounge8/text.inc"
-	.include "data/maps/BattleFrontier_ReceptionGate/scripts.inc"
-	.include "data/maps/BattleFrontier_ReceptionGate/text.inc"
-	.include "data/maps/BattleFrontier_ExchangeServiceCorner/scripts.inc"
-	.include "data/maps/BattleFrontier_ExchangeServiceCorner/text.inc"
-	.include "data/maps/BattleFrontier_ScottsHouse/scripts.inc"
-	.include "data/maps/BattleFrontier_ScottsHouse/text.inc"
-	.include "data/maps/BattleFrontier_PokemonCenter_1F/scripts.inc"
-	.include "data/maps/BattleFrontier_PokemonCenter_1F/text.inc"
-	.include "data/maps/BattleFrontier_PokemonCenter_2F/scripts.inc"
-	.include "data/maps/BattleFrontier_PokemonCenter_2F/text.inc"
-	.include "data/maps/BattleFrontier_Mart/scripts.inc"
-	.include "data/maps/BattleFrontier_Mart/text.inc"
-
-	.include "data/maps/BattleFrontier_RankingHall/scripts.inc"
-	.include "data/maps/BattleFrontier_RankingHall/text.inc"
+	.include "data/scripts/follower.inc"

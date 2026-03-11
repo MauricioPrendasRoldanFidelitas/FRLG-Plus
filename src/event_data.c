@@ -2,9 +2,6 @@
 #include "event_data.h"
 #include "item_menu.h"
 #include "quest_log.h"
-#include "constants/maps.h"
-#include "constants/map_groups.h"
-#include "constants/region_map_sections.h"
 
 static bool8 IsFlagOrVarStoredInQuestLog(u16 idx, u8 a1);
 
@@ -38,10 +35,12 @@ EWRAM_DATA u16 gSpecialVar_PrevTextColor = 0;
 EWRAM_DATA u16 gSpecialVar_0x8014 = 0;
 EWRAM_DATA u8 sSpecialFlags[SPECIAL_FLAGS_SIZE] = {};
 
+#define NUM_DAILY_FLAGS   (DAILY_FLAGS_END - DAILY_FLAGS_START + 1)
+#define DAILY_FLAGS_SIZE    (NUM_DAILY_FLAGS / 8)
+
 u16 gLastQuestLogStoredFlagOrVarIdx;
 
 extern u16 *const gSpecialVars[];
-extern u8 NuzlockeLUT[];
 
 void InitEventData(void)
 {
@@ -58,17 +57,13 @@ void ClearTempFieldEventData(void)
     FlagClear(FLAG_SYS_BLACK_FLUTE_ACTIVE);
     FlagClear(FLAG_SYS_USE_STRENGTH);
     FlagClear(FLAG_SYS_SPECIAL_WILD_BATTLE);
-    FlagClear(FLAG_SYS_CTRL_OBJ_DELETE);
     FlagClear(FLAG_SYS_INFORMED_OF_LOCAL_WIRELESS_PLAYER);
 }
 
-// Unused
-static void DisableNationalPokedex_RSE(void)
+
+void ClearDailyFlags(void)
 {
-    u16 *ptr = GetVarPointer(VAR_0x403C);
-    gSaveBlock2Ptr->pokedex.unused = 0;
-    *ptr = 0;
-    FlagClear(FLAG_0x838);
+    memset(gSaveBlock1Ptr->flags + (DAILY_FLAGS_START / 8), 0, DAILY_FLAGS_SIZE);
 }
 
 // The magic numbers used here (0xDA and 0x0302) correspond to those
@@ -80,17 +75,6 @@ void EnableNationalPokedex_RSE(void)
     gSaveBlock2Ptr->pokedex.unused = 0xDA;
     *ptr = 0x0302;
     FlagSet(FLAG_0x838);
-}
-
-// Unused
-static bool32 IsNationalPokedexEnabled_RSE(void)
-{
-    if (gSaveBlock2Ptr->pokedex.unused == 0xDA
-            && VarGet(VAR_0x403C) == 0x0302
-            && FlagGet(FLAG_0x838))
-        return TRUE;
-
-    return FALSE;
 }
 
 void DisableNationalPokedex(void)
@@ -111,9 +95,12 @@ void EnableNationalPokedex(void)
 
 bool32 IsNationalPokedexEnabled(void)
 {
-    if (!FlagGet(FLAG_SYS_NATIONAL_DEX))
-        return FALSE;
-    return TRUE;
+    if (gSaveBlock2Ptr->pokedex.nationalMagic == 0xB9
+            && VarGet(VAR_NATIONAL_DEX) == 0x6258
+            && FlagGet(FLAG_SYS_NATIONAL_DEX))
+        return TRUE;
+
+    return FALSE;
 }
 
 void DisableMysteryGift(void)
@@ -178,11 +165,12 @@ void EnableResetRTC(void)
 
 bool32 CanResetRTC(void)
 {
-    if (!FlagGet(FLAG_SYS_RESET_RTC_ENABLE))
-        return FALSE;
-    if (VarGet(VAR_RESET_RTC_ENABLE) != 0x0920)
-        return FALSE;
     return TRUE;
+    // if (!FlagGet(FLAG_SYS_RESET_RTC_ENABLE))
+    //     return FALSE;
+    // if (VarGet(VAR_RESET_RTC_ENABLE) != 0x0920)
+    //     return FALSE;
+    // return TRUE;
 }
 
 u16 *GetVarPointer(u16 idx)
@@ -242,6 +230,14 @@ u16 VarGet(u16 idx)
     return *ptr;
 }
 
+u16 VarGetIfExist(u16 id)
+{
+    u16 *ptr = GetVarPointer(id);
+    if (!ptr)
+        return 65535;
+    return *ptr;
+}
+
 bool8 VarSet(u16 idx, u16 val)
 {
     u16 *ptr = GetVarPointer(idx);
@@ -251,7 +247,7 @@ bool8 VarSet(u16 idx, u16 val)
     return TRUE;
 }
 
-u8 VarGetObjectEventGraphicsId(u8 idx)
+u16 VarGetObjectEventGraphicsId(u8 idx)
 {
     return VarGet(VAR_OBJ_GFX_ID_0 + idx);
 }
@@ -291,6 +287,14 @@ bool8 FlagSet(u16 idx)
     u8 *ptr = GetFlagAddr(idx);
     if (ptr != NULL)
         *ptr |= 1 << (idx & 7);
+    return FALSE;
+}
+
+u8 FlagToggle(u16 id)
+{
+    u8 *ptr = GetFlagAddr(id);
+    if (ptr)
+        *ptr ^= 1 << (id & 7);
     return FALSE;
 }
 
@@ -335,121 +339,4 @@ void ResetSpecialVars(void)
     gSpecialVar_TextColor = 0;
     gSpecialVar_PrevTextColor = 0;
     gSpecialVar_0x8014 = 0;
-}
-
-u8 NuzlockeFlagSet(u8 mapsec)
-{
-    u8 id = NuzlockeLUT[mapsec];
-    if(!FlagGet(FLAG_SYS_POKEDEX_GET))
-    {   //don't start keeping track until has Pokedex
-        return 1;
-    }
-    if(id == 0x27) //Safari Zone
-    {
-        if(gSaveBlock1Ptr->location.mapNum == MAP_NUM(SAFARI_ZONE_EAST))
-        {
-            FlagSet(FLAG_NUZLOCKE_SAFARI_EAST);
-            return 0;
-        }
-        else if(gSaveBlock1Ptr->location.mapNum == MAP_NUM(SAFARI_ZONE_NORTH))
-        {
-            FlagSet(FLAG_NUZLOCKE_SAFARI_NORTH);
-            return 0;
-        }
-        else if(gSaveBlock1Ptr->location.mapNum == MAP_NUM(SAFARI_ZONE_WEST))
-        {
-            FlagSet(FLAG_NUZLOCKE_SAFARI_WEST);
-            return 0;
-        }
-        else if(gSaveBlock1Ptr->location.mapNum == MAP_NUM(SAFARI_ZONE_NORTH_WEST))
-        {
-            FlagSet(FLAG_NUZLOCKE_SAFARI_NORTH_WEST);
-            return 0;
-        }
-        else if(gSaveBlock1Ptr->location.mapNum == MAP_NUM(SAFARI_ZONE_NORTH_EAST))
-        {
-            FlagSet(FLAG_NUZLOCKE_SAFARI_NORTH_EAST);
-            return 0;
-        }
-        else
-        {
-            FlagSet(NUZLOCKE_FLAGS_START + (id - 1)); //base Safari Zone flag
-            return 0;
-        }
-        return 0;
-    }
-    if(id != 0)
-        FlagSet(NUZLOCKE_FLAGS_START + (id - 1));
-    return 0;
-}
-
-u8 NuzlockeFlagClear(u8 mapsec)
-{   //can't handle additional Safari Zone flags
-    u8 id = NuzlockeLUT[mapsec];
-    if(id != 0)
-        FlagClear(NUZLOCKE_FLAGS_START + (id - 1));
-    return 0;
-}
-
-u8 NuzlockeFlagGet(u8 mapsec)
-{
-    u8 id = NuzlockeLUT[mapsec];
-    if(id == 0x27) //Safari Zone
-    {
-        if(gSaveBlock1Ptr->location.mapNum == MAP_NUM(SAFARI_ZONE_EAST))
-        {
-            return FlagGet(FLAG_NUZLOCKE_SAFARI_EAST);
-        }
-        else if(gSaveBlock1Ptr->location.mapNum == MAP_NUM(SAFARI_ZONE_NORTH))
-        {
-            return FlagGet(FLAG_NUZLOCKE_SAFARI_NORTH);
-        }
-        else if(gSaveBlock1Ptr->location.mapNum == MAP_NUM(SAFARI_ZONE_WEST))
-        {
-            return FlagGet(FLAG_NUZLOCKE_SAFARI_WEST);
-        }
-        else if(gSaveBlock1Ptr->location.mapNum == MAP_NUM(SAFARI_ZONE_NORTH_WEST))
-        {
-            return FlagGet(FLAG_NUZLOCKE_SAFARI_NORTH_WEST);
-        }
-        else if(gSaveBlock1Ptr->location.mapNum == MAP_NUM(SAFARI_ZONE_NORTH_EAST))
-        {
-            return FlagGet(FLAG_NUZLOCKE_SAFARI_NORTH_EAST);
-        }
-        else
-        {
-            return FlagGet(NUZLOCKE_FLAGS_START + (id - 1)); //base Safari Zone flag
-        }
-        return 0;
-    }
-    if(id != 0)
-        return FlagGet(NUZLOCKE_FLAGS_START + (id - 1));
-    return FALSE;
-}
-
-bool8 CheckMasterTrainerFlag(u16 flag)
-{
-    u8 index = flag / 8; //get byte in array
-    u8 bit = flag % 8;   //get bit in byte
-    u8 mask = 1 << bit;
-
-    return (gSaveBlock1Ptr->masterTrainerFlags[index] & mask) != 0;
-}
-
-bool8 SetMasterTrainerFlag(u16 flag)
-{
-    u8 index = flag / 8; //get byte in array
-    u8 bit = flag % 8;   //get bit in byte
-    u8 mask = 1 << bit;
-
-    gSaveBlock1Ptr->masterTrainerFlags[index] |= mask;
-}
-
-bool8 ClearMasterTrainerFlag(u16 flag)
-{
-    u8 index = flag / 8; //get byte in array
-    u8 bit = flag % 8;   //get bit in byte
-    u8 mask = 1 << bit;
-
-    gSaveBlock1Ptr->masterTrainerFlags[index] &= ~mask;
 }

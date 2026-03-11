@@ -30,6 +30,7 @@ Route5_PokemonDayCare_EventScript_TryGiveMon::
 	msgbox Route5_PokemonDayCare_Text_ComeSeeMeInAWhile
 	waitmoncry
 	special PutMonInRoute5Daycare
+	callnative UpdateFollowingPokemon
 	incrementgamestat GAME_STAT_USED_DAYCARE
 	goto Route5_PokemonDayCare_EventScript_CloseMoneyBox
 	end
@@ -61,7 +62,6 @@ Route5_PokemonDayCare_EventScript_CheckOnMon::
 	end
 
 Route5_PokemonDayCare_EventScript_MonHasGrownByXLevels::
-	callnative GetStartingLevelOfRoute5DaycareMon
 	msgbox Route5_PokemonDayCare_Text_MonHasGrownByXLevels
 	return
 
@@ -72,7 +72,6 @@ Route5_PokemonDayCare_EventScript_NotEnoughTime::
 Route5_PokemonDayCare_EventScript_TryRetrieveMon::
 	specialvar VAR_RESULT, CalculatePlayerPartyCount
 	goto_if_eq VAR_RESULT, PARTY_SIZE, Route5_PokemonDayCare_EventScript_NoRoomInParty
-Route5_PokemonDayCare_EventScript_TryRetrieveMon_Continue::
 	specialvar VAR_RESULT, IsEnoughForCostInVar0x8005
 	goto_if_eq VAR_RESULT, TRUE, Route5_PokemonDayCare_EventScript_RetrieveMon
 	msgbox Route5_PokemonDayCare_Text_DontHaveEnoughMoney
@@ -82,45 +81,27 @@ Route5_PokemonDayCare_EventScript_TryRetrieveMon_Continue::
 Route5_PokemonDayCare_EventScript_RetrieveMon::
 	setvar VAR_0x8004, 0
 	specialvar VAR_RESULT, TakePokemonFromRoute5Daycare
-	compare VAR_RESULT, 9999 //boxes full
-	goto_if_eq Route5_PokemonDayCare_EventScript_StorageAndPartyFull
 	special SubtractMoneyFromVar0x8005
 	updatemoneybox
 	copyvar VAR_0x8008, VAR_RESULT
 	getpartysize
 	subvar VAR_RESULT, 1
-	@bufferpartymonnick STR_VAR_1, VAR_RESULT @ done by TakePokemonFromRoute5Daycare into STR_VAR_1
+	bufferpartymonnick STR_VAR_1, VAR_RESULT
 	copyvar VAR_RESULT, VAR_0x8008
 	msgbox Route5_PokemonDayCare_Text_ThankYouHeresMon
 	textcolor NPC_TEXT_COLOR_NEUTRAL
 	waitse
 	playmoncry VAR_RESULT, CRY_MODE_NORMAL
 	msgbox Route5_PokemonDayCare_Text_PlayerGotMonBack
-	waitmoncry
-	compare VAR_MON_BOX_ID, 9999 //not sent to box
-	call_if_ne Route5_PokemonDayCare_EventScript_SentToBoxNum
 	call EventScript_RestorePrevTextColor
+	waitmoncry
 	goto Route5_PokemonDayCare_EventScript_CloseMoneyBox
 	end
 
 Route5_PokemonDayCare_EventScript_NoRoomInParty::
-	callnative CheckDaycareMonsHaveMail
-	goto_if_ne VAR_RESULT, TRUE, Route5_PokemonDayCare_EventScript_TryRetrieveMon_Continue @ this mon has mail
-Route5_PokemonDayCare_EventScript_StorageAndPartyFull::
 	msgbox Route5_PokemonDayCare_Text_YouveGotNoRoomForIt
 	goto Route5_PokemonDayCare_EventScript_CloseMoneyBox
 	end
-
-Route5_PokemonDayCare_EventScript_SentToBoxNum::
-	copyvar VAR_TEMP_1, VAR_RESULT
-	call EventScript_TransferredToPC_Nickname
-	return
-
-EventScript_TransferredToPC_Nickname::
-	bufferboxname STR_VAR_1, VAR_PC_BOX_TO_SEND_MON
-	call_if_unset FLAG_SYS_NOT_SOMEONES_PC, EventScript_TransferredSomeonesPC
-	call_if_set FLAG_SYS_NOT_SOMEONES_PC, EventScript_TransferredBillsPC
-	return
 
 Route5_PokemonDayCare_EventScript_CloseMoneyBox::
 	hidemoneybox
